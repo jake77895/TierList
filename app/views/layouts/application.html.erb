@@ -11,6 +11,17 @@
   </head>
 
   <body>
+
+    <nav>
+      <!-- Site Title aligned to the left -->
+      <h1> <%= link_to root_path do %>
+        <%= image_tag('logo.png', alt:'Logo')%>
+      <%end%> </h1>
+
+
+      <hr>
+      
+    </nav>
     <%= yield %>
   </body>
 </html>
