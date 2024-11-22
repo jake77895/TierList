@@ -12,10 +12,20 @@
     <%= f.text_area :short_description, class: "form-control", rows: 3 %>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :custom_fields, class: "form-label" %>
-    <%= f.text_area :custom_fields, class: "form-control", placeholder: "Enter custom fields as JSON (optional)" %>
+
+
+  <!-- Custom Fields -->
+<%= f.fields_for :custom_fields, @tier_list.custom_fields do |cf| %>
+  <div class="custom-field-row">
+    <%= cf.text_field :name, placeholder: "Field Name", value: cf.object[:name], class: "form-control mb-2" %>
+    <%= cf.select :data_type, ["String", "Integer", "Boolean", "Date"], { selected: cf.object[:data_type] }, class: "form-control mb-2" %>
   </div>
+<% end %>
+
+
+
+
+
 
   <div class="form-check mb-3">
     <%= f.check_box :published, class: "form-check-input", id: "published" %>
