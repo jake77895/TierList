@@ -7,59 +7,60 @@
       A tier list is a simple way to rank classes, teachers, or graduate programs from best to worst. It helps group similar options together and makes comparing them quick and easy.
     </p>
     <div class="d-flex justify-content-center gap-2 mt-3">
-      <button class="btn btn-primary btn-lg">Create a Tier List</button>
+      <% if @allow_create == true %>
+
+        <%= link_to "Create new tier list", new_tier_list_path, class: "btn btn-primary btn-lg" %>
+
+      <% else %>
+
+        <%= link_to "Sign in to create new tier list", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+
+      <% end %>
+
+
     </div>
   </div>
 
-  
+  <hr>
 
-<hr>
+  <!--Filter tier lists-->
+  <!--Not needed, a nice to have for later-->
 
-<!--Filter tier lists-->
-<!--Not needed, a nice to have for later-->
-
-<div class="d-flex">
-  <div class="ms-auto">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        Filter
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
+  <div class="d-flex">
+    <div class="ms-auto">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Filter
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 
+  <!--Find tier lists ( from a list of already created tier lists) -->
 
-<!--Find tier lists ( from a list of already created tier lists) -->
-
-<div class="container py-5">
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    <% 9.times do |i| %> <!--Needs to be replaced with only published tier lists-->
-      <div class="col pb-4 d-flex justify-content-center">
-        <div class="card tierlistcard"> 
-          <%= image_tag(@image_url || 'egg.png', class: 'card-img-top', alt: 'Card Image') %>
-          <hr class="m-0 p-0">
-          <div class="card-body">
-            <h5 class="card-title">Card <%= i + 1 %></h5>
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+  <div class="container py-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <% 9.times do |i| %> <!--Needs to be replaced with only published tier lists-->
+        <div class="col pb-4 d-flex justify-content-center">
+          <div class="card tierlistcard">
+            <%= image_tag(@image_url || 'egg.png', class: 'card-img-top', alt: 'Card Image') %>
+            <hr class="m-0 p-0">
+            <div class="card-body">
+              <h5 class="card-title">Card <%= i + 1 %></h5>
+              <p class="card-text">
+                Some quick example text to build on the card title and make up the bulk of the card's content.
+              </p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
-
-
-
-
-
-
 
 </body>

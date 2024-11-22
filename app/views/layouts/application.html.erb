@@ -53,18 +53,19 @@
         </a>
 
         <% if current_user.present? %>
-          <a href="/users/sign_out">Sign out</a>
-          <a href="/users/edit">Edit profile</a>
+          <div class="d-inline-flex">
+            <a href="/users/edit" class="btn btn-outline-primary me-1">Edit profile</a>
+            <a href="/users/sign_out" class="btn btn-primary">Sign out</a>
+          </div>
         <% else %>
-          <a href="/users/sign_up">Sign up</a>
-          <a href="/users/sign_in">Sign in</a>
+          <div class="d-inline-flex">
+            <a href="/users/sign_in" class="btn btn-outline-primary">Sign in</a>
+            <a href="/users/sign_up" class="btn btn-primary ms-2">Sign up</a>
+          </div>
 
         <% end %>
 
-        <div>
-          <button class="btn btn-outline-primary me-2">Log in</button>
-          <button class="btn btn-primary">Sign up</button>
-        </div>
+
       </div>
     </nav>
 

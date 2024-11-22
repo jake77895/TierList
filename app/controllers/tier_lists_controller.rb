@@ -23,6 +23,8 @@ class TierListsController < ApplicationController
   def create
     @tier_list = TierList.new(tier_list_params)
 
+    @tier_list.created_by_id = current_user.id
+
     respond_to do |format|
       if @tier_list.save
         format.html { redirect_to tier_list_url(@tier_list), notice: "Tier list was successfully created." }
