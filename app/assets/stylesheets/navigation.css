@@ -1,0 +1,8 @@
+
+/* Logo */
+.logo {
+  object-fit: cover;
+  width: 150px; /* Matches the width attribute */
+  height: 40px; /* Matches the height attribute */
+
+}

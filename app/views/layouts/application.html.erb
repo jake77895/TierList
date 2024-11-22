@@ -8,20 +8,67 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <style>
+    /* Ensure the body and html take full height */
+    html, body {
+      height: 100%;
+    }
+
+    /* Flexbox container ensures footer sticks at the bottom */
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1; /* Fills the remaining vertical space */
+    }
+
+    footer {
+      background-color: #f8f9fa; /* Light gray footer background */
+      padding: 1rem;
+    }
+  </style>
+
   </head>
 
   <body>
 
-    <nav>
-      <!-- Site Title aligned to the left -->
-      <h1> <%= link_to root_path do %>
-        <%= image_tag('logo.png', alt:'Logo')%>
-      <%end%> </h1>
+      <!-- NAVIGATION BAR -->
+      <div class="container">
+      <nav class="navbar navbar-light bg-light ">
+        
+          <a class="navbar-brand" href="<%= root_path %>">
+            <%= image_tag 'logo.png', width: 30, height: 30, alt: 'Logo', class: 'logo'%>
+          </a>
+          <div>
+          <button class="btn btn-outline-primary me-2">Log in</button>
+          <button class="btn btn-success">Sign up</button>
+      </div>
+      </nav>
+        </div>
 
-
-      <hr>
       
-    </nav>
-    <%= yield %>
+
+
+      <!-- Main Content -->
+      <main class="container">
+        <%= yield %>
+      </main>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div>© 2024 | All rights reserved.</div>
+  </footer>
+
+  
   </body>
 </html>
