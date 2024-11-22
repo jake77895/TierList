@@ -2,8 +2,8 @@
 <body>
 
   <div class="container text-center py-5">
-    <h1 class="display-4 fw-bold">Create a Tier List</h1>
-    <p class="lead">
+    <h1 class="display-4 fw-bold pb-4">Create a Tier List</h1>
+    <p class="lead pb-4">
       A tier list is a simple way to rank classes, teachers, or graduate programs from best to worst. It helps group similar options together and makes comparing them quick and easy.
     </p>
     <div class="d-flex justify-content-center gap-2 mt-3">
@@ -13,14 +13,34 @@
 
 <hr>
 
+<!--Filter tier lists-->
+<!--Not needed, a nice to have for later-->
+
+<div class="d-flex">
+  <div class="ms-auto">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        Filter
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
 <!--Find tier lists ( from a list of already created tier lists) -->
 
 <div class="container py-5">
   <div class="row row-cols-1 row-cols-md-3 g-4">
-    <% 9.times do |i| %>
+    <% 9.times do |i| %> <!--Needs to be replaced with only published tier lists-->
       <div class="col pb-4 d-flex justify-content-center">
-        <div class="card" style="width: 20rem;"> <!-- Slightly wider card -->
-          <img src="https://via.placeholder.com/320x180" class="card-img-top" alt="Card Image <%= i + 1 %>"> <!-- Slightly shorter image -->
+        <div class="card tierlistcard"> 
+          <%= image_tag(@image_url || 'egg.png', class: 'card-img-top', alt: 'Card Image') %>
+          <hr class="m-0 p-0">
           <div class="card-body">
             <h5 class="card-title">Card <%= i + 1 %></h5>
             <p class="card-text">

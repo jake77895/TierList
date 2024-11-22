@@ -1,0 +1,7 @@
+.tierlistcard {
+  width: 23rem;
+  box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.59);
+  -webkit-box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.59);
+  -moz-box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.59);
+
+}
