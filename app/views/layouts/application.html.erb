@@ -51,12 +51,34 @@
         <a class="navbar-brand" href="<%= root_path %>">
           <%= image_tag 'logo.png', width: 30, height: 30, alt: 'Logo', class: 'logo'%>
         </a>
+
+        <% if current_user.present? %>
+          <a href="/users/sign_out">Sign out</a>
+          <a href="/users/edit">Edit profile</a>
+        <% else %>
+          <a href="/users/sign_up">Sign up</a>
+          <a href="/users/sign_in">Sign in</a>
+
+        <% end %>
+
         <div>
           <button class="btn btn-outline-primary me-2">Log in</button>
           <button class="btn btn-primary">Sign up</button>
         </div>
       </div>
     </nav>
+
+    <% if notice.present? %>
+      <div class="alert alert-primary notice" role="alert">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
 
     <!-- Main Content -->
     <main class="container">
