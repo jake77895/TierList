@@ -1,27 +1,46 @@
-<div id="<%= dom_id tier_list %>">
-  <p>
-    <strong>Name:</strong>
-    <%= tier_list.name %>
-  </p>
+<div id="<%= dom_id tier_list %>" class="card mb-4 shadow-sm">
+  <div class="card-body">
 
-  <p>
-    <strong>Created by:</strong>
-    <%= tier_list.creator.user_name || "No username" %>
-  </p>
+    <!-- Creator Information -->
+    <p class="card-text">
+      <strong>Tier List Name:</strong> 
+      <%= tier_list.name %>
+    </p>
+    
+    <!-- Creator Information -->
+    <p class="card-text">
+      <strong>Created by:</strong> 
+      <%= tier_list.creator.user_name || "No username" %>
+    </p>
 
-  <p>
-    <strong>Short description:</strong>
-    <%= tier_list.short_description %>
-  </p>
+    <!-- Short Description -->
+    <p class="card-text">
+      <strong>Short description:</strong> 
+      <%= tier_list.short_description %>
+    </p>
 
-  <p>
-    <strong>Custom fields:</strong>
-    <%= tier_list.custom_fields %>
-  </p>
+    <!-- Custom Fields -->
+    <p class="card-text">
+      <strong>Custom fields:</strong>
+      <% if tier_list.custom_fields.present? %>
+        <ul class="list-group list-group-flush">
+          <% tier_list.custom_fields.each do |field| %>
+            <li class="list-group-item">
+              <strong><%= field[:name] %></strong>: <%= field[:data_type] %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <span>No custom fields provided.</span>
+      <% end %>
+    </p>
 
-  <p>
-    <strong>Published:</strong>
-    <%= tier_list.published %>
-  </p>
+    <p class="card-text">
+      <strong>Published:</strong> 
+      <span class="badge <%= tier_list.published ? 'bg-success' : 'bg-secondary' %>">
+        <%= tier_list.published ? "Yes" : "No" %>
+      </span>
+    </p>
 
+  </div>
 </div>

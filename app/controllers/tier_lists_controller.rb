@@ -13,7 +13,10 @@ class TierListsController < ApplicationController
   # GET /tier_lists/new
   def new
     @tier_list = TierList.new
-    @tier_list.custom_fields = [{}] if @tier_list.custom_fields.blank?
+    @tier_list.custom_fields ||= [] # Ensure it's initialized as an array
+    (10 - @tier_list.custom_fields.size).times do
+      @tier_list.custom_fields << { name: '', data_type: '' }
+    end
   end
 
   # GET /tier_lists/1/edit
@@ -22,7 +25,7 @@ class TierListsController < ApplicationController
   
     # Ensure `custom_fields` is initialized and has at least 5 entries
     @tier_list.custom_fields ||= []
-    (5 - @tier_list.custom_fields.size).times do
+    (10 - @tier_list.custom_fields.size).times do
       @tier_list.custom_fields << { name: '', data_type: '' }
     end
   
@@ -132,6 +135,7 @@ end
         :name,
         :short_description,
         :published,
+        :image,
         :created_by_id
       )
     
