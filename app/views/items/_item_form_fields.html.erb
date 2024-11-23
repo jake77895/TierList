@@ -1,0 +1,55 @@
+<div class="item mb-4 border rounded p-3 shadow-sm position-relative">
+  <!-- Delete Button -->
+  <button type="button" class="btn-close position-absolute top-0 end-0 m-2 delete-item-button" aria-label="Close"></button>
+
+  <h6>Add Item</h6>
+  <hr>
+
+  <div class="row">
+    <!-- Name -->
+    <div class="col-md-4">
+      <%= label_tag "items[#{index}][name]", "Item Name", class: "form-label" %>
+      <%= text_field_tag "items[#{index}][name]", nil, class: "form-control", placeholder: "Enter name"%>
+    </div>
+
+    <!-- Description -->
+    <div class="col-md-4">
+      <%= label_tag "items[#{index}][description]", "Item Description", class: "form-label" %>
+      <%= text_field_tag "items[#{index}][description]", nil, class: "form-control", placeholder: "Enter description" %>
+    </div>
+
+    <!-- Image -->
+    <div class="col-md-4">
+      <%= label_tag "items[#{index}][image]", "Upload Image", class: "form-label" %>
+      <%= file_field_tag "items[#{index}][image]", class: "form-control" %>
+    </div>
+  </div>
+
+  <!-- Custom Fields -->
+  <% if custom_fields.present? %>
+    <h6 class="mt-3">Custom Fields</h6>
+    <hr>
+    <% custom_fields.each_with_index do |field, field_index| %>
+      <div class="mb-3">
+        <%= label_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", field[:name] || field['name'], class: "form-label" %>
+
+        <% data_type = (field[:data_type] || field['data_type']).to_s %> <!-- Ensure it's a string -->
+        <% case data_type %>
+        <% when "String" %>
+          <%= text_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control", placeholder: "Enter value" %>
+        <% when "Integer" %>
+          <%= number_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control", placeholder: "Enter value" %>
+        <% when "Boolean" %>
+          <div class="form-check">
+            <%= check_box_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", "1", false, class: "form-check-input" %>
+            <%= label_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", "Yes", class: "form-check-label" %>
+          </div>
+        <% when "Date" %>
+          <%= date_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control" %>
+        <% else %>
+          <p class="text-danger">Unknown data type: <%= data_type %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
