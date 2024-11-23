@@ -3,19 +3,19 @@
 
     <!-- Creator Information -->
     <p class="card-text">
-      <strong>Tier List Name:</strong> 
+      <strong>Tier List Name:</strong>
       <%= tier_list.name %>
     </p>
-    
+
     <!-- Creator Information -->
     <p class="card-text">
-      <strong>Created by:</strong> 
+      <strong>Created by:</strong>
       <%= tier_list.creator.user_name || "No username" %>
     </p>
 
     <!-- Short Description -->
     <p class="card-text">
-      <strong>Short description:</strong> 
+      <strong>Short description:</strong>
       <%= tier_list.short_description %>
     </p>
 
@@ -35,12 +35,18 @@
       <% end %>
     </p>
 
-    <p class="card-text">
+    <hr>
+    
+    <div>
+      <%= link_to "Add items", new_tier_list_item_path(@tier_list), class: "btn btn-primary" %>
+    </div>
+
+    <!--    <p class="card-text">
       <strong>Published:</strong> 
-      <span class="badge <%= tier_list.published ? 'bg-success' : 'bg-secondary' %>">
-        <%= tier_list.published ? "Yes" : "No" %>
-      </span>
-    </p>
+      <span class="badge <%#= tier_list.published ? 'bg-success' : 'bg-secondary' %>">
+        <%#= tier_list.published ? "Yes" : "No" %>-->
+    <!--      </span>
+    </p>-->
 
   </div>
 </div>

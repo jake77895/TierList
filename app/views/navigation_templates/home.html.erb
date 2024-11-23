@@ -45,22 +45,29 @@
 
   <div class="container py-5">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <% 9.times do |i| %> <!--Needs to be replaced with only published tier lists-->
-        <div class="col pb-4 d-flex justify-content-center">
-          <div class="card tierlistcard">
-            <%= image_tag(@image_url || 'egg.png', class: 'card-img-top', alt: 'Card Image') %>
-            <hr class="m-0 p-0">
-            <div class="card-body">
-              <h5 class="card-title">Card <%= i + 1 %></h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-              </p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+      <% if @tier_lists.present? %>
+        <% @tier_lists.each do |tier_list| %>
+          <div class="col pb-4 d-flex justify-content-center">
+            <div class="card tierlistcard">
+              <%= image_tag(tier_list.image || 'egg.png', class: 'card-img-top', alt: 'Tier List Image') %>
+              <hr class="m-0 p-0">
+              <div class="card-body">
+                <h5 class="card-title"><%= tier_list.name %></h5>
+                <p class="card-text"><%= tier_list.short_description %></p>
+                <%= link_to 'View Tier List', tier_list_path(tier_list), class: 'btn btn-primary' %>
+              </div>
             </div>
           </div>
+        <% end %>
+      <% else %>
+        <div class="col d-flex justify-content-center align-items-center" style="height: 200px;">
+          <p class="text-center">No published tier lists found.</p>
         </div>
       <% end %>
     </div>
   </div>
+
+
+
 
 </body>

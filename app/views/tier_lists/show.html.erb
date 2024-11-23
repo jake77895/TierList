@@ -13,13 +13,60 @@
     <%= link_to "Back to tier lists", tier_lists_path, class: "btn btn-secondary" %>
   </div>
 
+
   <!-- Right-aligned button -->
-  <div>
-    <%= link_to "Add items", new_tier_list_item_path(@tier_list), class: "btn btn-primary" %>
+
+<p class="card-text">
+  <span class="d-inline-block" tabindex="0" 
+        data-bs-toggle="tooltip" 
+        title="<%= @tier_list.items.count < 5 ? 'Add at least 5 items to publish this tier list.' : '' %>">
+    <button class="btn btn-primary" 
+            style="<%= @tier_list.items.count < 5 ? 'pointer-events: none;' : '' %>" 
+            type="button" 
+            <%= @tier_list.items.count < 5 ? 'disabled' : 'data-bs-toggle="modal" data-bs-target="#publishModal"' %>>
+      Publish Tier List
+    </button>
+  </span>
+</p>
+
+
+
+
+
   </div>
-</div>
+
 
 <hr>
 
 <%= render partial: "items/item_list", locals: { tier_list_items: @tier_list_items } %>
 
+<!-- Modal -->
+<div class="modal fade" id="publishModal" tabindex="-1" aria-labelledby="publishModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="publishModalLabel">Confirm Publish</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        When you publish the tier list, you will not be able to add items or edit it. It will also be shared with anyone who uses the site.
+      </div>
+      <div class="modal-footer">
+        <%= button_to 'Publish', publish_tier_list_path(@tier_list), method: :patch, class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+    new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+
+
+</script>

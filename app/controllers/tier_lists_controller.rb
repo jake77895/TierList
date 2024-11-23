@@ -8,6 +8,7 @@ class TierListsController < ApplicationController
 
   # GET /tier_lists/1 or /tier_lists/1.json
   def show
+    @tier_list = TierList.find(params[:id])
     @tier_list_items = @tier_list.items.order(updated_at: :desc) # Fetch items ordered by `updated_at`
   end
 
