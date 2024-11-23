@@ -3,7 +3,12 @@ Rails.application.routes.draw do
 
   resources :tier_lists do
     resources :items
+    member do
+      patch :publish # Adds a PATCH route for the `publish` action
+      get :rank
+    end
   end
+
   
 
   # Home view root

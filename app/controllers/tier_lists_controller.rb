@@ -1,6 +1,21 @@
 class TierListsController < ApplicationController
   before_action :set_tier_list, only: %i[ show edit update destroy ]
 
+  def rank
+    @tier_list = TierList.find(params[:id])
+  end
+
+  def publish
+    @tier_list = TierList.find(params[:id])
+
+    if @tier_list.update(published: true)
+      redirect_to rank_tier_list_path(@tier_list), notice: 'Published tier list.'
+    else
+      redirect_to @tier_list, alert: 'Failed to publish the tier list.'
+    end
+    
+  end
+  
   # GET /tier_lists or /tier_lists.json
   def index
     @tier_lists = TierList.all
@@ -31,12 +46,10 @@ class TierListsController < ApplicationController
       @tier_list.custom_fields << { name: '', data_type: '' }
     end
   
-    Rails.logger.debug "Custom Fields for Edit: #{@tier_list.custom_fields.inspect}"
   end
   
 
 def create
-  Rails.logger.debug "Strong Params: #{tier_list_params.inspect}"
 
   # Initialize TierList
   @tier_list = TierList.new(tier_list_params.except(:custom_fields))

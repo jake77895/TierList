@@ -1,0 +1,35 @@
+<div class="tier-list-section border p-3">
+  <!-- Title and Meta Information -->
+  <h2 class="text-center mb-3">Tier List Title</h2>
+  <p class="text-center text-muted">Created by <%= @tier_list.user_name %><br>Last updated <%= tier_list.updated_at.strftime('%m/%d/%Y') %></p>
+  
+  <!-- Bootstrap Grid for Tier List -->
+  <% ["S", "A", "B", "C", "D", "F"].each do |tier| %>
+    <div class="row align-items-center mb-3">
+      <!-- Tier Label Column -->
+      <div class="col-1 text-center">
+        <div class="badge bg-primary w-100 py-3">
+          <strong><%= tier %></strong>
+        </div>
+      </div>
+
+      <!-- Items Column -->
+      <div class="col-11">
+        <div class="row g-2">
+          <!-- Placeholder for items in this tier -->
+          <% 3.times do |i| %> <!-- Replace with actual items later -->
+            <div class="col-4">
+              <div class="card">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Item image">
+                <div class="card-body p-2">
+                  <h6 class="card-title mb-0">Item Name</h6>
+                  <p class="card-text text-muted">Subtitle</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

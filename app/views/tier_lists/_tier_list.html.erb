@@ -35,10 +35,12 @@
       <% end %>
     </p>
 
-    <hr>
-    
     <div>
-      <%= link_to "Add items", new_tier_list_item_path(@tier_list), class: "btn btn-primary" %>
+      <% if @tier_list&.id.present? %>
+        <hr>
+        <%= link_to "Add items", new_tier_list_item_path(@tier_list), class: "btn btn-primary" %>
+      <% end %>
+
     </div>
 
     <!--    <p class="card-text">
