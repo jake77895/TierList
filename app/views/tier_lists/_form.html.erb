@@ -14,13 +14,18 @@
 
 
 
-  <!-- Custom Fields -->
-<%= f.fields_for :custom_fields, @tier_list.custom_fields do |cf| %>
+<!-- Custom Fields -->
+<% @tier_list.custom_fields.each_with_index do |field, index| %>
   <div class="custom-field-row">
-    <%= cf.text_field :name, placeholder: "Field Name", value: cf.object[:name], class: "form-control mb-2" %>
-    <%= cf.select :data_type, ["String", "Integer", "Boolean", "Date"], { selected: cf.object[:data_type] }, class: "form-control mb-2" %>
+    <%= text_field_tag "custom_fields[#{index}][name]", field[:name], placeholder: "Field Name", class: "form-control mb-2" %>
+    <%= select_tag "custom_fields[#{index}][data_type]",
+                   options_for_select(["String", "Integer", "Boolean", "Date"], selected: field[:data_type]),
+                   class: "form-control mb-2", prompt: "Select Data Type" %>
   </div>
 <% end %>
+
+
+
 
 
 

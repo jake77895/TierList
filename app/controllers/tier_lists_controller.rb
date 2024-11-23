@@ -19,75 +19,74 @@ class TierListsController < ApplicationController
   # GET /tier_lists/1/edit
   def edit
     @tier_list = TierList.find(params[:id])
-
   
-    # Ensure each custom field hash is properly initialized as a plain hash
+    # Ensure `custom_fields` is initialized and has at least 5 entries
     @tier_list.custom_fields ||= []
-    @tier_list.custom_fields = @tier_list.custom_fields.map do |field|
-      field.is_a?(Hash) ? field.symbolize_keys : {}
+    (5 - @tier_list.custom_fields.size).times do
+      @tier_list.custom_fields << { name: '', data_type: '' }
     end
-    
   
     Rails.logger.debug "Custom Fields for Edit: #{@tier_list.custom_fields.inspect}"
   end
   
-  
 
+def create
+  Rails.logger.debug "Strong Params: #{tier_list_params.inspect}"
 
-  def create
-    Rails.logger.debug "Strong Params: #{tier_list_params.inspect}"
-    
-    # Initialize TierList
-    @tier_list = TierList.new(tier_list_params.except(:custom_fields))
-    Rails.logger.debug "Initialized TierList: #{@tier_list.inspect}"
-    
-    # Extract and assign custom_fields
-    custom_fields = tier_list_params[:custom_fields]
-    Rails.logger.debug "Custom Fields from Strong Params: #{custom_fields.inspect}"
-    
-    @tier_list.custom_fields = extract_custom_fields(custom_fields)
-    Rails.logger.debug "Custom Fields Assigned: #{@tier_list.custom_fields.inspect}"
-    
-    # Save and respond
-    if @tier_list.save
-      redirect_to tier_list_url(@tier_list), notice: "Tier list was successfully created."
-    else
-      Rails.logger.debug "Save Failed: #{@tier_list.errors.full_messages}"
-      render :new, status: :unprocessable_entity
-    end
+  # Initialize TierList
+  @tier_list = TierList.new(tier_list_params.except(:custom_fields))
+  Rails.logger.debug "Initialized TierList: #{@tier_list.inspect}"
+
+  # Extract and assign custom fields from the separate custom_fields key
+  custom_fields = params[:custom_fields]&.values || [] # Safely access values
+  Rails.logger.debug "Raw Custom Fields from Params: #{custom_fields.inspect}"
+
+  # Convert each field into a plain hash and filter out blanks
+  filtered_fields = custom_fields.reject { |field| field['name'].blank? && field['data_type'].blank? }
+  Rails.logger.debug "Filtered Custom Fields: #{filtered_fields.inspect}"
+
+  @tier_list.custom_fields = filtered_fields.map { |field| field.to_h.symbolize_keys }
+  Rails.logger.debug "Custom Fields Assigned to TierList: #{@tier_list.custom_fields.inspect}"
+
+  # Save and respond
+  if @tier_list.save
+    Rails.logger.debug "Save Successful: #{@tier_list.inspect}"
+    redirect_to tier_list_url(@tier_list), notice: "Tier list was successfully created."
+  else
+    Rails.logger.debug "Save Failed: #{@tier_list.errors.full_messages}"
+    render :new, status: :unprocessable_entity
   end
-  
-  
-  
-  
-  
-  
-  
-  
+end
 
-  # PATCH/PUT /tier_lists/1 or /tier_lists/1.json
+def update
+  @tier_list = TierList.find(params[:id])
+  
+  # Update tier list attributes except custom fields
+  @tier_list.assign_attributes(tier_list_params.except(:custom_fields))
+  Rails.logger.debug "Updated Tier List Attributes: #{@tier_list.inspect}"
+  
+  # Extract and assign custom fields
+  custom_fields = params[:custom_fields]&.values || [] # Safely access values
+  Rails.logger.debug "Raw Custom Fields from Params: #{custom_fields.inspect}"
+  
+  filtered_fields = custom_fields.reject { |field| field['name'].blank? && field['data_type'].blank? }
+  Rails.logger.debug "Filtered Custom Fields: #{filtered_fields.inspect}"
+  
+  @tier_list.custom_fields = filtered_fields.map { |field| field.to_h.symbolize_keys }
+  Rails.logger.debug "Updated Custom Fields Assigned to TierList: #{@tier_list.custom_fields.inspect}"
+  
+  # Save and respond
+  if @tier_list.save
+    Rails.logger.debug "Update Successful: #{@tier_list.inspect}"
+    redirect_to tier_list_url(@tier_list), notice: "Tier list was successfully updated."
+  else
+    Rails.logger.debug "Update Failed: #{@tier_list.errors.full_messages.inspect}"
+    render :edit, status: :unprocessable_entity
+  end
+end
 
-  def update
-    @tier_list = TierList.find(params[:id])
-    
-    # Extract and assign custom_fields
-    custom_fields = tier_list_params[:custom_fields]
-    Rails.logger.debug "Custom Fields Before Processing: #{custom_fields.inspect}"
-  
-    @tier_list.custom_fields = extract_custom_fields(custom_fields) if custom_fields.present?
-  
-    # Update other attributes
-    respond_to do |format|
-      if @tier_list.update(tier_list_params.except(:custom_fields))
-        format.html { redirect_to tier_list_url(@tier_list), notice: "Tier list was successfully updated." }
-        format.json { render :show, status: :ok, location: @tier_list }
-      else
-        Rails.logger.debug "Update Failed: #{@tier_list.errors.full_messages}"
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @tier_list.errors, status: :unprocessable_entity }
-      end
-    end
-  end  
+
+
 
 
   # DELETE /tier_lists/1 or /tier_lists/1.json
@@ -129,12 +128,19 @@ class TierListsController < ApplicationController
     
     # Only allow a list of trusted parameters through.
     def tier_list_params
-      params.require(:tier_list).permit(
+      permitted_params = params.require(:tier_list).permit(
         :name,
         :short_description,
         :published,
-        :created_by_id,
-        custom_fields: [:name, :data_type] # Explicitly permit the nested attributes
+        :created_by_id
       )
+    
+      # Manually permit and add custom_fields if present
+      if params[:custom_fields]
+        permitted_params[:custom_fields] = params[:custom_fields].permit!.to_h.values
+      end
+    
+      permitted_params
     end
+    
 end
