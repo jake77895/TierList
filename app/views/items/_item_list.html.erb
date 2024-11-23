@@ -1,0 +1,60 @@
+
+
+<div class="container mt-4">
+  <% if tier_list_items.present? %>
+    <div class="row">
+      <% tier_list_items.each_with_index do |item, index| %>
+        <div class="col-md-3 mb-4">
+          <div class="card" style="width: 100%;">
+            <!-- Image as Modal Trigger -->
+            <% if item.image.attached? %>
+            <%= image_tag item.image, class: "card-img-top", alt: item.name,
+                          "data-bs-toggle": "modal", "data-bs-target": "#itemModal-#{item.id}" %>
+          <% else %>
+            <img src="https://via.placeholder.com/150" class="card-img-top" 
+                alt="Placeholder Image" 
+                data-bs-toggle="modal" data-bs-target="#itemModal-#{item.id}">
+          <% end %>
+
+            <div class="card-body">
+              <h5 class="card-title"><%= item.name %></h5>
+              <p class="card-text"><%= item.description.presence || "No description provided." %></p>
+              
+              <% if @tier_list.published == false %>
+                <%= link_to "Edit", edit_tier_list_item_path(@tier_list, item), class: "btn btn-primary" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Start a new row after every 4 cards -->
+        <% if (index + 1) % 4 == 0 %>
+          </div><div class="row">
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center">No items available for this tier list.</p>
+  <% end %>
+</div>
+
+<!-- Modals for Each Item -->
+<% tier_list_items.each do |item| %>
+  <!-- Modal -->
+  <div class="modal fade" id="itemModal-<%= item.id %>" tabindex="-1" aria-labelledby="itemModalLabel-<%= item.id %>" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Optional Modal Title -->
+          <h6 class="modal-title" id="itemModalLabel-<%= item.id %>">
+            Last updated: <%= item.updated_at.strftime("%b %d, %Y") %>
+          </h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex align-items-center justify-content-center">
+          <%= render partial: "items/item_popup", locals: { item: item } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

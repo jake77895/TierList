@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :tier_lists
   devise_for :users
+
+  resources :tier_lists do
+    resources :items
+  end
+  
 
   # Home view root
   root to: "home#index"

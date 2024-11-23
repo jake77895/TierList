@@ -1,0 +1,14 @@
+
+
+<h1>Edit Item</h1>
+
+<div class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <%= render partial: "form_for_one_item", locals: { item: @item } %>
+  </div>
+</div>
+
+
+<div class="mt-3">
+  <%= link_to "Back to Tier List", tier_list_path(@tier_list), class: "btn btn-secondary" %>
+</div>

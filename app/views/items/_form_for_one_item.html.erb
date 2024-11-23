@@ -1,0 +1,46 @@
+<%= form_with(model: [@tier_list, item], local: true) do |f| %>
+  <!-- Item Name -->
+  <div class="mb-3">
+    <%= f.label :name, "Item Name", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <%= f.label :description, "Item Description", class: "form-label" %>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <!-- Image -->
+  <div class="mb-3">
+    <%= f.label :image, "Upload Image", class: "form-label" %>
+    <%= f.file_field :image, class: "form-control" %>
+  </div>
+
+   <!-- Custom Fields -->
+  <h4>Custom Fields</h4>
+  <% if item.custom_field_values.present? %>
+    <% item.custom_field_values.each do |field_name, field_value| %>
+      <div class="mb-3">
+        <%= label_tag "item[custom_field_values][#{field_name}]", field_name.humanize, class: "form-label" %>
+        <% if field_value.is_a?(String) %>
+          <%= text_field_tag "item[custom_field_values][#{field_name}]", field_value, class: "form-control" %>
+        <% elsif field_value.is_a?(Integer) %>
+          <%= number_field_tag "item[custom_field_values][#{field_name}]", field_value, class: "form-control" %>
+        <% elsif field_value.is_a?(TrueClass) || field_value.is_a?(FalseClass) %>
+          <%= check_box_tag "item[custom_field_values][#{field_name}]", "1", field_value, class: "form-check-input" %>
+          <%= label_tag "item[custom_field_values][#{field_name}]", "Yes", class: "form-check-label" %>
+        <% elsif field_value.is_a?(Date) %>
+          <%= date_field_tag "item[custom_field_values][#{field_name}]", field_value, class: "form-control" %>
+        <% else %>
+          <p class="text-danger">Unsupported field type for: <%= field_name %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No custom fields available for this item.</p>
+  <% end %>
+
+  <!-- Submit Button -->
+  <%= f.submit "Save Changes", class: "btn btn-primary" %>
+<% end %>
