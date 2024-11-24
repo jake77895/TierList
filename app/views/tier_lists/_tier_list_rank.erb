@@ -4,32 +4,38 @@
 
   <hr class="mt-0">
   
-  <div class="container mt-1">
+  <div class="container-fluid mt-1">
     <!-- Tier List Rows -->
     <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
-      <div class="row align-items-stretch mb-3 g-0" style="height: 60px;">
+      <div class="row align-items-center mb-3 g-0">
         <!-- Tier Label -->
-        <div class="col-auto text-center d-flex align-items-center justify-content-center" style="width: 60px;">
-          <div class="text-dark fw-bold rounded-start w-100 h-100 d-flex align-items-center justify-content-center fs-4"
+        <div class="col-auto text-center d-flex align-items-center justify-content-center flex-shrink-0" 
+             style="width: 70px; height: 70px;">
+          <div class="text-dark fw-bold w-100 h-100 d-flex align-items-center justify-content-center fs-5 rounded-start flex-wrap"
                style="background-color: <%= ["#FF7F7F", "#FFBF7F", "#FFDF7F", "#BFFF7F", "#7FFF7F", "#7FFFFF"][index] %>; 
-                      box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);">
+                      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
             <%= tier %>
           </div>
         </div>
 
-        <!-- Tier Items (Empty for Now) -->
+        <!-- Tier Items -->
         <div class="col">
-          <div class="rounded-end bg-white w-100 h-100" style="box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);">
-            <!-- Empty Placeholder for Items -->
+          <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+            <!-- Placeholder Squares -->
+            <% 10.times do %>
+              <div class="d-flex justify-content-center align-items-center flex-shrink-0"
+                   style="width: 60px; height: 60px; background-color: #e0e0e0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);">
+                <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     <% end %>
   </div>
 
-    <p class="text-left text-muted mb-0" style="font-size: 0.6rem;">
+  <p class="text-left text-muted mb-0" style="font-size: 0.6rem;">
     Created by <%= @tier_list.creator&.user_name.presence || "User" %> 
     <%= @tier_list.creator&.id || "N/A" %>
   </p>
-
 </div>
