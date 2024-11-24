@@ -1,35 +1,35 @@
-<div class="tier-list-section border p-3">
+<div class="tier-list-section border p-3" style="background-color: #f8f9fa;">
   <!-- Title and Meta Information -->
-  <h2 class="text-center mb-3">Tier List Title</h2>
-  <p class="text-center text-muted">Created by <%= @tier_list.user_name %><br>Last updated <%= tier_list.updated_at.strftime('%m/%d/%Y') %></p>
-  
-  <!-- Bootstrap Grid for Tier List -->
-  <% ["S", "A", "B", "C", "D", "F"].each do |tier| %>
-    <div class="row align-items-center mb-3">
-      <!-- Tier Label Column -->
-      <div class="col-1 text-center">
-        <div class="badge bg-primary w-100 py-3">
-          <strong><%= tier %></strong>
-        </div>
-      </div>
+  <h3 class="text-left">Tier List Title</h3>
 
-      <!-- Items Column -->
-      <div class="col-11">
-        <div class="row g-2">
-          <!-- Placeholder for items in this tier -->
-          <% 3.times do |i| %> <!-- Replace with actual items later -->
-            <div class="col-4">
-              <div class="card">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Item image">
-                <div class="card-body p-2">
-                  <h6 class="card-title mb-0">Item Name</h6>
-                  <p class="card-text text-muted">Subtitle</p>
-                </div>
-              </div>
-            </div>
-          <% end %>
+  <hr class="mt-0">
+  
+  <div class="container mt-1">
+    <!-- Tier List Rows -->
+    <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
+      <div class="row align-items-stretch mb-3 g-0" style="height: 60px;">
+        <!-- Tier Label -->
+        <div class="col-auto text-center d-flex align-items-center justify-content-center" style="width: 60px;">
+          <div class="text-dark fw-bold rounded-start w-100 h-100 d-flex align-items-center justify-content-center fs-4"
+               style="background-color: <%= ["#FF7F7F", "#FFBF7F", "#FFDF7F", "#BFFF7F", "#7FFF7F", "#7FFFFF"][index] %>; 
+                      box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);">
+            <%= tier %>
+          </div>
+        </div>
+
+        <!-- Tier Items (Empty for Now) -->
+        <div class="col">
+          <div class="rounded-end bg-white w-100 h-100" style="box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);">
+            <!-- Empty Placeholder for Items -->
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+
+    <p class="text-left text-muted mb-0" style="font-size: 0.6rem;">
+    Created by <%= @tier_list.creator&.user_name.presence || "User" %> 
+    <%= @tier_list.creator&.id || "N/A" %>
+  </p>
+
 </div>
