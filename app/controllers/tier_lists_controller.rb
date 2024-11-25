@@ -3,6 +3,9 @@ class TierListsController < ApplicationController
 
   def rank
     @tier_list = TierList.find(params[:id])
+
+    @items = @tier_list.items.order(updated_at: :desc)
+
   end
 
   def publish

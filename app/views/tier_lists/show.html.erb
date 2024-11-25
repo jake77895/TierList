@@ -26,14 +26,22 @@
       Publish Tier List
     </button>
   </span>
-<% else %>
+<% elsif @tier_list.published == false %>
   <button class="btn btn-primary" 
           type="button" 
           data-bs-toggle="modal" 
           data-bs-target="#publishModal">
     Publish Tier List
   </button>
+
+<% else %>
+
+<%= button_to 'Rank Tier List', rank_tier_list_path(@tier_list), method: :get, class: "btn btn-primary" %>
+
+
 <% end %>
+
+
 
 
 

@@ -3,7 +3,7 @@
   <h3 class="text-left">Tier List Title</h3>
 
   <hr class="mt-0">
-  
+
   <div class="container-fluid mt-1">
     <!-- Tier List Rows -->
     <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
@@ -35,7 +35,7 @@
   </div>
 
   <p class="text-left text-muted mb-0" style="font-size: 0.6rem;">
-    Created by <%= @tier_list.creator&.user_name.presence || "User" %> 
-    <%= @tier_list.creator&.id || "N/A" %>
+    Created by <%= @tier_list.creator&.user_name.presence || "User" %>
+    <%= @tier_list.creator&.id if @tier_list.creator&.user_name.blank? %>
   </p>
 </div>
