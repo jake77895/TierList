@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # Tier list ranking
+  resources :tier_list_rankings, only: [:create]
+
+
   
 
   # Home view root

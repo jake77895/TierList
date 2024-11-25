@@ -22,9 +22,10 @@
 #
 class TierList < ApplicationRecord
 
-  belongs_to :creator, class_name: 'User', foreign_key: 'created_by_id'
+  belongs_to :creator, class_name: 'User', foreign_key: 'created_by_id', optional: true
   serialize :custom_fields, Array
   has_one_attached :image
-  has_many :items, dependent: :destroy
+  has_many :tier_list_rankings, :items, dependent: :destroy
+  
 
 end

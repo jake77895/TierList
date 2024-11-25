@@ -36,63 +36,99 @@
 
 <hr>
 
-        <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-  <label class="form-check-label" for="inlineRadio1">1</label>
+        <!-- Ranking Form -->
+        <%= form_with url: tier_list_rankings_path, method: :post, local: true do |f| %>
+          <!-- Hidden field for item_id -->
+          <%= f.hidden_field :item_id, id: "item-id", value: @items.first[:id] %>
+
+          <!-- Radio buttons for rank -->
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 1, id: "rank1", class: "form-check-input" %>
+            <%= f.label :rank, "S", for: "rank1", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 2, id: "rank2", class: "form-check-input" %>
+            <%= f.label :rank, "A", for: "rank2", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 3, id: "rank3", class: "form-check-input" %>
+            <%= f.label :rank, "B", for: "rank3", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 4, id: "rank4", class: "form-check-input" %>
+            <%= f.label :rank, "C", for: "rank4", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 5, id: "rank5", class: "form-check-input" %>
+            <%= f.label :rank, "D", for: "rank5", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 6, id: "rank6", class: "form-check-input" %>
+            <%= f.label :rank, "F", for: "rank6", class: "form-check-label" %>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-3">
+            <%= f.submit "Submit", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-  <label class="form-check-label" for="inlineRadio2">2</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
-  <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
-</div>
+
+
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-   const items = <%= raw @items.to_json %>; // Serialize items into JavaScript
-   let currentIndex = 0;
+ document.addEventListener('DOMContentLoaded', function () {
+  const items = <%= raw @items.to_json %>; // Serialize items into JavaScript
+  let currentIndex = 0; // Tracks the currently displayed item
 
-   const titleElement = document.getElementById('item-title');
-   const descriptionElement = document.getElementById('item-description');
-   const imageElement = document.getElementById('item-image'); // Add reference to the image element
-   const prevButton = document.getElementById('prev-item');
-   const nextButton = document.getElementById('next-item');
+  // DOM Elements
+  const titleElement = document.getElementById('item-title');
+  const descriptionElement = document.getElementById('item-description');
+  const imageElement = document.getElementById('item-image');
+  const itemIdField = document.getElementById('item-id'); // Hidden input for item_id
+  const prevButton = document.getElementById('prev-item');
+  const nextButton = document.getElementById('next-item');
 
-   // Update the card content
-   function updateCard() {
-     const currentItem = items[currentIndex];
-     titleElement.textContent = currentItem.name;
-     descriptionElement.textContent = currentItem.description || "No description available";
+  // Update the card content
+  function updateCard() {
+    const currentItem = items[currentIndex];
 
-     // Update the image dynamically
-     imageElement.src = currentItem.image_url || "<%= asset_path('egg.png') %>"; // Fallback image
+    // Update card elements
+    titleElement.textContent = currentItem.name || "No items available";
+    descriptionElement.textContent = currentItem.description || "No description available";
+    imageElement.src = currentItem.image_url || "<%= asset_path('egg.png') %>";
+    itemIdField.value = currentItem.id; // Update the hidden field with the current item's ID
 
-     // Enable/disable buttons
-     prevButton.disabled = currentIndex === 0;
-     nextButton.disabled = currentIndex === items.length - 1;
-   }
+    // Enable/disable buttons
+    prevButton.disabled = currentIndex === 0; // Disable if first item
+    nextButton.disabled = currentIndex === items.length - 1; // Disable if last item
+  }
 
-   // Event listeners for navigation
-   prevButton.addEventListener('click', function () {
-     if (currentIndex > 0) {
-       currentIndex--;
-       updateCard();
-     }
-   });
-
-   nextButton.addEventListener('click', function () {
-     if (currentIndex < items.length - 1) {
-       currentIndex++;
-       updateCard();
-     }
-   });
-
-   updateCard(); // Initialize the card
+  // Event listener for Previous button
+  prevButton.addEventListener('click', function () {
+    if (currentIndex > 0) {
+      currentIndex--; // Decrement index
+      updateCard(); // Update card
+    }
   });
+
+  // Event listener for Next button
+  nextButton.addEventListener('click', function () {
+    if (currentIndex < items.length - 1) {
+      currentIndex++; // Increment index
+      updateCard(); // Update card
+    }
+  });
+
+  // Initialize the first item
+  updateCard();
+});
+
 </script>
