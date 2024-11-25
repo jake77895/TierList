@@ -37,9 +37,9 @@
 <hr>
 
         <!-- Ranking Form -->
-        <%= form_with url: tier_list_rankings_path, method: :post, local: true do |f| %>
-          <!-- Hidden field for item_id -->
-          <%= f.hidden_field :item_id, id: "item-id", value: @items.first[:id] %>
+        <%= form_with url: tier_list_tier_list_rankings_path(@tier_list), method: :post, local: true do |f| %>
+          <!-- Hidden field to pass the current item ID -->
+          <%= f.hidden_field :item_id, value: @current_item[:id] %>
 
           <!-- Radio buttons for rank -->
           <div class="form-check form-check-inline">
