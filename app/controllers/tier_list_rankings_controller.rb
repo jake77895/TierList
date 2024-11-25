@@ -9,7 +9,7 @@ class TierListRankingsController < ApplicationController
 
     # Update the rank and who ranked it
     ranking.rank = params[:rank]
-    ranking.ranked_by_id = current_user&.id # Assuming you have a current_user method
+    ranking.ranked_by_id = current_user.id # Assuming you have a current_user method
 
     if ranking.save
       flash[:success] = "Ranking saved successfully!"
@@ -19,5 +19,5 @@ class TierListRankingsController < ApplicationController
 
     redirect_to tier_list_path(params[:tier_list_id]) # Redirect to the tier list or wherever needed
   end
-  
+
 end

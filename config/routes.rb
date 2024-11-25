@@ -12,9 +12,6 @@ Rails.application.routes.draw do
   # Tier list ranking
   resources :tier_list_rankings, only: [:create]
 
-
-  
-
   # Home view root
   root to: "home#index"
   
