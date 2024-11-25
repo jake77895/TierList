@@ -4,7 +4,14 @@ class TierListsController < ApplicationController
   def rank
     @tier_list = TierList.find(params[:id])
 
-    @items = @tier_list.items.order(updated_at: :desc)
+    @items = @tier_list.items.with_attached_image.order(updated_at: :desc).map do |item|
+      {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        image_url: item.image.attached? ? url_for(item.image) : nil
+      }
+    end
 
   end
 
