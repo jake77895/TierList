@@ -1,0 +1,190 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- Left Column: 2/3 Width -->
+    <div class="col-lg-8 col-md-8">
+      <div class="content-left border p-3">
+        <!-- Content for the tier list will go here -->
+
+        <%= render 'tier_list_rank' %>
+      </div>
+    </div>
+
+    <!-- Right Column: 1/3 Width -->
+    <div class="col-lg-4 col-md-4" >
+      <div class="content-right border p-3" style="background-color: #f8f9fa;">
+        <h3 class="text-left">Rank Items</h3>
+        <hr class="mt-0">
+
+      <div id="item-card" class="card bg-light text-dark position-relative mb-3" style="overflow: hidden;">
+        <%= image_tag(@current_item.image.attached? ? url_for(@current_item.image) : asset_path('egg.png'),
+                      id: "item-image", class: "card-img", alt: "Tier List Item",
+                      style: "width: 100%; height: 300px; object-fit: cover;") %>
+        <div class="position-absolute" style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 90%; bottom: 15px; left: 5%; padding: 10px; border-radius: 0px; border-left: 5px solid var(--bs-primary);">
+          <h5 id="item-title" class="card-title mb-1" style="font-size: 1.2rem; margin-bottom: 0;">
+            <%= @current_item.name || "No items available" %>
+          </h5>
+          <p id="item-description" class="card-text" style="font-size: 0.9rem;">
+            <%= @current_item.description || "No item description available" %>
+          </p>
+        </div>
+      </div>
+
+
+        <div class="d-flex justify-content-between mt-3">
+        <% prev_item = @items.where('id < ?', @current_item.id).last %>
+        <% next_item = @items.where('id > ?', @current_item.id).first %>
+
+        <% if prev_item %>
+          <%= link_to "Previous", rank_item_tier_list_path(@tier_list, prev_item.id), class: "btn btn-secondary" %>
+        <% else %>
+          <button class="btn btn-secondary" disabled>Previous</button>
+        <% end %>
+
+        <% if next_item %>
+          <%= link_to "Next", rank_item_tier_list_path(@tier_list, next_item.id), class: "btn btn-secondary" %>
+        <% else %>
+          <button class="btn btn-secondary" disabled>Next</button>
+        <% end %>
+      </div>
+
+<hr>
+
+        <!-- Ranking Form -->
+        <%= form_with url: tier_list_tier_list_rankings_path(@tier_list), method: :post, local: true do |f| %>
+
+          <!-- Hidden field to pass the current item ID -->
+          <%= f.hidden_field :item_id, value: @current_item.id %>
+
+          <!-- Radio buttons for rank -->
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 1, id: "rank1", class: "form-check-input" %>
+            <%= f.label :rank, "S", for: "rank1", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 2, id: "rank2", class: "form-check-input" %>
+            <%= f.label :rank, "A", for: "rank2", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 3, id: "rank3", class: "form-check-input" %>
+            <%= f.label :rank, "B", for: "rank3", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 4, id: "rank4", class: "form-check-input" %>
+            <%= f.label :rank, "C", for: "rank4", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 5, id: "rank5", class: "form-check-input" %>
+            <%= f.label :rank, "D", for: "rank5", class: "form-check-label" %>
+          </div>
+          <div class="form-check form-check-inline">
+            <%= f.radio_button :rank, 6, id: "rank6", class: "form-check-input" %>
+            <%= f.label :rank, "F", for: "rank6", class: "form-check-label" %>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-3">
+            <%= f.submit "Submit", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<script>
+// Declare globally
+let items = []; // Default to an empty array to avoid undefined errors
+let currentIndex = 0; // Make currentIndex global
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Serialize items into JavaScript and initialize index
+  const items = <%#= raw @items.to_json %>; // Ensure @items is not nil in the view
+  let currentIndex = 0; // Tracks the currently displayed item
+
+  // DOM Elements
+  const titleElement = document.getElementById('item-title');
+  const descriptionElement = document.getElementById('item-description');
+  const imageElement = document.getElementById('item-image');
+  const itemIdField = document.getElementById('item-id'); // Hidden input for item_id
+  const prevButton = document.getElementById('prev-item');
+  const nextButton = document.getElementById('next-item');
+
+  // Debugging: Log DOM elements
+  console.log("Title element:", titleElement);
+  console.log("Description element:", descriptionElement);
+  console.log("Image element:", imageElement);
+  console.log("Item ID field:", itemIdField);
+  console.log("Previous button:", prevButton);
+  console.log("Next button:", nextButton);
+
+  // Update the card content
+function updateCard() {
+  console.log("Updating card. Current index:", currentIndex); // Debugging
+
+  if (!items || items.length === 0) {
+    console.error("No items available for updateCard.");
+    return;
+  }
+
+  const currentItem = items[currentIndex];
+  console.log("Current item:", currentItem); // Debugging
+
+  // Update card elements
+  if (titleElement) titleElement.textContent = currentItem.name || "No items available";
+  if (descriptionElement) descriptionElement.textContent = currentItem.description || "No description available";
+  if (imageElement) imageElement.src = currentItem.image_url || "<%#= asset_path('egg.png') %>";
+
+  // Dynamically update the hidden field value
+  if (itemIdField) {
+    itemIdField.value = currentItem.id; // Update the hidden field with the current item's ID
+    console.log("Updated itemIdField value to:", currentItem.id); // Debugging
+  } else {
+    console.error("itemIdField is null. Ensure the hidden input field exists in the DOM.");
+  }
+
+  // Enable/disable buttons
+  prevButton.disabled = currentIndex <= 0; // Disable if first item
+  nextButton.disabled = currentIndex >= items.length - 1; // Disable if last item
+  console.log("Button states updated. Prev disabled:", prevButton.disabled, "Next disabled:", nextButton.disabled); // Debugging
+}
+
+
+  // Event listener for Previous button
+  prevButton.addEventListener('click', function () {
+    if (currentIndex > 0) {
+      console.log("Previous button clicked. Current index before decrement:", currentIndex); // Debugging
+      currentIndex--; // Decrement index
+      updateCard(); // Update card
+    } else {
+      console.log("Previous button clicked but already at the first item."); // Debugging
+    }
+  });
+
+  // Event listener for Next button
+  nextButton.addEventListener('click', function () {
+    if (currentIndex < items.length - 1) {
+      console.log("Next button clicked. Current index before increment:", currentIndex); // Debugging
+      currentIndex++; // Increment index
+      updateCard(); // Update card
+    } else {
+      console.log("Next button clicked but already at the last item."); // Debugging
+    }
+  });
+
+  // Initialize the first item (if there are items)
+  if (items.length > 0) {
+    console.log("Initializing with first item."); // Debugging
+    updateCard(); // Initialize card and button states
+  } else {
+    console.error("No items to display. Disabling buttons."); // Debugging
+    prevButton.disabled = true;
+    nextButton.disabled = true;
+  }
+});
+
+
+
+</script>-->

@@ -36,7 +36,8 @@
 
 <% else %>
 
-<%= button_to 'Rank Tier List', rank_tier_list_path(@tier_list), method: :get, class: "btn btn-primary" %>
+<%= link_to "Rank Tier List", rank_item_tier_list_path(@tier_list, @tier_list.items.first.id), class: "btn btn-primary" %>
+
 
 
 <% end %>

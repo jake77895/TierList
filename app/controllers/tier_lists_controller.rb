@@ -13,6 +13,10 @@ class TierListsController < ApplicationController
       }
     end
 
+    @current_item = @items.first
+
+    
+
   end
 
   def publish

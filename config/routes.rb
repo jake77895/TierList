@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   resources :tier_lists do
     resources :items
     resources :tier_list_rankings, only: [:create]
+
     member do
       patch :publish # Adds a PATCH route for the `publish` action
-      get :rank
+      get 'rank/:item_id', to: 'tier_list_rankings#rank', as: 'rank_item'
     end
   end
 

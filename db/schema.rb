@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_25_200622) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_29_025514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_200622) do
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_tier_list_rankings_on_item_id"
     t.index ["ranked_by_id"], name: "index_tier_list_rankings_on_ranked_by_id"
-    t.index ["tier_list_id", "rank"], name: "index_tier_list_rankings_on_tier_list_id_and_rank", unique: true
+    t.index ["tier_list_id", "item_id", "ranked_by_id"], name: "unique_tier_list_rankings", unique: true
     t.index ["tier_list_id"], name: "index_tier_list_rankings_on_tier_list_id"
   end
 
