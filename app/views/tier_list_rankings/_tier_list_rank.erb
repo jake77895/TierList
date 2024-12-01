@@ -3,6 +3,8 @@
   <h3 class="text-left">Tier List Title</h3>
   <hr class="mt-0">
 
+
+
   <div class="container-fluid mt-1">
     <!-- Tier List Rows -->
     <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
@@ -17,42 +19,35 @@
           </div>
         </div>
 
+
         <!-- Tier Items -->
         <div class="col">
-          <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" 
-               style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
-            <% # Get items for the current rank %>
-            <% ranked_items_for_tier = @ranked_items.select { |item| item[:rank] == tier } %>
+          <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+  <% ranked_items_for_tier = @ranked_items.select { |item| item[:rank] == tier } %>
 
-<% 10.times do |i| %>
-  <% item = ranked_items_for_tier[i] %>
-  <div class="d-flex justify-content-center align-items-center flex-shrink-0 position-relative"
-       style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); 
-              background-color: <%= item ? '#fff' : '#e0e0e0' %>; overflow: hidden; border-radius: 8px;">
-    <% if item %>
-      <!-- Item Card -->
-      <div id="item-card" class="position-relative w-100 h-100">
-        <!-- Image -->
-        <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
-                      id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
-                      style: "object-fit: cover;") %>
-        <!-- Overlay for Name -->
-        <div class="position-absolute d-flex flex-column justify-content-end"
-             style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px; border-radius: 0;">
-          <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;">
-            <%= item[:name] %>
-          </h5>
-        </div>
-      </div>
-    <% else %>
-      <!-- Empty Placeholder -->
-      <p class="text-muted m-0 text-center" style="font-size: 0.6rem;">Empty</p>
-    <% end %>
-  </div>
-<% end %>
-
+  <% 10.times do |i| %>
+    <% item = ranked_items_for_tier[i] %>
+    <div class="d-flex flex-column justify-content-center align-items-center text-center flex-shrink-0"
+         style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
+      <% if item %>
+        <!-- Updated Item Card with Modal Trigger -->
+        <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
+          <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
+                        id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
+                        style: "object-fit: cover; border-radius: 8px; cursor: pointer;") %>
+          <div class="position-absolute d-flex flex-column justify-content-end"
+               style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
+            <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item[:name] %></h5>
           </div>
         </div>
+
+      <% else %>
+        <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>        
+</div>
       </div>
     <% end %>
   </div>
@@ -62,3 +57,21 @@
     <%= @tier_list.creator&.id if @tier_list.creator&.user_name.blank? %>
   </p>
 </div>
+
+<!-- Modals for Each Item -->
+<% @ranked_items.each do |item| %>
+  <div class="modal fade" id="modal-<%= item[:id] %>" tabindex="-1" aria-labelledby="modalLabel-<%= item[:id] %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel-<%= item[:id] %>"><%= item[:name] %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render partial: "tier_list_rankings/item_popup", locals: { item: item } %>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+<% end %>
