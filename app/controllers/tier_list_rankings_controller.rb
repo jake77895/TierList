@@ -1,5 +1,14 @@
 class TierListRankingsController < ApplicationController
 
+  RANK_TO_TIER_MAP = {
+    1 => "S",
+    2 => "A",
+    3 => "B",
+    4 => "C",
+    5 => "D",
+    6 => "F"
+}.freeze
+
   def create
     @tier_list = TierList.find(params[:tier_list_id])
   
@@ -30,13 +39,21 @@ class TierListRankingsController < ApplicationController
     @items = @tier_list.items              # Get all items in the tier list
     @current_item = @items.find_by(id: params[:item_id]) # Find the current item by item_id
 
+
+
     @ranked_items = @tier_list.tier_list_rankings.includes(:item).map do |ranking|
+      next if ranking.item.nil? # Skip if the associated item is missing
+    
       {
-        rank: ranking.rank,
-        name: ranking.item.name,
-        image_url: ranking.item.image.attached? ? url_for(ranking.item.image) : nil
+        rank: RANK_TO_TIER_MAP[ranking.rank.to_i] || "Unranked", # Map rank or fallback
+        name: ranking.item.name || "Unknown Item",               # Handle missing name
+        image_url: if ranking.item&.image&.attached?
+                     url_for(ranking.item.image)
+                   else
+                     view_context.asset_path("egg.png") # Provide a default placeholder image
+                   end
       }
-    end
+    end.compact # Remove any `nil` entries from the array
   
     if @current_item.nil?
       redirect_to tier_list_path(@tier_list), alert: "Item not found or no items available to rank."
