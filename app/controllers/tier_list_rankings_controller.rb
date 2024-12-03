@@ -20,6 +20,9 @@ class TierListRankingsController < ApplicationController
   
     # Update the rank value
     ranking.rank = params[:rank]
+
+    # Retrieve the current item for fallback use
+    current_item = @tier_list.items.find(params[:item_id])
   
     if ranking.save
       # Find the next item to rank
@@ -27,6 +30,8 @@ class TierListRankingsController < ApplicationController
   
       if next_item
         redirect_to rank_item_tier_list_path(@tier_list, next_item.id), notice: "Ranking saved successfully!"
+      else
+        redirect_to rank_item_tier_list_path(@tier_list, current_item.id), notice: "Ranking saved successfully!"
       end
     else
       redirect_to rank_item_tier_list_path(@tier_list, params[:item_id]),

@@ -61,13 +61,15 @@
 <!-- Modals for Each Item -->
 <% @ranked_items.each do |item| %>
   <div class="modal fade" id="modal-<%= item[:id] %>" tabindex="-1" aria-labelledby="modalLabel-<%= item[:id] %>" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalLabel-<%= item[:id] %>"><%= item[:name] %></h5>
+          <h6 class="modal-title" id="modalLabel-<%= item[:id] %>">
+          <!-- Optional Modal Title -->
+          </h6>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body d-flex align-items-center justify-content-center">
           <%= render partial: "tier_list_rankings/item_popup", locals: { item: item } %>
         </div>
       
