@@ -14,4 +14,9 @@
  *= require_self
  */
 
-
+ .card-img-custom {
+  width: 100%;         /* Make the image take the full width of the card */
+  height: 300px;       /* Set a fixed height for the image */
+  object-fit: cover;   /* Ensures the image maintains its aspect ratio and fills the space */
+  object-position: center; /* Center the image within the container */
+}

@@ -3,7 +3,7 @@
   <% if item[:image_url].present? %>
     <%= image_tag item[:image_url], class: "card-img-top", alt: item[:name] %>
   <% else %>
-    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Placeholder Image">
+    <img src="<%= asset_path('egg.png')%>" class="card-img-top" alt="Placeholder Image">
   <% end %>
 
   <!-- Card Body -->

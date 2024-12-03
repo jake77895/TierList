@@ -48,7 +48,7 @@
               <% when "Date" %>
                 <%= date_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control" %>
               <% else %>
-                <p class="text-danger">Unknown data type: <%= data_type %></p>
+                <%= text_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control", placeholder: "Enter value" %>
               <% end %>
             </div>
           <% end %>

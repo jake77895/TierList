@@ -26,8 +26,20 @@
         <ul class="list-group list-group-flush">
           <% tier_list.custom_fields.each do |field| %>
             <li class="list-group-item">
-              <strong><%= field[:name] %></strong>: <%= field[:data_type] %>
+              <strong><%= field[:name] %></strong>: 
+              <% if field[:data_type] == "String" %>
+                Text
+              <% elsif field[:data_type] == "Integer" %>
+                Number
+              <% elsif field[:data_type] == "Boolean" %>
+                True/False
+              <% elsif field[:data_type] == "Date" %>
+                Date
+              <% else %>
+                Text
+              <% end %>
             </li>
+
           <% end %>
         </ul>
       <% else %>
@@ -42,13 +54,6 @@
       <% end %>
 
     </div>
-
-    <!--    <p class="card-text">
-      <strong>Published:</strong> 
-      <span class="badge <%#= tier_list.published ? 'bg-success' : 'bg-secondary' %>">
-        <%#= tier_list.published ? "Yes" : "No" %>-->
-    <!--      </span>
-    </p>-->
 
   </div>
 </div>

@@ -15,39 +15,61 @@
         <h3 class="text-left">Rank Items</h3>
         <hr class="mt-0">
 
-      <div id="item-card" class="card bg-light text-dark position-relative mb-3" style="overflow: hidden;">
-        <%= image_tag(@current_item.image.attached? ? url_for(@current_item.image) : asset_path('egg.png'),
-                      id: "item-image", class: "card-img", alt: "Tier List Item",
-                      style: "width: 100%; height: 300px; object-fit: cover;") %>
-        <div class="position-absolute" style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 90%; bottom: 15px; left: 5%; padding: 10px; border-radius: 0px; border-left: 5px solid var(--bs-primary);">
-          <h5 id="item-title" class="card-title mb-1" style="font-size: 1.2rem; margin-bottom: 0;">
-            <%= @current_item.name || "No items available" %>
-          </h5>
-          <p id="item-description" class="card-text" style="font-size: 0.9rem;">
-            <%= @current_item.description || "No item description available" %>
-          </p>
+        <!-- Item Card -->
+        <div id="item-card-<%= @current_item.id %>" class="card bg-light text-dark position-relative mb-3" style="overflow: hidden;">
+          <%= image_tag(@current_item.image.attached? ? url_for(@current_item.image) : asset_path('egg.png'),
+                id: "item-image-#{@current_item.id}", class: "card-img", alt: "Tier List Item",
+                style: "width: 100%; height: 300px; object-fit: cover;") %>
+          <div class="position-absolute" style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 90%; bottom: 15px; left: 5%; padding: 10px; border-radius: 0px; border-left: 5px solid var(--bs-primary);">
+            <h5 id="item-title-<%= @current_item.id %>" class="card-title mb-1" style="font-size: 1.2rem; margin-bottom: 0;">
+              <%= @current_item.name || "No items available" %>
+            </h5>
+            <p id="item-description-<%= @current_item.id %>" class="card-text" style="font-size: 0.9rem;">
+              <%= @current_item.description || "No item description available" %>
+            </p>
+          </div>
+          <!-- Trigger Modal -->
+          <button type="button" class="btn btn-outline-primary position-absolute" style="top: 10px; right: 10px;"
+          data-bs-toggle="modal" data-bs-target="#modal-<%= @current_item.id %>">
+            View Details
+          </button>
         </div>
-      </div>
 
+        <!-- Modal for the Current Item -->
+        <div class="modal fade" id="modal-<%= @current_item.id %>" tabindex="-1" aria-labelledby="modalLabel-<%= @current_item.id %>" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h6 class="modal-title" id="modalLabel-<%= @current_item.id %>">
+                  <%= @current_item.name || "Item Details" %>
+                </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex align-items-center justify-content-center">
+                <%= render partial: "tier_list_rankings/item_popup", locals: { item: @current_item } %>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="d-flex justify-content-between mt-3">
-        <% prev_item = @items.where('id < ?', @current_item.id).last %>
-        <% next_item = @items.where('id > ?', @current_item.id).first %>
+          <% prev_item = @items.where('id < ?', @current_item.id).last %>
+          <% next_item = @items.where('id > ?', @current_item.id).first %>
 
-        <% if prev_item %>
-          <%= link_to "Previous", rank_item_tier_list_path(@tier_list, prev_item.id), class: "btn btn-secondary" %>
-        <% else %>
-          <button class="btn btn-secondary" disabled>Previous</button>
-        <% end %>
+          <% if prev_item %>
+            <%= link_to "Previous", rank_item_tier_list_path(@tier_list, prev_item.id), class: "btn btn-secondary" %>
+          <% else %>
+            <button class="btn btn-secondary" disabled>Previous</button>
+          <% end %>
 
-        <% if next_item %>
-          <%= link_to "Next", rank_item_tier_list_path(@tier_list, next_item.id), class: "btn btn-secondary" %>
-        <% else %>
-          <button class="btn btn-secondary" disabled>Next</button>
-        <% end %>
-      </div>
+          <% if next_item %>
+            <%= link_to "Next", rank_item_tier_list_path(@tier_list, next_item.id), class: "btn btn-secondary" %>
+          <% else %>
+            <button class="btn btn-secondary" disabled>Next</button>
+          <% end %>
+        </div>
 
-<hr>
+        <hr>
 
         <!-- Ranking Form -->
         <%= form_with url: tier_list_tier_list_rankings_path(@tier_list), method: :post, local: true do |f| %>
@@ -56,29 +78,31 @@
           <%= f.hidden_field :item_id, value: @current_item.id %>
 
           <!-- Radio buttons for rank -->
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 1, id: "rank1", class: "form-check-input" %>
-            <%= f.label :rank, "S", for: "rank1", class: "form-check-label" %>
-          </div>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 2, id: "rank2", class: "form-check-input" %>
-            <%= f.label :rank, "A", for: "rank2", class: "form-check-label" %>
-          </div>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 3, id: "rank3", class: "form-check-input" %>
-            <%= f.label :rank, "B", for: "rank3", class: "form-check-label" %>
-          </div>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 4, id: "rank4", class: "form-check-input" %>
-            <%= f.label :rank, "C", for: "rank4", class: "form-check-label" %>
-          </div>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 5, id: "rank5", class: "form-check-input" %>
-            <%= f.label :rank, "D", for: "rank5", class: "form-check-label" %>
-          </div>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :rank, 6, id: "rank6", class: "form-check-input" %>
-            <%= f.label :rank, "F", for: "rank6", class: "form-check-label" %>
+          <div class="d-flex justify-content-between">
+            <div class="form-check">
+              <%= f.radio_button :rank, 1, id: "rank1", class: "form-check-input" %>
+              <%= f.label :rank, "S", for: "rank1", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :rank, 2, id: "rank2", class: "form-check-input" %>
+              <%= f.label :rank, "A", for: "rank2", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :rank, 3, id: "rank3", class: "form-check-input" %>
+              <%= f.label :rank, "B", for: "rank3", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :rank, 4, id: "rank4", class: "form-check-input" %>
+              <%= f.label :rank, "C", for: "rank4", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :rank, 5, id: "rank5", class: "form-check-input" %>
+              <%= f.label :rank, "D", for: "rank5", class: "form-check-label" %>
+            </div>
+            <div class="form-check">
+              <%= f.radio_button :rank, 6, id: "rank6", class: "form-check-input" %>
+              <%= f.label :rank, "F", for: "rank6", class: "form-check-label" %>
+            </div>
           </div>
 
           <!-- Submit Button -->
@@ -87,10 +111,32 @@
           </div>
         <% end %>
       </div>
+
+      <div class="d-grid gap-2 mt-2 d-flex justify-content-left">
+        <button type="button" class="btn btn-outline-primary"
+          data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+          See All Items
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Full-Screen Modal -->
+<div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullscreenModalLabel">All Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Render the partial for listing all items -->
+        <%= render partial: "tier_list_rankings/item_list", locals: { tier_list_items: @tier_list.items } %>
+      </div>
     </div>
   </div>
 </div>
-
-
-
-

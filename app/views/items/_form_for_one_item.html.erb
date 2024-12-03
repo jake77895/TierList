@@ -33,7 +33,7 @@
         <% elsif field_value.is_a?(Date) %>
           <%= date_field_tag "item[custom_field_values][#{field_name}]", field_value, class: "form-control" %>
         <% else %>
-          <p class="text-danger">Unsupported field type for: <%= field_name %></p>
+          <%= text_field_tag "item[custom_field_values][#{field_name}]", field_value, class: "form-control" %>
         <% end %>
       </div>
     <% end %>

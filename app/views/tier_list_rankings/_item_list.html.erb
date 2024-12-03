@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <% if tier_list_items.present? %>
+    <div class="row">
+      <% tier_list_items.each_with_index do |item, index| %>
+        <div class="col-md-3 mb-4">
+          <div class="card" style="width: 100%;">
+
+            <% if item.image.attached? %>
+              <%= image_tag item.image, class: "card-img-top card-img-custom", alt: item.name %>
+            <% else %>
+              <img src="<%= asset_path('egg.png')%>" class="card-img-top card-img-custom" 
+                   alt="Placeholder Image">
+            <% end %>
+
+            <div class="card-body">
+              <h5 class="card-title"><%= item.name %></h5>
+              <p class="card-text"><%= item.description.presence || "No description provided." %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Start a new row after every 4 cards -->
+        <% if (index + 1) % 4 == 0 %>
+          </div><div class="row">
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center">No items available for this tier list.</p>
+  <% end %>
+</div>

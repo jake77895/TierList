@@ -33,10 +33,10 @@
 <% @tier_list.custom_fields.each_with_index do |field, index| %>
   <div class="custom-field-row">
     <%= text_field_tag "custom_fields[#{index}][name]", field[:name], placeholder: "Field Name", class: "form-control mb-2" %>
-    <%= select_tag "custom_fields[#{index}][data_type]",
-                   options_for_select(["String", "Integer", "Boolean", "Date"], field[:data_type]),
-                   prompt: "Select Data Type",
-                   class: "form-control mb-2" %>
+<%= select_tag "custom_fields[#{index}][data_type]", 
+      options_for_select([["Text", "String"], ["Number", "Integer"], ["True/False", "Boolean"], ["Date", "Date"]], field[:data_type]), 
+      prompt: "Select Data Type", 
+      class: "form-control mb-2" %>
   </div>
   <hr>
 <% end %>
