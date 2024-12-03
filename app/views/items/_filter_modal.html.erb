@@ -15,17 +15,20 @@
           <label for="filter_<%= field[:name] %>" class="form-label fw-bold"><%= field[:name].humanize %></label>
           <% case field[:data_type] %>
           <% when 'String' %>
-           <!-- Multi-Select Dropdown for String -->
-<div class="mb-3">
-  <label for="exampleSelectMultiple" class="form-label fw-bold">Choose Options</label>
-  <select id="exampleSelectMultiple" class="form-select" multiple style="height: 50px; font-size: 1rem; padding: 10px;">
-    <option value="" disabled selected>Select options</option>
-    <option value="Option 1">Option 1</option>
-    <option value="Option 2">Option 2</option>
-    <option value="Option 3">Option 3</option>
-    <option value="Option 4">Option 4</option>
-  </select>
-</div>
+  <div class="mb-3">
+<!--    <label for="filter_<%#= field[:name] %>" class="form-label fw-bold"><%= field[:name].humanize %></label>-->
+<select id="filter_<%= field[:name] %>" name="filter_<%= field[:name] %>[]" class="form-select" multiple style="height: auto; font-size: 1rem; padding: 10px;">
+  <% @unique_field_values[field[:name]]&.each do |value| %>
+    <option value="<%= value.strip %>"><%= value.titleize %></option>
+  <% end %>
+</select>
+
+<!-- Debugging output -->
+<% @unique_field_values[field[:name]]&.each do |value| %>
+  <p>Raw Value: <%= value.inspect %></p>
+<% end %>
+
+  </div>
           <% when 'Integer' %>
             <div class="d-flex gap-2">
               <%= f.number_field "filter_#{field[:name]}_min", class: 'form-control', placeholder: "Min #{field[:name]}" %>

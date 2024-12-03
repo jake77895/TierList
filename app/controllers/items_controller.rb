@@ -55,30 +55,30 @@ class ItemsController < ApplicationController
     redirect_to tier_list_items_url(@tier_list), notice: "Item was successfully destroyed."
   end
 
-  def filter_items
+  # def filter_items
 
-    @tier_list = TierList.find(params[:tier_list_id]) # Find the associated tier list
-    @items = @tier_list.items # Start with all items in the tier list
+  #   @tier_list = TierList.find(params[:tier_list_id]) # Find the associated tier list
+  #   @items = @tier_list.items # Start with all items in the tier list
 
-    # Apply filters based on custom_field_values
-    params.each do |key, value|
-      next unless key.start_with?("filter_") && value.present?
-      field_name = key.gsub("filter_", "").split("_").first
-      if key.end_with?("_min")
-        @items = @items.where("custom_field_values ->> ? >= ?", field_name, value)
-      elsif key.end_with?("_max")
-        @items = @items.where("custom_field_values ->> ? <= ?", field_name, value)
-      else
-        @items = @items.where("custom_field_values ->> ? = ?", field_name, value)
-      end
-    end
+  #   # Apply filters based on custom_field_values
+  #   params.each do |key, value|
+  #     next unless key.start_with?("filter_") && value.present?
+  #     field_name = key.gsub("filter_", "").split("_").first
+  #     if key.end_with?("_min")
+  #       @items = @items.where("custom_field_values ->> ? >= ?", field_name, value)
+  #     elsif key.end_with?("_max")
+  #       @items = @items.where("custom_field_values ->> ? <= ?", field_name, value)
+  #     else
+  #       @items = @items.where("custom_field_values ->> ? = ?", field_name, value)
+  #     end
+  #   end
 
-    # Render filtered items (adjust as needed)
-    respond_to do |format|
-      format.html { render :filter_results } # Create a `filter_results.html.erb` view if needed
-      format.json { render json: @items }    # For AJAX or API-based responses
-    end
-  end
+  #   # Render filtered items (adjust as needed)
+  #   respond_to do |format|
+  #     format.html { render :filter_results } # Create a `filter_results.html.erb` view if needed
+  #     format.json { render json: @items }    # For AJAX or API-based responses
+  #   end
+  # end
 
   private
 

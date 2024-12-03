@@ -48,6 +48,22 @@ def rank
   @tier_list = TierList.find(params[:id]) # Find the Tier List by ID
   @items = @tier_list.items              # Get all items in the tier list
 
+  # Extract unique options for each custom field
+  @unique_field_values = @tier_list.items.each_with_object({}) do |item, hash|
+    item.custom_field_values.each do |key, value|
+      # Normalize value to lowercase and exclude empty strings
+      normalized_value = value.to_s.strip.downcase
+      next if normalized_value.empty?
+  
+      hash[key] ||= []
+      hash[key] << value.strip unless hash[key].include?(value.strip)
+    end
+  end
+  
+  @unique_field_values.transform_values!(&:uniq)
+
+  Rails.logger.debug "Unique Field Values: #{@unique_field_values.inspect}"
+
   if params[:commit] == "Clear All Filters" # Check if "Clear All Filters" was pressed
     @filtered_items = nil
     flash[:notice] = "All filters cleared. Showing all items."
@@ -84,6 +100,10 @@ def rank
       custom_fields: ranking.item.custom_field_values || {}
     }
   end.compact # Remove any `nil` entries from the array
+
+  # Pass the filtered items explicitly to the partial
+  @filtered_ranked_items = @ranked_items.select { |item| @filtered_items.pluck(:id).include?(item[:id]) } if @filtered_items.present?
+  
 end
 
 
@@ -107,6 +127,31 @@ end
       next unless key.start_with?("filter_") && value.present?
   
       field_name = key.gsub("filter_", "").split("_").first
+
+      Rails.logger.debug "Filter params: #{params.inspect}"
+
+      # Apply the appropriate filter based on the parameter type
+      if value.is_a?(Array)
+        # Ensure case-insensitive match and remove spaces
+        filtered_items = filtered_items.where(
+          "LOWER(custom_field_values ->> ?) IN (?)",
+          field_name,
+          value.map { |v| v.downcase.strip }
+        )
+      elsif key.end_with?("_min")
+        # Apply minimum filter for numeric values
+        filtered_items = filtered_items.where("custom_field_values ->> ? IS NOT NULL AND CAST(custom_field_values ->> ? AS numeric) >= ?", field_name, field_name, value)
+      elsif key.end_with?("_max")
+        # Apply maximum filter for numeric values
+        filtered_items = filtered_items.where("custom_field_values ->> ? IS NOT NULL AND CAST(custom_field_values ->> ? AS numeric) <= ?", field_name, field_name, value)
+      else
+        # Handle exact match for single string values
+        filtered_items = filtered_items.where(
+          "LOWER(custom_field_values ->> ?) = ?",
+          field_name,
+          value.downcase.strip
+        )
+      end
   
       if key.end_with?("_min")
         min_conditions[field_name] = value
@@ -125,10 +170,15 @@ end
     max_conditions.each do |field, max_value|
       filtered_items = filtered_items.where("custom_field_values ->> ? <= ?", field, max_value)
     end
+
+
+        
   
     # Return all items if no filters are applied
     filtered_items == items ? items : filtered_items
   end
+
+ 
 
 
   
