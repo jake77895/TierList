@@ -48,27 +48,29 @@ def rank
   @tier_list = TierList.find(params[:id]) # Find the Tier List by ID
   @items = @tier_list.items              # Get all items in the tier list
 
-  # Apply filters only to @filtered_items
-  @filtered_items = filter_items(@tier_list.items)
-
-  Rails.logger.debug "Filtered Items: #{@filtered_items.pluck(:id)}"
-  Rails.logger.debug "All Items: #{@items.pluck(:id)}"
-
-  # Use all items if no filters are applied or filtered list is empty
-  if params[:commit] == "Clear All Filters" || @filtered_items.empty?
-    @filtered_items = @items
-    Rails.logger.debug "Cleared Filters: Using all items."
+  if params[:commit] == "Clear All Filters" # Check if "Clear All Filters" was pressed
+    @filtered_items = nil
+    flash[:notice] = "All filters cleared. Showing all items."
+  else
+    # Apply filters only to @filtered_items
+    @filtered_items = filter_items(@tier_list.items)
+    flash[:alert] = "No items available with the applied filters." if @filtered_items.empty?
   end
 
   # Ensure the current item is included even if filters exclude it
-  @current_item = @filtered_items.find_by(id: params[:item_id]) || @items.find_by(id: params[:item_id])
-  Rails.logger.debug "Current Item: #{@current_item.inspect}"
+  @current_item = if @filtered_items&.any?
+    @filtered_items.find_by(id: params[:item_id])
+  else
+    @items.find_by(id: params[:item_id])
+  end
 
-  # If no items match the filters, show an alert
-  flash[:alert] = "No items available with the applied filters." if @filtered_items.empty?
+  # Clear previous flash messages to avoid overlap
+  flash.discard(:notice)
+  flash.discard(:alert)
 
+  # Generate ranked items based on filters
   @ranked_items = @tier_list.tier_list_rankings.includes(:item).map do |ranking|
-    next if ranking.item.nil? # Skip if the associated item is missing
+    next if ranking.item.nil? || (@filtered_items.present? && !@filtered_items.include?(ranking.item))
 
     {
       id: ranking.item.id, # Include the unique item ID
@@ -82,8 +84,9 @@ def rank
       custom_fields: ranking.item.custom_field_values || {}
     }
   end.compact # Remove any `nil` entries from the array
-  Rails.logger.debug "Ranked Items: #{@ranked_items.inspect}"
 end
+
+
 
 
   def show
@@ -96,19 +99,31 @@ end
 
   def filter_items(items)
     filtered_items = items
+    min_conditions = {}
+    max_conditions = {}
   
     # Apply filters based on custom_field_values from params
     params.each do |key, value|
       next unless key.start_with?("filter_") && value.present?
   
       field_name = key.gsub("filter_", "").split("_").first
+  
       if key.end_with?("_min")
-        filtered_items = filtered_items.where("custom_field_values ->> ? >= ?", field_name, value)
+        min_conditions[field_name] = value
       elsif key.end_with?("_max")
-        filtered_items = filtered_items.where("custom_field_values ->> ? <= ?", field_name, value)
+        max_conditions[field_name] = value
       else
         filtered_items = filtered_items.where("custom_field_values ->> ? = ?", field_name, value)
       end
+    end
+  
+    # Apply min and max conditions after gathering them
+    min_conditions.each do |field, min_value|
+      filtered_items = filtered_items.where("custom_field_values ->> ? >= ?", field, min_value)
+    end
+  
+    max_conditions.each do |field, max_value|
+      filtered_items = filtered_items.where("custom_field_values ->> ? <= ?", field, max_value)
     end
   
     # Return all items if no filters are applied

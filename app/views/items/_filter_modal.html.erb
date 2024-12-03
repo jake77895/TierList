@@ -52,7 +52,8 @@
     <% end %>
 <div class="d-flex justify-content-between">
       <!-- Clear All Filters Button -->
-      <%= link_to "Clear All Filters", request.path, class: "btn btn-secondary" %>
+      <%= button_to "Clear All Filters", rank_item_tier_list_path(@tier_list, params[:item_id]), 
+          method: :get, class: "btn btn-secondary", params: { commit: "Clear All Filters" } %>
 
       <!-- Apply Filters Button -->
       <%= f.submit "Apply Filters", class: "btn btn-primary" %>
