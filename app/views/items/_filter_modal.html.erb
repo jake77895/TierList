@@ -7,7 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-  <%= form_with url: filter_items_tier_list_items_path(tier_list), method: :get, local: true do |f| %>
+  <%= form_with url: request.fullpath, method: :get, local: true do |f| %>
     <% if tier_list.custom_fields.present? %>
       <% tier_list.custom_fields.each_with_index do |field, index| %>
         <% next if field[:name].nil? %>
@@ -18,7 +18,7 @@
            <!-- Multi-Select Dropdown for String -->
 <div class="mb-3">
   <label for="exampleSelectMultiple" class="form-label fw-bold">Choose Options</label>
-  <select id="exampleSelectMultiple" class="form-select" multiple style="height: auto;" size="1">
+  <select id="exampleSelectMultiple" class="form-select" multiple style="height: 50px; font-size: 1rem; padding: 10px;">
     <option value="" disabled selected>Select options</option>
     <option value="Option 1">Option 1</option>
     <option value="Option 2">Option 2</option>
@@ -43,16 +43,19 @@
             <p class="text-muted">Unsupported field type: <%= field[:data_type] %></p>
           <% end %>
         </div>
-        <%# Add an <hr> except after the last field %>
-        <% if index < tier_list.custom_fields.size - 1 %>
+        <% if index < tier_list.custom_fields.size %>
           <hr>
         <% end %>
       <% end %>
     <% else %>
       <p>No filters available for this tier list.</p>
     <% end %>
-    <div class="modal-footer">
-      <%= f.submit 'Apply Filters', class: 'btn btn-primary' %>
+<div class="d-flex justify-content-between">
+      <!-- Clear All Filters Button -->
+      <%= link_to "Clear All Filters", request.path, class: "btn btn-secondary" %>
+
+      <!-- Apply Filters Button -->
+      <%= f.submit "Apply Filters", class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>
