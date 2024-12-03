@@ -56,17 +56,14 @@ class ItemsController < ApplicationController
   end
 
   def filter_items
-    Rails.logger.debug "Filter Items Action Triggered"
-    Rails.logger.debug "Params: #{params.inspect}"
 
     @tier_list = TierList.find(params[:tier_list_id]) # Find the associated tier list
     @items = @tier_list.items # Start with all items in the tier list
 
     # Apply filters based on custom_field_values
     params.each do |key, value|
-      next unless key.start_with?("filter_") # Only process filter params
-      field_name = key.gsub("filter_", "")
-
+      next unless key.start_with?("filter_") && value.present?
+      field_name = key.gsub("filter_", "").split("_").first
       if key.end_with?("_min")
         @items = @items.where("custom_field_values ->> ? >= ?", field_name, value)
       elsif key.end_with?("_max")

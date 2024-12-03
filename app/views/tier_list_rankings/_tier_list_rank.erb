@@ -14,57 +14,61 @@
 
     <!-- Button to Open Modal -->
     <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#filterModal">
-      Add Filters
+      Filter
     </button>
   </div>
 
   <hr class="mt-0">
 
   <div class="container-fluid mt-1">
-    <!-- Tier List Rows -->
-    <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
-      <div class="row align-items-center mb-3 g-0">
-        <!-- Tier Label -->
-        <div class="col-auto text-center d-flex align-items-center justify-content-center flex-shrink-0" 
-             style="width: 70px; height: 70px;">
-          <div class="text-dark fw-bold w-100 h-100 d-flex align-items-center justify-content-center fs-5 rounded-start flex-wrap"
-               style="background-color: <%= ["#FF7F7F", "#FFBF7F", "#FFDF7F", "#BFFF7F", "#7FFF7F", "#7FFFFF"][index] %>; 
-                      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
-            <%= tier %>
-          </div>
-        </div>
-
-        <!-- Tier Items -->
-        <div class="col">
-          <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
-            <% ranked_items_for_tier = @ranked_items.select { |item| item[:rank] == tier } %>
-
-            <% 10.times do |i| %>
-              <% item = ranked_items_for_tier[i] %>
-              <div class="d-flex flex-column justify-content-center align-items-center text-center flex-shrink-0"
-         style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
-                <% if item %>
-                  <!-- Updated Item Card with Modal Trigger -->
-                  <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
-                    <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
-                        id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
-                        style: "object-fit: cover; border-radius: 0px; cursor: pointer;") %>
-                    <div class="position-absolute d-flex flex-column justify-content-end"
-               style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
-                      <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item[:name] %></h5>
-                    </div>
-                  </div>
-
-                <% else %>
-                  <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
+  <!-- Tier List Rows -->
+  <% ["S", "A", "B", "C", "D", "F"].each_with_index do |tier, index| %>
+    <div class="row align-items-center mb-3 g-0">
+      <!-- Tier Label -->
+      <div class="col-auto text-center d-flex align-items-center justify-content-center flex-shrink-0" 
+           style="width: 70px; height: 70px;">
+        <div class="text-dark fw-bold w-100 h-100 d-flex align-items-center justify-content-center fs-5 rounded-start flex-wrap"
+             style="background-color: <%= ["#FF7F7F", "#FFBF7F", "#FFDF7F", "#BFFF7F", "#7FFF7F", "#7FFFFF"][index] %>; 
+                    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+          <%= tier %>
         </div>
       </div>
-    <% end %>
-  </div>
+
+      <!-- Tier Items -->
+      <div class="col">
+        <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
+          <!-- Filter items based on the tier and @filtered_items -->
+          <% ranked_items_for_tier = if @filtered_items
+                              @ranked_items.select { |item| item[:rank] == tier && @filtered_items.pluck(:id).include?(item[:id]) }
+                            else
+                              @ranked_items.select { |item| item[:rank] == tier }
+                            end %>
+
+          <% 10.times do |i| %>
+            <% item = ranked_items_for_tier[i] %>
+            <div class="d-flex flex-column justify-content-center align-items-center text-center flex-shrink-0"
+                 style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
+              <% if item %>
+                <!-- Updated Item Card with Modal Trigger -->
+                <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
+                  <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
+                                id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
+                                style: "object-fit: cover; border-radius: 0px; cursor: pointer;") %>
+                  <div class="position-absolute d-flex flex-column justify-content-end"
+                       style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
+                    <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item[:name] %></h5>
+                  </div>
+                </div>
+              <% else %>
+                <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
 
   <p class="text-left text-muted mb-0" style="font-size: 0.6rem;">
     Created by <%= @tier_list.creator&.user_name.presence || "User" %>
