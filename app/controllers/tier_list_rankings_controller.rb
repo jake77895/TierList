@@ -50,7 +50,8 @@ class TierListRankingsController < ApplicationController
                      url_for(ranking.item.image)
                    else
                      view_context.asset_path("egg.png") # Provide a default placeholder image
-                   end
+                   end,
+        custom_fields: ranking.item.custom_field_values || {}
       }
     end.compact # Remove any `nil` entries from the array
   

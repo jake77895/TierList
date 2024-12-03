@@ -34,7 +34,7 @@
         <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
           <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
                         id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
-                        style: "object-fit: cover; border-radius: 8px; cursor: pointer;") %>
+                        style: "object-fit: cover; border-radius: 0px; cursor: pointer;") %>
           <div class="position-absolute d-flex flex-column justify-content-end"
                style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
             <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item[:name] %></h5>

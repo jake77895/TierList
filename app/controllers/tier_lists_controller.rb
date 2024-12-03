@@ -21,13 +21,17 @@ class TierListsController < ApplicationController
 
   def publish
     @tier_list = TierList.find(params[:id])
-
+  
     if @tier_list.update(published: true)
-      redirect_to rank_tier_list_path(@tier_list), notice: 'Published tier list.'
+      first_item = @tier_list.items.first # Select the first item or a specific one
+      if first_item
+        redirect_to rank_item_tier_list_path(@tier_list, first_item.id), notice: 'Published tier list.'
+      else
+        redirect_to @tier_list, alert: 'Tier list published, but no items available to rank.'
+      end
     else
       redirect_to @tier_list, alert: 'Failed to publish the tier list.'
     end
-    
   end
   
   # GET /tier_lists or /tier_lists.json

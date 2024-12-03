@@ -12,6 +12,7 @@
     <p class="card-text"><%= item[:description].presence || "No description provided." %></p>
   </div>
 
+<% puts "DEBUG: item[:custom_fields] = #{item[:custom_fields].inspect}" %>
   <!-- List Group for Custom Fields -->
   <% if item[:custom_fields].present? %>
     <ul class="list-group list-group-flush">
