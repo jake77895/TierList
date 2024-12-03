@@ -53,7 +53,7 @@
               <hr class="m-0 p-0">
               <div class="card-body">
                 <h5 class="card-title"><%= tier_list.name %></h5>
-                <p class="card-text"><%= tier_list.short_description %></p>
+                <p class="card-text"><%= truncate(tier_list.short_description, length: 150, separator: ' ') %></p>
                 <%= link_to 'View Tier List', tier_list_path(tier_list), class: 'btn btn-primary' %>
               </div>
             </div>

@@ -1,6 +1,23 @@
+
+
+
+
+
+<!-- Render the Modal Partial -->
+<%= render partial: 'items/filter_modal', locals: { tier_list: @tier_list } %>
+
 <div class="tier-list-section border p-3" style="background-color: #f8f9fa;">
-  <!-- Title and Meta Information -->
-  <h3 class="text-left">Tier List Title</h3>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <!-- Tier List Title -->
+    <h3 class="text-left mb-0"><%= @tier_list.name %></h3>
+
+    <!-- Button to Open Modal -->
+    <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#filterModal">
+      Add Filters
+    </button>
+  </div>
+
   <hr class="mt-0">
 
   <div class="container-fluid mt-1">

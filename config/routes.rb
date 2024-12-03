@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :tier_lists do
-    resources :items
+    resources :items do
+      collection do
+        get :filter_items
+      end
+    end
+  
     resources :tier_list_rankings, only: [:create]
 
     member do

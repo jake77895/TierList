@@ -1,0 +1,37 @@
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: filter_items_tier_list_items_path(@tier_list), method: :get, local: true do |f| %>
+          <% @tier_list.custom_fields.each do |field| %>
+            <% next if field['name'].nil? %>
+            <div class="mb-3">
+              <label for="filter_<%= field['name'] %>" class="form-label"><%= field['name'].humanize %></label>
+              <% case field['type'] %>
+              <% when 'String' %>
+                <%= f.text_field "filter_#{field['name']}", class: 'form-control', placeholder: "Enter #{field['name']}", value: params["filter_#{field['name']}"] %>
+              <% when 'Integer' %>
+                <%= f.number_field "filter_#{field['name']}_min", class: 'form-control mb-2', placeholder: "Min #{field['name']}", value: params["filter_#{field['name']}_min"] %>
+                <%= f.number_field "filter_#{field['name']}_max", class: 'form-control', placeholder: "Max #{field['name']}", value: params["filter_#{field['name']}_max"] %>
+              <% when 'Boolean' %>
+                <%= f.check_box "filter_#{field['name']}", class: 'form-check-input', checked: params["filter_#{field['name']}"] %>
+                <%= f.label "filter_#{field['name']}", "Yes", class: 'form-check-label' %>
+              <% when 'Date' %>
+                <%= f.date_field "filter_#{field['name']}_start", class: 'form-control mb-2', placeholder: "Start Date", value: params["filter_#{field['name']}_start"] %>
+                <%= f.date_field "filter_#{field['name']}_end", class: 'form-control', placeholder: "End Date", value: params["filter_#{field['name']}_end"] %>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="modal-footer">
+            <%= f.submit 'Apply Filters', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

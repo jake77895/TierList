@@ -70,6 +70,8 @@ class TierListRankingsController < ApplicationController
   
 
   end
+
+
   
 
 end
