@@ -4,21 +4,19 @@
       <% tier_list_items.each_with_index do |item, index| %>
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 100%;">
-
-            <% if item.image.attached? %>
-              <%= image_tag item.image, class: "card-img-top card-img-custom", alt: item.name %>
+            <!-- Item Image -->
+            <% if item[:image_url].present? %>
+              <%= image_tag item[:image_url], class: "card-img-top", alt: item[:name], style: "object-fit: cover; width: 100%; height: 300px;" %>
             <% else %>
-              <img src="<%= asset_path('egg.png')%>" class="card-img-top card-img-custom" 
-                   alt="Placeholder Image">
+              <img src="<%= asset_path('egg.png') %>" class="card-img-top" alt="Placeholder Image" style="object-fit: cover; width: 100%; height: 200px;">
             <% end %>
-
+            <!-- Item Details -->
             <div class="card-body">
-              <h5 class="card-title"><%= item.name %></h5>
-              <p class="card-text"><%= item.description.presence || "No description provided." %></p>
+              <h5 class="card-title"><%= item[:name] %></h5>
+              <p class="card-text"><%= item[:description].presence || "No description provided." %></p>
             </div>
           </div>
         </div>
-
         <!-- Start a new row after every 4 cards -->
         <% if (index + 1) % 4 == 0 %>
           </div><div class="row">
@@ -26,6 +24,6 @@
       <% end %>
     </div>
   <% else %>
-    <p class="text-center">No items available for this tier list.</p>
+    <p class="text-center">No items available for this tier.</p>
   <% end %>
 </div>

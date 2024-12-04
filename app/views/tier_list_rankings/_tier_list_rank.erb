@@ -79,8 +79,23 @@
                 <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
               <% end %>
             </div>
+
+            
           <% end %>
+
+              <!-- Vertical Divider -->
+    <div class="vr mx-0"></div>
+
+<!-- SVG Icon to Open Tier-Specific Modal -->
+<div class="d-flex align-items-center" 
+     style="cursor: pointer; margin-left: auto; margin-right: 3px;" 
+     data-bs-toggle="modal" data-bs-target="#modal-<%= tier %>">
+  <%= image_tag "tier_list/expand-icon.svg", alt: "Expand #{tier} items", width: 17, height: 17 %>
+</div>
+
         </div>
+
+
       </div>
     </div>
   <% end %>
@@ -107,6 +122,24 @@
           <%= render partial: "tier_list_rankings/item_popup", locals: { item: item } %>
         </div>
 
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!--Modal for all the items in each tier-->
+<% ["S", "A", "B", "C", "D", "F"].each do |tier| %>
+  <div class="modal fade" id="modal-<%= tier %>" tabindex="-1" aria-labelledby="modalLabel-<%= tier %>" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel-<%= tier %>">Tier <%= tier %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <% ranked_items_for_tier = @ranked_items.select { |item| item[:rank] == tier } %>
+          <%= render partial: "tier_list_rankings/item_list", locals: { tier_list_items: ranked_items_for_tier } %>
+        </div>
       </div>
     </div>
   </div>
