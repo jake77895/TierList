@@ -74,11 +74,13 @@ def rank
   end
 
   # Ensure the current item is included even if filters exclude it
-  @current_item = if @filtered_items&.any?
-    @filtered_items.find_by(id: params[:item_id])
-  else
-    @items.find_by(id: params[:item_id])
-  end
+  # @current_item = if @filtered_items&.any?
+  #   @filtered_items.find_by(id: params[:item_id])
+  # else
+  #   @items.find_by(id: params[:item_id])
+  # end
+
+  @current_item = @items.find_by(id: params[:item_id])
 
   # Clear previous flash messages to avoid overlap
   flash.discard(:notice)
@@ -143,6 +145,10 @@ end
         filtered_items = filtered_items.where("custom_field_values ->> ? IS NOT NULL AND CAST(custom_field_values ->> ? AS numeric) >= ?", field_name, field_name, value)
       elsif key.end_with?("_max")
         # Apply maximum filter for numeric values
+        if value == ""
+          Rails.logger.debug "Skipping max filter for #{field_name} due to empty string value"
+          next
+        end
         filtered_items = filtered_items.where("custom_field_values ->> ? IS NOT NULL AND CAST(custom_field_values ->> ? AS numeric) <= ?", field_name, field_name, value)
       else
         # Handle exact match for single string values
@@ -155,28 +161,38 @@ end
   
       if key.end_with?("_min")
         min_conditions[field_name] = value
+        Rails.logger.debug "Min condition for #{field_name}: #{min_conditions[field_name]}"
       elsif key.end_with?("_max")
-        max_conditions[field_name] = value
+        # Apply maximum filter for numeric values, ensuring values are greater than or equal to 0
+        filtered_items = filtered_items.where(
+          "custom_field_values ->> ? IS NOT NULL AND CAST(custom_field_values ->> ? AS numeric) >= 0 AND CAST(custom_field_values ->> ? AS numeric) <= ?",
+          field_name, field_name, field_name, value
+        )
       else
+        Rails.logger.debug "Applying exact match filter for #{field_name} with value: #{value}"
         filtered_items = filtered_items.where("custom_field_values ->> ? = ?", field_name, value)
       end
     end
   
     # Apply min and max conditions after gathering them
     min_conditions.each do |field, min_value|
+      min_value = min_value.presence || 0
+      Rails.logger.debug "Applying min condition: Field = #{field}, Min Value = #{min_value}"
       filtered_items = filtered_items.where("custom_field_values ->> ? >= ?", field, min_value)
     end
-  
+    
     max_conditions.each do |field, max_value|
+      Rails.logger.debug "Applying max condition: Field = #{field}, Max Value = #{max_value}"
       filtered_items = filtered_items.where("custom_field_values ->> ? <= ?", field, max_value)
     end
 
-
-        
   
     # Return all items if no filters are applied
     filtered_items == items ? items : filtered_items
   end
+
+  
+  
 
  
 
