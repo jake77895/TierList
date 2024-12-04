@@ -1,6 +1,24 @@
 class TierListsController < ApplicationController
   before_action :set_tier_list, only: %i[ show edit update destroy ]
 
+  def your_list
+    @tier_list = TierList.find(params[:id])
+    # Add any specific logic for "Your List" view
+  end
+
+  def creator_list
+    @tier_list = TierList.find(params[:id])
+    # Add any specific logic for "Creator List" view
+    render "tier_list_creator/show"
+  end
+
+  def group_list
+    @tier_list = TierList.find(params[:id])
+    # Add any specific logic for "Group List" view
+    render "tier_list_group/show"
+  end
+  
+  
   def rank
     @tier_list = TierList.find(params[:id])
 

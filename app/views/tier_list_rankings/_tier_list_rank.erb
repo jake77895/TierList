@@ -8,15 +8,30 @@
 
 <div class="tier-list-section border p-3" style="background-color: #f8f9fa;">
 
-  <div class="d-flex justify-content-between align-items-center">
-    <!-- Tier List Title -->
-    <h3 class="text-left mb-0"><%= @tier_list.name %></h3>
+<div class="d-flex justify-content-between align-items-center">
+  <!-- Tier List Title -->
+  <h3 class="text-left mb-0"><%= @tier_list.name %></h3>
 
-    <!-- Button to Open Modal -->
-    <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#filterModal">
+  <!-- Navigation Buttons + Divider + Filter Button -->
+  <div class="d-flex align-items-center gap-2">
+    <!-- Navigation Buttons -->
+    <div class="d-flex gap-1">
+      <button type="button" class="btn btn-light" disabled>
+        Your List
+      </button>
+      <%= link_to "Creator List", creator_list_tier_list_path(@tier_list), class: "btn btn-light" %>
+      <%= link_to "Group List", group_list_tier_list_path(@tier_list), class: "btn btn-light" %>
+    </div>
+
+    <!-- Vertical Divider -->
+    <div class="vr mx-2"></div>
+
+    <!-- Filter Button -->
+    <button type="button" class="btn btn-light mb-1" data-bs-toggle="modal" data-bs-target="#filterModal">
       Filter
     </button>
   </div>
+</div>
 
   <hr class="mt-0">
 
