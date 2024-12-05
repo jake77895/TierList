@@ -30,4 +30,16 @@ class TierListRanking < ApplicationRecord
 
   validates :rank, presence: true, inclusion: { in: 1..6 } # Ensure rank is between 1 and 6
 
+  def as_json(filtered_items: nil, view_context: nil)
+    return if item.nil? || (filtered_items && !filtered_items.include?(item))
+
+    {
+      id: item.id,
+      rank: TierListRankingsController::RANK_TO_TIER_MAP[rank.to_i] || "Unranked",
+      name: item.name || "Unknown Item",
+      image_url: item.image&.attached? ? view_context.url_for(item.image) : view_context.asset_path("egg.png"),
+      custom_fields: item.custom_field_values || {}
+    }
+  end
+
 end

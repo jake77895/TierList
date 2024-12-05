@@ -1,4 +1,4 @@
-<!-- Filter Modal -->
+<!-- Modal Structure -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -7,63 +7,42 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-  <%= form_with url: request.fullpath, method: :get, local: true do |f| %>
-    <% if tier_list.custom_fields.present? %>
-      <% tier_list.custom_fields.each_with_index do |field, index| %>
-        <% next if field[:name].nil? %>
-        <div class="mb-3">
-          <label for="filter_<%= field[:name] %>" class="form-label fw-bold"><%= field[:name].humanize %></label>
-          <% case field[:data_type] %>
-          <% when 'String' %>
+        <!-- Filter Form -->
+<%= search_form_for @q, url: rank_item_tier_list_path(@tier_list, @current_item), method: :get do |f| %>
+  <!-- Add a filter for item name -->
   <div class="mb-3">
-<!--    <label for="filter_<%#= field[:name] %>" class="form-label fw-bold"><%= field[:name].humanize %></label>-->
-<select id="filter_<%= field[:name] %>" name="filter_<%= field[:name] %>[]" class="form-select" multiple style="height: auto; font-size: 1rem; padding: 10px;">
-  <% @unique_field_values[field[:name]]&.each do |value| %>
-    <option value="<%= value.strip %>"><%= value.titleize %></option>
-  <% end %>
-</select>
+    <%= f.label :name_cont, "Name" %>
+    <%= f.text_field :name_cont, class: "form-control", placeholder: "Contains" %>
+  </div>
 
-<!-- Debugging output -->
-<% @unique_field_values[field[:name]]&.each do |value| %>
-  <p>Raw Value: <%= value.inspect %></p>
+  <!-- Dynamic filters based on custom fields -->
+  <% @field_types.each do |field_name, data_type| %>
+  <div class="mb-3">
+    <%= f.label "custom_#{field_name.parameterize(separator: '_')}_cont", field_name %>
+    <% if data_type == "String" %>
+      <%= f.select "custom_#{field_name.parameterize(separator: '_')}_cont", 
+                   options_for_select(
+                     @tier_list.items.pluck(:custom_field_values)
+                                   .map { |cf| cf[field_name] }
+                                   .compact
+                                   .reject(&:blank?)
+                                   .map(&:strip)
+                                   .map(&:downcase)
+                                   .uniq
+                                   .map(&:capitalize)
+                   ), 
+                   { prompt: "Select a value" }, 
+                   { class: "form-select", "aria-label" => "Default select example" } %>
+    <% end %>
+  </div>
 <% end %>
 
-  </div>
-          <% when 'Integer' %>
-            <div class="d-flex gap-2">
-              <%= f.number_field "filter_#{field[:name]}_min", class: 'form-control', placeholder: "Min #{field[:name]}" %>
-              <%= f.number_field "filter_#{field[:name]}_max", class: 'form-control', placeholder: "Max #{field[:name]}" %>
-            </div>
-          <% when 'Boolean' %>
-            <%= f.check_box "filter_#{field[:name]}", class: 'form-check-input' %>
-            <%= f.label "filter_#{field[:name]}", "Yes", class: 'form-check-label' %>
-          <% when 'Date' %>
-            <div class="d-flex gap-2">
-              <%= f.date_field "filter_#{field[:name]}_start", class: 'form-control', placeholder: "Start Date" %>
-              <%= f.date_field "filter_#{field[:name]}_end", class: 'form-control', placeholder: "End Date" %>
-            </div>
-          <% else %>
-            <p class="text-muted">Unsupported field type: <%= field[:data_type] %></p>
-          <% end %>
-        </div>
-        <% if index < tier_list.custom_fields.size %>
-          <hr>
+          <div class="modal-footer">
+            <%= f.submit "Apply Filters", class: "btn btn-primary" %>
+            <%= link_to "Clear Filters", rank_item_tier_list_path(@tier_list, @current_item), class: "btn btn-secondary" %>
+          </div>
         <% end %>
-      <% end %>
-    <% else %>
-      <p>No filters available for this tier list.</p>
-    <% end %>
-<div class="d-flex justify-content-between">
-      <!-- Clear All Filters Button -->
-      <%= button_to "Clear All Filters", rank_item_tier_list_path(@tier_list, params[:item_id]), 
-          method: :get, class: "btn btn-secondary", params: { commit: "Clear All Filters" } %>
-
-      <!-- Apply Filters Button -->
-      <%= f.submit "Apply Filters", class: "btn btn-primary" %>
-    </div>
-  <% end %>
-</div>
-
+      </div>
     </div>
   </div>
 </div>

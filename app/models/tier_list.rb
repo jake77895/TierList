@@ -26,7 +26,23 @@ class TierList < ApplicationRecord
   serialize :custom_fields, Array
   has_one_attached :image
   has_many :tier_list_rankings, dependent: :destroy
-  has_many :items, dependent: :destroy
+  has_many :items
+
+  # Extract field names from custom_fields JSON
+  def field_names
+    custom_fields.map { |field| field['name'] } if custom_fields.present?
+  end
+
+  def self.custom_field_names
+    TierList.distinct.pluck(:field_names).flatten.compact.uniq
+  end
+  
+
+  # Extract field types as a hash { "Field Name" => "Data Type" }
+  # Extract field types from `custom_fields`
+  def field_types
+    custom_fields.map { |field| [field['name'], field['data_type']] } if custom_fields.present?
+  end
   
 
 end
