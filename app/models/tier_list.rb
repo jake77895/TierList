@@ -23,26 +23,22 @@
 class TierList < ApplicationRecord
 
   belongs_to :creator, class_name: 'User', foreign_key: 'created_by_id', optional: true
-  serialize :custom_fields, Array
+  serialize :custom_fields, type: Array
   has_one_attached :image
   has_many :tier_list_rankings, dependent: :destroy
   has_many :items
 
-  # Extract field names from custom_fields JSON
-  def field_names
-    custom_fields.map { |field| field['name'] } if custom_fields.present?
-  end
+  def custom_fields_with_types
+    # Ensure `custom_fields` is present and is an array
+    return [] unless custom_fields.is_a?(Array)
 
-  def self.custom_field_names
-    TierList.distinct.pluck(:field_names).flatten.compact.uniq
+    # Extract name and data type from each entry
+    custom_fields.map do |field|
+      {
+        name: field['name'] || field[:name],
+        data_type: field['data_type'] || field[:data_type]
+      }
+    end.compact # Remove any nil or invalid entries
   end
-  
-
-  # Extract field types as a hash { "Field Name" => "Data Type" }
-  # Extract field types from `custom_fields`
-  def field_types
-    custom_fields.map { |field| [field['name'], field['data_type']] } if custom_fields.present?
-  end
-  
 
 end

@@ -8,41 +8,34 @@
       </div>
       <div class="modal-body">
         <!-- Filter Form -->
-<%= search_form_for @q, url: rank_item_tier_list_path(@tier_list, @current_item), method: :get do |f| %>
-  <!-- Add a filter for item name -->
-  <div class="mb-3">
-    <%= f.label :name_cont, "Name" %>
-    <%= f.text_field :name_cont, class: "form-control", placeholder: "Contains" %>
-  </div>
-
-  <!-- Dynamic filters based on custom fields -->
+         <%= search_form_for @q, url: rank_item_tier_list_path(@tier_list), method: :get do |f| %>
   <% @field_types.each do |field_name, data_type| %>
-  <div class="mb-3">
-    <%= f.label "custom_#{field_name.parameterize(separator: '_')}_cont", field_name %>
-    <% if data_type == "String" %>
-      <%= f.select "custom_#{field_name.parameterize(separator: '_')}_cont", 
-                   options_for_select(
-                     @tier_list.items.pluck(:custom_field_values)
-                                   .map { |cf| cf[field_name] }
-                                   .compact
-                                   .reject(&:blank?)
-                                   .map(&:strip)
-                                   .map(&:downcase)
-                                   .uniq
-                                   .map(&:capitalize)
-                   ), 
-                   { prompt: "Select a value" }, 
-                   { class: "form-select", "aria-label" => "Default select example" } %>
-    <% end %>
+    <div class="mb-3">
+      <%#= f.label "custom_#{field_name.parameterize(separator: '_')}", field_name %>
+<!---->
+      <%# case data_type %>
+      <%# when "String" %>
+        <%#= f.text_field "custom_#{field_name.parameterize(separator: '_')}_cont", class: "form-control", placeholder: "Contains" %>
+      <%# when "Integer" %>
+        <%#= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", class: "form-control", placeholder: "Min Value" %>
+        <%#= f.number_field "custom_#{field_name.parameterize(separator: '_')}_lteq", class: "form-control", placeholder: "Max Value" %>
+      <%# when "Boolean" %>
+        <%#= f.select "custom_#{field_name.parameterize(separator: '_')}_eq", [['True', true], ['False', false]], { include_blank: true }, class: "form-control" %>
+      <%# when "Date" %>
+        <%#= f.date_field "custom_#{field_name.parameterize(separator: '_')}_gteq", class: "form-control", placeholder: "Start Date" %>
+        <%#= f.date_field "custom_#{field_name.parameterize(separator: '_')}_lteq", class: "form-control", placeholder: "End Date" %>
+      <%# end %>
+    </div>
+  <% end %>
+
+  <div class="modal-footer">
+    <%= f.submit "Apply Filters", class: "btn btn-primary" %>
+    <%= link_to "Clear Filters", rank_item_tier_list_path(@tier_list), class: "btn btn-secondary" %>
   </div>
 <% end %>
 
-          <div class="modal-footer">
-            <%= f.submit "Apply Filters", class: "btn btn-primary" %>
-            <%= link_to "Clear Filters", rank_item_tier_list_path(@tier_list, @current_item), class: "btn btn-secondary" %>
-          </div>
-        <% end %>
+
+        </div>
       </div>
     </div>
   </div>
-</div>

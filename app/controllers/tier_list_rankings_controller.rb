@@ -44,12 +44,16 @@ end
 def rank
   @tier_list = TierList.find(params[:id])
   @q = @tier_list.items.ransack(params[:q])
+
   @filtered_items = @q.result
+  Rails.logger.debug "Ransack params: #{params[:q].inspect}"
   @items = @tier_list.items
 
   @current_item = find_current_item
-  @field_types = @tier_list.custom_fields.map { |field| [field['name'], field['data_type']] }
+  @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
   Rails.logger.debug "Field Types: #{@field_types.inspect}"
+  Rails.logger.debug "TierList: #{@tier_list.inspect}"
+  Rails.logger.debug "Custom Fields: #{@tier_list.custom_fields.inspect}"
   @ranked_items = generate_ranked_items || []
   @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
 
