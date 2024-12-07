@@ -30,6 +30,7 @@ class TierListsController < ApplicationController
     # Set up Ransack for filtering
     @q = @tier_list.items.ransack(params[:q])
     @filtered_items = @q.result # Filtered items based on query
+    @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
 
     # Fetch filtered or all ranked items for the creator
     @filtered_ranked_items = @filtered_items.present? ? generate_filtered_creator_ranked_items : generate_creator_ranked_items
@@ -247,18 +248,18 @@ class TierListsController < ApplicationController
     end
   end
 
-  # Generate filtered ranked items
-  def generate_filtered_ranked_items
-    @filtered_items.map do |item|
-      {
-        id: item.id,
-        rank: RANK_TO_TIER_MAP[item.tier_list_rankings.first&.rank.to_i] || "Unranked",
-        name: item.name || "Unknown Item",
-        image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
-        custom_fields: item.custom_field_values || {},
-      }
-    end.compact
-  end
+  # # Generate filtered ranked items
+  # def generate_filtered_ranked_items
+  #   @filtered_items.map do |item|
+  #     {
+  #       id: item.id,
+  #       rank: RANK_TO_TIER_MAP[item.tier_list_rankings.first&.rank.to_i] || "Unranked",
+  #       name: item.name || "Unknown Item",
+  #       image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+  #       custom_fields: item.custom_field_values || {},
+  #     }
+  #   end.compact
+  # end
 
   def generate_filtered_creator_ranked_items
     @filtered_items.map do |item|

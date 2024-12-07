@@ -1,0 +1,64 @@
+<!-- Modal Structure -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Filter Form -->
+        <%= search_form_for @q, url: rank_item_tier_list_path(@tier_list), method: :get do |f| %>
+
+          <!-- Add a filter for item name -->
+          <div class="mb-3">
+            <%= f.label :name_cont, "Name" %>
+            <%= f.text_field :name_cont, class: "form-control", placeholder: "Contains" %>
+          </div>
+
+          <% @field_types.each do |field_name, data_type| %>
+
+            <div class="mb-3">
+
+              <%= f.label "custom_#{field_name.parameterize(separator: '_')}", field_name %>
+
+              <% case data_type %>
+              <% when "String" %>
+                <%= f.text_field "custom_#{field_name.parameterize(separator: '_')}_cont", class: "form-control", placeholder: "Contains" %>
+              <% when "Integer" %>
+                <div class="d-flex gap-2"> <!-- Flex container with spacing -->
+                  <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
+                       class: "form-control", 
+                       placeholder: "Min Value" %>
+                  <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
+                       class: "form-control", 
+                       placeholder: "Max Value" %>
+                </div>
+              <% when "Boolean" %>
+                <%= f.select "custom_#{field_name.parameterize(separator: '_')}_eq", 
+             [['True or False', '', { disabled: true, selected: true }], ['True', '1'], ['False', '0']], 
+             {}, 
+             class: "form-control" %>
+              <% when "Date" %>
+                <div class="d-flex gap-2"> <!-- Flex container with spacing -->
+                  <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
+                     class: "form-control", 
+                     placeholder: "Start Date" %>
+                  <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
+                     class: "form-control", 
+                     placeholder: "End Date" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="modal-footer">
+            <%= f.submit "Apply Filters", class: "btn btn-primary" %>
+            <%= link_to "Clear Filters", rank_item_tier_list_path(@tier_list), class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
