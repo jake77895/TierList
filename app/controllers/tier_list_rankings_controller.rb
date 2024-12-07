@@ -55,7 +55,7 @@ def rank
   Rails.logger.debug "TierList: #{@tier_list.inspect}"
   Rails.logger.debug "Custom Fields: #{@tier_list.custom_fields.inspect}"
   @ranked_items = generate_ranked_items || []
-  @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
+  # @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
 
 
 end
@@ -76,33 +76,33 @@ end
     @filtered_items.find_by(id: params[:item_id]) || @tier_list.items.find_by(id: params[:item_id])
   end
   
-# Generate all ranked items
-def generate_ranked_items
-  @tier_list.tier_list_rankings.includes(:item).map do |ranking|
-    next if ranking.item.nil?
-
-    {
-      id: ranking.item.id,
-      rank: RANK_TO_TIER_MAP[ranking.rank.to_i] || "Unranked",
-      name: ranking.item.name || "Unknown Item",
-      image_url: ranking.item.image&.attached? ? url_for(ranking.item.image) : view_context.asset_path("egg.png"),
-      custom_fields: ranking.item.custom_field_values || {}
-    }
-  end.compact
-end
+  def generate_ranked_items
+    @tier_list.items.includes(:tier_list_rankings).map do |item|
+      # Fetch the ranking for the current user for this item
+      user_ranking = item.tier_list_rankings.find_by(ranked_by: current_user)
+  
+      {
+        id: item.id,
+        rank: user_ranking ? RANK_TO_TIER_MAP[user_ranking.rank.to_i] : "Unranked",
+        name: item.name || "Unknown Item",
+        image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+        custom_fields: item.custom_field_values || {}
+      }
+    end
+  end
 
 # Generate filtered ranked items
-def generate_filtered_ranked_items
-  @filtered_items.map do |item|
-    {
-      id: item.id,
-      rank: RANK_TO_TIER_MAP[item.tier_list_rankings.first&.rank.to_i] || "Unranked",
-      name: item.name || "Unknown Item",
-      image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
-      custom_fields: item.custom_field_values || {}
-    }
-  end.compact
-end
+# def generate_filtered_ranked_items
+#   @filtered_items.map do |item|
+#     {
+#       id: item.id,
+#       rank: RANK_TO_TIER_MAP[item.tier_list_rankings.first&.rank.to_i] || "Unranked",
+#       name: item.name || "Unknown Item",
+#       image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+#       custom_fields: item.custom_field_values || {}
+#     }
+#   end.compact
+# end
   
   
 

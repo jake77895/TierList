@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       get 'rank/:item_id', to: 'tier_list_rankings#rank', as: 'rank_item'
       
       # Custom routes for the different views
-      get :your_list, to: 'tier_lists#your_list'
+      get 'your_list', to: 'tier_list_rankings#rank', as: 'your_list'
       get :creator_list, to: 'tier_lists#creator_list'
       get :group_list, to: 'tier_lists#group_list'
     end

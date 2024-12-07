@@ -13,25 +13,27 @@ class TierListsController < ApplicationController
   def your_list
     @tier_list = TierList.find(params[:id])
     # Add any specific logic for "Your List" view
+    render "tier_list_rankings/rank"
   end
 
   def creator_list
     @tier_list = TierList.find(params[:id])
-  
+
     # Fetch ranked items specific to the creator
     @creator_ranked_items = @tier_list.items.joins(:tier_list_rankings)
-                                             .where(tier_list_rankings: { ranked_by: @tier_list.created_by_id })
-                                             .select('items.*, tier_list_rankings.rank as rank')
-  
-    # Add the rank attribute to each item for easier filtering in the view
-    @creator_ranked_items = @creator_ranked_items.map do |item|
-      item.attributes.merge('rank' => item.rank)
-    end
-  
+                                            .where(tier_list_rankings: { ranked_by: @tier_list.created_by_id })
+                                            .select('items.*, tier_list_rankings.rank as rank')
+
+    # Define the current item (e.g., the first ranked item for the creator)
+    @current_item = @creator_ranked_items.first
+
+    # Fetch ranked items specific to the creator
+    @ranked_items = generate_creator_ranked_items || []
+
     # Pass the rank-to-tier map to the view
     @rank_to_tier_map = RANK_TO_TIER_MAP
-  
-    render "tier_list_creator/show"
+
+    render "tier_list_creator/creator_view"
   end
   
 
@@ -219,6 +221,36 @@ end
       end
     
       permitted_params
+    end
+
+    # Generate all ranked items
+    def generate_ranked_items
+      @tier_list.tier_list_rankings.includes(:item).map do |ranking|
+        next if ranking.item.nil?
+  
+        {
+          id: ranking.item.id,
+          rank: RANK_TO_TIER_MAP[ranking.rank.to_i] || "Unranked",
+          name: ranking.item.name || "Unknown Item",
+          image_url: ranking.item.image&.attached? ? url_for(ranking.item.image) : view_context.asset_path("egg.png"),
+          custom_fields: ranking.item.custom_field_values || {}
+        }
+      end.compact
+    end
+
+    def generate_creator_ranked_items
+      @tier_list.items.includes(:tier_list_rankings).map do |item|
+        # Fetch the ranking for the creator for this item
+        creator_ranking = item.tier_list_rankings.find_by(ranked_by: @tier_list.created_by_id)
+    
+        {
+          id: item.id,
+          rank: creator_ranking ? RANK_TO_TIER_MAP[creator_ranking.rank.to_i] : "Unranked",
+          name: item.name || "Unknown Item",
+          image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+          custom_fields: item.custom_field_values || {}
+        }
+      end
     end
     
 end
