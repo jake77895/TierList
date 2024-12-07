@@ -1,6 +1,15 @@
 class TierListsController < ApplicationController
   before_action :set_tier_list, only: %i[ show edit update destroy ]
 
+  RANK_TO_TIER_MAP = {
+    1 => "S",
+    2 => "A",
+    3 => "B",
+    4 => "C",
+    5 => "D",
+    6 => "F"
+  }.freeze
+
   def your_list
     @tier_list = TierList.find(params[:id])
     # Add any specific logic for "Your List" view
@@ -8,9 +17,23 @@ class TierListsController < ApplicationController
 
   def creator_list
     @tier_list = TierList.find(params[:id])
-    # Add any specific logic for "Creator List" view
+  
+    # Fetch ranked items specific to the creator
+    @creator_ranked_items = @tier_list.items.joins(:tier_list_rankings)
+                                             .where(tier_list_rankings: { ranked_by: @tier_list.created_by_id })
+                                             .select('items.*, tier_list_rankings.rank as rank')
+  
+    # Add the rank attribute to each item for easier filtering in the view
+    @creator_ranked_items = @creator_ranked_items.map do |item|
+      item.attributes.merge('rank' => item.rank)
+    end
+  
+    # Pass the rank-to-tier map to the view
+    @rank_to_tier_map = RANK_TO_TIER_MAP
+  
     render "tier_list_creator/show"
   end
+  
 
   def group_list
     @tier_list = TierList.find(params[:id])

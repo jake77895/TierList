@@ -57,6 +57,7 @@ def rank
   @ranked_items = generate_ranked_items || []
   @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
 
+
 end
 
 
