@@ -22,6 +22,7 @@ class Item < ApplicationRecord
   belongs_to :tier_list
   has_one_attached :image
   has_many :tier_list_rankings, dependent: :destroy
+  has_many :comments, dependent: :destroy # Optional, depending on how you want to handle item deletion
 
   validates :name, presence: true
 

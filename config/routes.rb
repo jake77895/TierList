@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :comments, only: [:create, :edit, :update, :destroy]
+    
     resources :tier_list_rankings, only: [:create]
 
     member do

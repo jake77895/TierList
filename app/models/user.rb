@@ -25,5 +25,6 @@ class User < ApplicationRecord
 
   has_many :tier_list_rankings, foreign_key: 'ranked_by_id', dependent: :nullify
   has_many :tier_lists, foreign_key: 'created_by_id', dependent: :nullify
+  has_many :comments, dependent: :nullify # Comments persist even if user is deleted
 
 end

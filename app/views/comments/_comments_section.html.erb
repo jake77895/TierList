@@ -1,0 +1,28 @@
+<div class="comments-section">
+  <h3>Comments</h3>
+  
+  <!-- List of Comments -->
+  <div id="comments">
+    <% tier_list.comments.includes(:user).each do |comment| %>
+      <%= render partial: "comments/comment", locals: { comment: comment } %>
+    <% end %>
+  </div>
+
+
+
+  <!-- Comment Form -->
+<%= form_with model: [tier_list, Comment.new], local: true, html: { class: "mb-3" } do |form| %>
+  <div class="mb-3">
+    <%= form.label :body, "Message", class: "form-label" %>
+    <%= form.text_area :body, 
+                       rows: 3, 
+                       class: "form-control", 
+                       placeholder: current_user ? "Write your comment here..." : "Sign in to post a comment", 
+                       disabled: !current_user %>
+  </div>
+  <div class="d-flex justify-content-end gap-2">
+    <%= form.submit "Post Comment", class: "btn btn-primary", disabled: !current_user %>
+    <%= link_to "Cancel", cancel_path, class: "btn btn-outline-secondary", disabled: !current_user %>
+  </div>
+<% end %>
+</div>

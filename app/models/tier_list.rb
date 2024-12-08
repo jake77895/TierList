@@ -27,6 +27,7 @@ class TierList < ApplicationRecord
   has_one_attached :image
   has_many :tier_list_rankings, dependent: :destroy
   has_many :items
+  has_many :comments, dependent: :destroy # Comments linked to a TierList are removed if it’s deleted
 
   def custom_fields_with_types
     # Ensure `custom_fields` is present and is an array
