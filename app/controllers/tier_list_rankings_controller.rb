@@ -57,7 +57,9 @@ def rank
   @ranked_items = generate_ranked_items || []
   @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
 
-
+# Prepare unique values for all string custom fields
+@string_field_options = prepare_string_field_options(@tier_list)
+Rails.logger.debug "String Field Options: #{@string_field_options.inspect}"
 end
 
 
@@ -108,7 +110,20 @@ def generate_filtered_ranked_items
 end
   
   
+# Collect unique options for all string custom fields in the tier list
+def prepare_string_field_options(tier_list)
+  options = {}
+  tier_list.items.each do |item|
+    item.custom_field_values.each do |key, value|
+      next unless value.is_a?(String)
 
+      options[key] ||= []
+      # Store original values for filtering, clean them only for display
+      options[key] << value.strip unless value.strip.empty?
+    end
+  end
+  options.transform_values(&:uniq)
+end
  
 
 

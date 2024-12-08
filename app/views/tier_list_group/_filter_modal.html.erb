@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
         <!-- Filter Form -->
-        <%= search_form_for @q, url: rank_item_tier_list_path(@tier_list), method: :get do |f| %>
+        <%= search_form_for @q, url: group_list_tier_list_path(@tier_list), method: :get do |f| %>
 
           <!-- Add a filter for item name -->
           <div class="mb-3">
@@ -24,17 +24,7 @@
 
               <% case data_type %>
               <% when "String" %>
-                <% normalized_field_name = "custom_#{field_name.parameterize(separator: '_')}" %>
-                <% Rails.logger.debug "Field Name: #{field_name}, Normalized Field Name: #{normalized_field_name}" %>
-                <% Rails.logger.debug "Options for #{field_name}: #{@string_field_options[field_name]}" %>
-
-                <%= f.select "#{normalized_field_name}_eq", 
-               options_for_select([['Select', '']] + 
-               @string_field_options[field_name].map { |value| [value.titleize, value] }), 
-               {}, 
-               class: "form-select", 
-               aria: { label: "Filter by #{field_name}" } %>
-
+                <%= f.text_field "custom_#{field_name.parameterize(separator: '_')}_cont", class: "form-control", placeholder: "Contains" %>
               <% when "Integer" %>
                 <div class="d-flex gap-2"> <!-- Flex container with spacing -->
                   <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
@@ -64,7 +54,7 @@
 
           <div class="modal-footer">
             <%= f.submit "Apply Filters", class: "btn btn-primary" %>
-            <%= link_to "Clear Filters", rank_item_tier_list_path(@tier_list), class: "btn btn-secondary" %>
+            <%= link_to "Clear Filters", group_list_tier_list_path(@tier_list), class: "btn btn-secondary" %>
           </div>
         <% end %>
 
