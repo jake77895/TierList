@@ -54,7 +54,7 @@
             <% 10.times do |i| %>
               <% item = creator_ranked_items_for_tier[i] %>
               <div class="d-flex flex-column justify-content-center align-items-center text-center flex-shrink-0"
-           style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
+           style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: #f8f9fa;">
                 <% if item %>
                   <!-- Updated Item Card with Modal Trigger -->
                   <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
@@ -67,7 +67,7 @@
                     </div>
                   </div>
                 <% else %>
-                  <p class="text-muted m-0 text-center" style="font-size: 0.75rem;">Empty</p>
+                  <p class="text-muted m-0 text-center" style="font-size: 0.75rem;"></p>
                 <% end %>
               </div>
             <% end %>

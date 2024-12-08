@@ -24,7 +24,16 @@
 
               <% case data_type %>
               <% when "String" %>
-                <%= f.text_field "custom_#{field_name.parameterize(separator: '_')}_cont", class: "form-control", placeholder: "Contains" %>
+                <% normalized_field_name = "custom_#{field_name.parameterize(separator: '_')}" %>
+                <% Rails.logger.debug "Field Name: #{field_name}, Normalized Field Name: #{normalized_field_name}" %>
+                <% Rails.logger.debug "Options for #{field_name}: #{@string_field_options[field_name]}" %>
+
+                <%= f.select "#{normalized_field_name}_eq", 
+               options_for_select([['Select', '']] + 
+               @string_field_options[field_name].map { |value| [value.titleize, value] }), 
+               {}, 
+               class: "form-select", 
+               aria: { label: "Filter by #{field_name}" } %>
               <% when "Integer" %>
                 <div class="d-flex gap-2"> <!-- Flex container with spacing -->
                   <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 

@@ -51,6 +51,9 @@ class TierListsController < ApplicationController
     # Pass the rank-to-tier map to the view
     @rank_to_tier_map = RANK_TO_TIER_MAP
 
+      # Prepare unique values for all string custom fields
+  @string_field_options = prepare_string_field_options(@tier_list)
+
     render "tier_list_creator/creator_view"
   end
 
@@ -106,6 +109,9 @@ class TierListsController < ApplicationController
     
       # Pass the rank-to-tier map to the view
       @rank_to_tier_map = RANK_TO_TIER_MAP
+
+        # Prepare unique values for all string custom fields
+  @string_field_options = prepare_string_field_options(@tier_list)
     
       render "tier_list_group/group_view"
     end
@@ -338,15 +344,17 @@ class TierListsController < ApplicationController
 
 end
 
-  # # Generate filtered ranked items
-  # def generate_filtered_ranked_items
-  #   @filtered_items.map do |item|
-  #     {
-  #       id: item.id,
-  #       rank: RANK_TO_TIER_MAP[item.tier_list_rankings.first&.rank.to_i] || "Unranked",
-  #       name: item.name || "Unknown Item",
-  #       image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
-  #       custom_fields: item.custom_field_values || {},
-  #     }
-  #   end.compact
-  # end
+# Collect unique options for all string custom fields in the tier list
+def prepare_string_field_options(tier_list)
+  options = {}
+  tier_list.items.each do |item|
+    item.custom_field_values.each do |key, value|
+      next unless value.is_a?(String)
+
+      options[key] ||= []
+      # Store original values for filtering, clean them only for display
+      options[key] << value.strip unless value.strip.empty?
+    end
+  end
+  options.transform_values(&:uniq)
+end

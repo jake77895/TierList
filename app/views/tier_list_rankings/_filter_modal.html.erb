@@ -29,11 +29,11 @@
                 <% Rails.logger.debug "Options for #{field_name}: #{@string_field_options[field_name]}" %>
 
                 <%= f.select "#{normalized_field_name}_eq", 
-               options_for_select([['Select', '']] + 
-               @string_field_options[field_name].map { |value| [value.titleize, value] }), 
-               {}, 
-               class: "form-select", 
-               aria: { label: "Filter by #{field_name}" } %>
+                            options_for_select([['Select', '']] + 
+                            @string_field_options[field_name].map { |value| [value.titleize, value] }), 
+                            {}, 
+                            class: "form-select", 
+                            aria: { label: "Filter by #{field_name}" } %>
 
               <% when "Integer" %>
                 <div class="d-flex gap-2"> <!-- Flex container with spacing -->

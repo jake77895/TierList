@@ -57,10 +57,10 @@ def rank
   @ranked_items = generate_ranked_items || []
   @filtered_ranked_items = @filtered_items.present? ? generate_filtered_ranked_items : []
 
-# Prepare unique values for all string custom fields
-@string_field_options = prepare_string_field_options(@tier_list)
-Rails.logger.debug "String Field Options: #{@string_field_options.inspect}"
-end
+  # Prepare unique values for all string custom fields
+  @string_field_options = prepare_string_field_options(@tier_list)
+
+  end
 
 
 
