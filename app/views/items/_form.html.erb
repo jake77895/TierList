@@ -43,7 +43,7 @@
               <% when "Boolean" %>
                 <div class="form-check">
                   <%= check_box_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", "1", false, class: "form-check-input" %>
-                  <%= label_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", "Yes", class: "form-check-label" %>
+                  <%= label_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", "True", class: "form-check-label" %>
                 </div>
               <% when "Date" %>
                 <%= date_field_tag "items[#{index}][custom_field_values][#{field[:name] || field['name']}]", nil, class: "form-control" %>

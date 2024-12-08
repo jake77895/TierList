@@ -54,22 +54,64 @@ class TierListsController < ApplicationController
     render "tier_list_creator/creator_view"
   end
 
-      # # Set up Ransack for filtering
-    # @q = @tier_list.items.ransack(params[:q])
-    # @filtered_items = @q.result # Filtered items based on query
-    # @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
 
-    # # Fetch filtered or all ranked items for the creator
-    # @filtered_ranked_items = @filtered_items.present? ? generate_filtered_creator_ranked_items : generate_creator_ranked_items
+    def group_list
+      @tier_list = TierList.find(params[:id])
 
-    # # Fetch ranked items specific to the creator
-    # @ranked_items = generate_creator_ranked_items || []
-
-  def group_list
-    @tier_list = TierList.find(params[:id])
-    # Add any specific logic for "Group List" view
-    render "tier_list_group/show"
-  end
+          # Count unique users who ranked the tier list
+    @user_count = @tier_list.tier_list_rankings.distinct.count(:ranked_by_id)
+    
+      # Count unique users who ranked the tier list
+      @user_count = @tier_list.tier_list_rankings.distinct.count(:ranked_by_id)
+    
+      # Fetch items with their average ranking
+      @group_ranked_items = @tier_list.items.includes(:tier_list_rankings).map do |item|
+        rankings = item.tier_list_rankings.pluck(:rank)
+        next if rankings.empty? # Skip items with no rankings
+    
+        average_rank = rankings.sum.to_f / rankings.size
+        {
+          id: item.id,
+          rank: RANK_TO_TIER_MAP[average_rank.round] || "Unranked",
+          average_rank: average_rank.round(2),
+          name: item.name || "Unknown Item",
+          image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+          custom_fields: item.custom_field_values || {}
+        }
+      end.compact
+    
+      # Define the current item from the ActiveRecord `@tier_list.items`
+      @current_item = @filtered_items.present? ? @filtered_items.first : @tier_list.items.first
+    
+      # Set up Ransack for filtering
+      @q = @tier_list.items.ransack(params[:q])
+      Rails.logger.debug "Filter Params: #{params[:q].inspect}"
+      @filtered_items = @q.result # Filtered items based on query
+      Rails.logger.debug "Filtered Items: #{@filtered_items.pluck(:id)}"
+      @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
+      Rails.logger.debug "Custom Fields: #{@tier_list.custom_fields.inspect}"
+    
+      # Determine which ranked items to fetch
+      if @filtered_items.present?
+        # Use filtered items if filters are applied
+        @filtered_ranked_items = generate_filtered_group_ranked_items
+        Rails.logger.debug "Filtered Ranked Items: #{@filtered_ranked_items}"
+        @ranked_items = @filtered_ranked_items # Display only filtered ranked items
+      else
+        # Use all group-ranked items if no filters are applied
+        @filtered_ranked_items = []
+        @ranked_items = @group_ranked_items
+        Rails.logger.debug "Unfiltered Ranked Items: #{@ranked_items}"
+      end
+    
+      # Pass the rank-to-tier map to the view
+      @rank_to_tier_map = RANK_TO_TIER_MAP
+    
+      render "tier_list_group/group_view"
+    end
+    
+    
+    
 
   def rank
     @tier_list = TierList.find(params[:id])
@@ -284,6 +326,16 @@ class TierListsController < ApplicationController
       }
     end.compact
   end
+
+  def generate_filtered_group_ranked_items
+    @filtered_items.map do |item|
+      Rails.logger.debug "Generating Filtered Group Ranked Items for: #{@filtered_items.pluck(:id)}"
+      group_data = @group_ranked_items.find { |ranked_item| ranked_item[:id] == item.id }
+      group_data if group_data
+    end.compact
+  end
+
+
 end
 
   # # Generate filtered ranked items

@@ -4,7 +4,7 @@
 <div class="creator-rankings-section border p-3" style="background-color: #f8f9fa;">
   <div class="d-flex justify-content-between align-items-center">
     <!-- Title -->
-    <h3 class="mb-0"><%= @tier_list.name %></h3>
+    <h3 class="mb-0"><%= truncate(@tier_list.name, length: 20, omission: "...") %></h3>
 
     <!-- Navigation Buttons -->
     <div class="d-flex align-items-center gap-2">
@@ -130,3 +130,19 @@
     </div>
   </div>
 <% end %>
+
+<!-- Full-Screen Modal -->
+<div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullscreenModalLabel">All Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Render the partial for listing all items -->
+        <%= render partial: "tier_list_creator/item_list", locals: { tier_list_items: @tier_list.items } %>
+      </div>
+    </div>
+  </div>
+</div>
