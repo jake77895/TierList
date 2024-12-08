@@ -45,22 +45,25 @@
         <!-- Tier Items -->
         <div class="col">
           <div class="d-flex align-items-center gap-1 flex-wrap bg-white h-100" style="padding: 5px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);">
-            <!-- Filter items based on the mapped rank -->
-            <% creator_ranked_items_for_tier = @creator_ranked_items.select { |item| @rank_to_tier_map[item["rank"]] == tier } %>
+            <% creator_ranked_items_for_tier = if @filtered_ranked_items
+                                          @filtered_ranked_items.select { |item| item[:rank] == tier }
+                                       else
+                                          @ranked_items.select { |item| item[:rank] == tier }
+                                       end %>
 
             <% 10.times do |i| %>
               <% item = creator_ranked_items_for_tier[i] %>
               <div class="d-flex flex-column justify-content-center align-items-center text-center flex-shrink-0"
-       style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
+           style="width: 60px; height: 60px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); background-color: <%= item ? '#fff' : '#e0e0e0' %>;">
                 <% if item %>
                   <!-- Updated Item Card with Modal Trigger -->
-                  <div id="item-card-<%= item["id"] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item["id"] %>">
-                    <%= image_tag(item["image_url"].present? ? item["image_url"] : asset_path('egg.png'),
-                      id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
-                      style: "object-fit: cover; border-radius: 0px; cursor: pointer;") %>
+                  <div id="item-card-<%= item[:id] || 'no-id' %>" class="position-relative w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-<%= item[:id] %>">
+                    <%= image_tag(item[:image_url].present? ? item[:image_url] : asset_path('egg.png'),
+                          id: "item-image", class: "w-100 h-100", alt: "Tier List Item",
+                          style: "object-fit: cover; border-radius: 0px; cursor: pointer;") %>
                     <div class="position-absolute d-flex flex-column justify-content-end"
-             style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
-                      <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item["name"] %></h5>
+                 style="background: rgba(0, 0, 0, 0.6); color: white; height: auto; width: 100%; bottom: 0; padding: 3px;">
+                      <h5 id="item-title" class="mb-0 text-truncate" style="font-size: 0.6rem;"><%= item[:name] %></h5>
                     </div>
                   </div>
                 <% else %>
@@ -69,20 +72,17 @@
               </div>
             <% end %>
 
-                    <!-- Vertical Divider -->
-    <div class="vr mx-0"></div>
+            <!-- Vertical Divider -->
+            <div class="vr mx-0"></div>
 
-    <!-- SVG Icon to Open Tier-Specific Modal -->
-    <div class="d-flex align-items-center" 
-      style="cursor: pointer; margin-left: auto; margin-right: 3px;" 
-      data-bs-toggle="modal" data-bs-target="#modal-<%= tier %>">
-      <%= image_tag "tier_list/expand-icon.svg", alt: "Expand #{tier} items", width: 17, height: 17 %>
-    </div>
-
+            <!-- SVG Icon to Open Tier-Specific Modal -->
+            <div class="d-flex align-items-center" 
+         style="cursor: pointer; margin-left: auto; margin-right: 3px;" 
+         data-bs-toggle="modal" data-bs-target="#modal-<%= tier %>">
+              <%= image_tag "tier_list/expand-icon.svg", alt: "Expand #{tier} items", width: 17, height: 17 %>
+            </div>
           </div>
         </div>
-
-
 
       </div>
     <% end %>

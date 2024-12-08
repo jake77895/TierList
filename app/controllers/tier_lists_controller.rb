@@ -27,22 +27,43 @@ class TierListsController < ApplicationController
     # Define the current item (e.g., the first ranked item for the creator)
     @current_item = @creator_ranked_items.first
 
-    # Set up Ransack for filtering
-    @q = @tier_list.items.ransack(params[:q])
-    @filtered_items = @q.result # Filtered items based on query
-    @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
+      # Set up Ransack for filtering
+  @q = @tier_list.items.ransack(params[:q])
+  Rails.logger.debug "Filter Params: #{params[:q].inspect}"
+  @filtered_items = @q.result # Filtered items based on query
+  Rails.logger.debug "Filtered Items: #{@filtered_items.pluck(:id)}"
+  @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
+  Rails.logger.debug "Custom Fields: #{@tier_list.custom_fields.inspect}"
 
-    # Fetch filtered or all ranked items for the creator
-    @filtered_ranked_items = @filtered_items.present? ? generate_filtered_creator_ranked_items : generate_creator_ranked_items
-
-    # Fetch ranked items specific to the creator
-    @ranked_items = generate_creator_ranked_items || []
+  # Determine which ranked items to fetch
+  if @filtered_items.present?
+    # Use filtered items if filters are applied
+    @filtered_ranked_items = generate_filtered_creator_ranked_items
+    Rails.logger.debug "Filtered Ranked Items: #{@filtered_ranked_items}"
+    @ranked_items = @filtered_ranked_items # Display only filtered ranked items
+  else
+    # Use all creator-ranked items if no filters are applied
+    @filtered_ranked_items = []
+    @ranked_items = generate_creator_ranked_items
+    Rails.logger.debug "Unfiltered Ranked Items: #{@ranked_items}"
+  end
 
     # Pass the rank-to-tier map to the view
     @rank_to_tier_map = RANK_TO_TIER_MAP
 
     render "tier_list_creator/creator_view"
   end
+
+      # # Set up Ransack for filtering
+    # @q = @tier_list.items.ransack(params[:q])
+    # @filtered_items = @q.result # Filtered items based on query
+    # @field_types = @tier_list.custom_fields.map { |field| [field[:name], field[:data_type]] }
+
+    # # Fetch filtered or all ranked items for the creator
+    # @filtered_ranked_items = @filtered_items.present? ? generate_filtered_creator_ranked_items : generate_creator_ranked_items
+
+    # # Fetch ranked items specific to the creator
+    # @ranked_items = generate_creator_ranked_items || []
 
   def group_list
     @tier_list = TierList.find(params[:id])
@@ -219,19 +240,19 @@ class TierListsController < ApplicationController
   end
 
   # Generate all ranked items
-  def generate_ranked_items
-    @tier_list.tier_list_rankings.includes(:item).map do |ranking|
-      next if ranking.item.nil?
+  # def generate_ranked_items
+  #   @tier_list.tier_list_rankings.includes(:item).map do |ranking|
+  #     next if ranking.item.nil?
 
-      {
-        id: ranking.item.id,
-        rank: RANK_TO_TIER_MAP[ranking.rank.to_i] || "Unranked",
-        name: ranking.item.name || "Unknown Item",
-        image_url: ranking.item.image&.attached? ? url_for(ranking.item.image) : view_context.asset_path("egg.png"),
-        custom_fields: ranking.item.custom_field_values || {},
-      }
-    end.compact
-  end
+  #     {
+  #       id: ranking.item.id,
+  #       rank: RANK_TO_TIER_MAP[ranking.rank.to_i] || "Unranked",
+  #       name: ranking.item.name || "Unknown Item",
+  #       image_url: ranking.item.image&.attached? ? url_for(ranking.item.image) : view_context.asset_path("egg.png"),
+  #       custom_fields: ranking.item.custom_field_values || {},
+  #     }
+  #   end.compact
+  # end
 
   def generate_creator_ranked_items
     @tier_list.items.includes(:tier_list_rankings).map do |item|
@@ -248,6 +269,23 @@ class TierListsController < ApplicationController
     end
   end
 
+
+
+  def generate_filtered_creator_ranked_items
+    @filtered_items.map do |item|
+      Rails.logger.debug "Generating Filtered Creator Ranked Items for: #{@filtered_items.pluck(:id)}"
+      creator_ranking = item.tier_list_rankings.find_by(ranked_by: @tier_list.created_by_id)
+      {
+        id: item.id,
+        rank: creator_ranking ? RANK_TO_TIER_MAP[creator_ranking.rank.to_i] : "Unranked",
+        name: item.name || "Unknown Item",
+        image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+        custom_fields: item.custom_field_values || {},
+      }
+    end.compact
+  end
+end
+
   # # Generate filtered ranked items
   # def generate_filtered_ranked_items
   #   @filtered_items.map do |item|
@@ -260,17 +298,3 @@ class TierListsController < ApplicationController
   #     }
   #   end.compact
   # end
-
-  def generate_filtered_creator_ranked_items
-    @filtered_items.map do |item|
-      creator_ranking = item.tier_list_rankings.find_by(ranked_by: @tier_list.created_by_id)
-      {
-        id: item.id,
-        rank: creator_ranking ? RANK_TO_TIER_MAP[creator_ranking.rank.to_i] : "Unranked",
-        name: item.name || "Unknown Item",
-        image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
-        custom_fields: item.custom_field_values || {},
-      }
-    end.compact
-  end
-end

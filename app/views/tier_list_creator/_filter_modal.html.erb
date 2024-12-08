@@ -26,28 +26,28 @@
               <% when "String" %>
                 <%= f.text_field "custom_#{field_name.parameterize(separator: '_')}_cont", class: "form-control", placeholder: "Contains" %>
               <% when "Integer" %>
-  <div class="d-flex gap-2"> <!-- Flex container with spacing -->
-    <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
+                <div class="d-flex gap-2"> <!-- Flex container with spacing -->
+                  <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
                        class: "form-control", 
                        placeholder: "Min Value" %>
-    <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
+                  <%= f.number_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
                        class: "form-control", 
                        placeholder: "Max Value" %>
-  </div>
+                </div>
               <% when "Boolean" %>
-<%= f.select "custom_#{field_name.parameterize(separator: '_')}_eq", 
+                <%= f.select "custom_#{field_name.parameterize(separator: '_')}_eq", 
              [['True or False', '', { disabled: true, selected: true }], ['True', '1'], ['False', '0']], 
              {}, 
              class: "form-control" %>
-<% when "Date" %>
-  <div class="d-flex gap-2"> <!-- Flex container with spacing -->
-    <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
+              <% when "Date" %>
+                <div class="d-flex gap-2"> <!-- Flex container with spacing -->
+                  <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_gteq", 
                      class: "form-control", 
                      placeholder: "Start Date" %>
-    <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
+                  <%= f.date_field "custom_#{field_name.parameterize(separator: '_')}_lteq", 
                      class: "form-control", 
                      placeholder: "End Date" %>
-  </div>
+                </div>
               <% end %>
             </div>
           <% end %>
