@@ -61,7 +61,10 @@ class TierListsController < ApplicationController
     @tier_list = TierList.find(params[:id])
 
     # Load comments and associated users
-    @comments = @tier_list.comments.includes(:user) 
+    @comments = @tier_list.comments.includes(:user).order(updated_at: :desc)
+
+    # Load comments for the item
+    @item_comments = Comment.where(item_id: params[:item_id]).includes(:user) 
 
     # Count unique users who ranked the tier list
     @user_count = @tier_list.tier_list_rankings.distinct.count(:ranked_by_id)
@@ -82,6 +85,7 @@ class TierListsController < ApplicationController
         name: item.name || "Unknown Item",
         image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
         custom_fields: item.custom_field_values || {},
+        comments: item.comments # Include associated comments here
       }
     end.compact
 

@@ -20,3 +20,18 @@
   object-fit: cover;   /* Ensures the image maintains its aspect ratio and fills the space */
   object-position: center; /* Center the image within the container */
 }
+
+.comments-wrapper {
+  max-width: 600px; /* Optional: Constrain the overall width */
+}
+
+.comments-container {
+  max-height: 300px; /* Limit height to show 3 comments */
+  overflow-y: auto; /* Add a vertical scrollbar when needed */
+  padding-right: 10px; /* Prevent scrollbar from overlapping content */
+  border-bottom: 1px solid #ddd; /* Optional: Visual separation from the form */
+}
+
+.comment-form {
+  margin-top: 10px; /* Add spacing between the form and the comments */
+}

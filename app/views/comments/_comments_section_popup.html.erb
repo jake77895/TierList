@@ -1,7 +1,7 @@
 <div class="comments-wrapper border rounded p-3 bg-white">
   <!-- Comment List -->
   <div id="comments" class="comments-container">
-    <% @comments.each do |comment| %>
+    <% comments.each do |comment| %>
       <%= render partial: "comments/comment", locals: { comment: comment } %>
     <% end %>
   </div>
@@ -12,7 +12,6 @@
       <!-- Comment Body -->
       <div class="mb-3">
         <%#= form.label :body, "Message", class: "form-label" %>
-        <hr>
         <%= form.text_area :body, rows: 3, class: "form-control", placeholder: "Write your comment here", maxlength: 200 %>
         <small class="text-muted">Comment cuts off after 200 characters</small>
       </div>
@@ -20,21 +19,12 @@
       <!-- Buttons Section -->
       <div class="d-flex justify-content-start gap-2 mb-3">
         <%= form.submit "Post Comment", class: "btn btn-primary" %>
-        <%= link_to "Cancel", cancel_path, class: "btn btn-outline-secondary" %>
       </div>
 
       <hr>
 
-      <!-- Dropdown Section (Separate Row) -->
-      <div class="mb-3 d-flex align-items-center gap-2">
-        <%= form.label :item_id, "Link to Item", class: "form-label mb-0" %>
-        <%= form.collection_select :item_id, 
-                                  @filtered_items, 
-                                  :id, 
-                                  :name, 
-                                  { include_blank: "Optional" }, # Placeholder text
-                                  { class: "form-select w-auto" } %>
-      </div>
+      <!-- Dropdown Section (Hidden for Current Item) -->
+      <%= form.hidden_field :item_id, value: item[:id] %>
     <% end %>
   </div>
 </div>

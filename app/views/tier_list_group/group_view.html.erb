@@ -12,20 +12,19 @@
     <div class="col-lg-4 col-md-4">
       <div class="content-right border p-3" style="background-color: #f8f9fa;">
         <!-- Placeholder for Future Content -->
-        <h3 class="text-left">Details</h3>
+        <h3 class="text-left">Comments</h3>
         <hr class="mt-0">
-        <p>Select a box to view details or rank an item.</p>
 
-            <!-- Render Comments Section -->
-            <%= render 'comments/comments_section', tier_list: @tier_list, cancel_path: group_list_tier_list_path(@tier_list) %>
+        <!-- Render Comments Section -->
+        <%= render 'comments/comments_section', tier_list: @tier_list, cancel_path: group_list_tier_list_path(@tier_list) %>
       </div>
-       <div class="d-grid gap-2 mt-2 d-flex justify-content-left">
-          <button type="button" class="btn btn-outline-primary"
+      <div class="d-grid gap-2 mt-2 d-flex justify-content-left">
+        <button type="button" class="btn btn-outline-primary"
           data-bs-toggle="modal" data-bs-target="#fullscreenModal">
-            See All Items
-          </button>
-        </div>
+          See All Items
+        </button>
+      </div>
     </div>
-  
+
   </div>
 </div>
