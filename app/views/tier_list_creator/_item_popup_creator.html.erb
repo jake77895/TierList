@@ -24,6 +24,13 @@
     </ul>
   <% end %>
 
-
+  <!-- Comments Section -->
+  <div class="comments-section flex-grow-1" style="min-width: 450px;">
+    <%= render partial: "comments/comments_section_popup", locals: { 
+      item: item, 
+      tier_list: tier_list, 
+      comments: item.comments
+    } %>
+  </div>
   
 </div>

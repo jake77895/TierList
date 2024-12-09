@@ -93,25 +93,32 @@
   </p>
 </div>
 
+
 <!-- Modals for Each Item -->
 <% @ranked_items.each do |item| %>
   <div class="modal fade" id="modal-<%= item[:id] %>" tabindex="-1" aria-labelledby="modalLabel-<%= item[:id] %>" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h6 class="modal-title" id="modalLabel-<%= item[:id] %>">
-            <!-- Optional Modal Title -->
+            Item Details: <%= item[:name] %>
           </h6>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body d-flex align-items-center justify-content-center">
-          <%= render partial: "tier_list_creator/item_popup_creator", locals: { item: item } %>
+        <div class="modal-body d-flex flex-column flex-md-row gap-3">
+          <!-- Render Main Content and Comments Side by Side -->
+          <%= render partial: "tier_list_creator/item_popup_creator", locals: { 
+             item: item, 
+             tier_list: @tier_list 
+           } %>
         </div>
-
       </div>
     </div>
   </div>
 <% end %>
+
+
+
 
 <!--Modal for all the items in each tier-->
 <% ["S", "A", "B", "C", "D", "F"].each do |tier| %>

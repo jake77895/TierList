@@ -19,10 +19,23 @@ class TierListsController < ApplicationController
   def creator_list
     @tier_list = TierList.find(params[:id])
 
+    # Load comments and associated users
+    @comments = @tier_list.comments.includes(:user).order(updated_at: :desc)
+
+    # Load comments for the item
+    @item_comments = Comment.where(item_id: params[:item_id]).includes(:user) 
+
     # Fetch ranked items specific to the creator
-    @creator_ranked_items = @tier_list.items.joins(:tier_list_rankings)
-      .where(tier_list_rankings: { ranked_by: @tier_list.created_by_id })
-      .select("items.*, tier_list_rankings.rank as rank")
+    @creator_ranked_items = @tier_list.items.includes(:comments).map do |item|
+      {
+        id: item.id,
+        name: item.name || "Unknown Item",
+        image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
+        custom_fields: item.custom_field_values || {},
+        comments: item.comments, # Explicitly include comments
+        rank: item.tier_list_rankings.find_by(ranked_by: @tier_list.created_by_id)&.rank || "Unranked"
+      }
+    end
 
     # Define the current item (e.g., the first ranked item for the creator)
     @current_item = @creator_ranked_items.first
