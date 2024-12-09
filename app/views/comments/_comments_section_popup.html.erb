@@ -11,14 +11,24 @@
     <%= form_with model: [tier_list, Comment.new], local: true, html: { class: "mb-3" } do |form| %>
       <!-- Comment Body -->
       <div class="mb-3">
-        <%#= form.label :body, "Message", class: "form-label" %>
-        <%= form.text_area :body, rows: 3, class: "form-control", placeholder: "Write your comment here", maxlength: 200 %>
-        <small class="text-muted">Comment cuts off after 200 characters</small>
+        <%= form.text_area :body, 
+                           rows: 3, 
+                           class: "form-control", 
+                           placeholder: user_signed_in? ? "Write your comment here" : "Sign in to comment", 
+                           maxlength: 200, 
+                           disabled: !user_signed_in? %>
+        <small class="text-muted">
+          <% if user_signed_in? %>
+            Comment cuts off after 200 characters
+          <% else %>
+            Please sign in to comment
+          <% end %>
+        </small>
       </div>
 
       <!-- Buttons Section -->
       <div class="d-flex justify-content-start gap-2 mb-3">
-        <%= form.submit "Post Comment", class: "btn btn-primary" %>
+        <%= form.submit "Post Comment", class: "btn btn-primary", disabled: !user_signed_in? %>
       </div>
 
       <hr>

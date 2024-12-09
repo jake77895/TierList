@@ -1,36 +1,38 @@
-<div class="card" style="width: 18rem;">
-  <!-- Image -->
-  <% if item[:image_url].present? %>
-    <%= image_tag item[:image_url], class: "card-img-top", alt: item[:name] %>
-  <% else %>
-    <img src="<%= asset_path('egg.png')%>" class="card-img-top" alt="Placeholder Image">
-  <% end %>
+<div class="d-flex flex-column flex-md-row gap-3">
+  <!-- Left Section: Main Content -->
+  <div class="card" style="width: 18rem;">
+    <!-- Image -->
+    <% if item[:image_url].present? %>
+      <%= image_tag item[:image_url], class: "card-img-top", alt: item[:name] %>
+    <% else %>
+      <img src="<%= asset_path('egg.png') %>" class="card-img-top" alt="Placeholder Image">
+    <% end %>
 
-  <!-- Card Body -->
-  <div class="card-body">
-    <h5 class="card-title"><%= item[:name].presence || "No name provided" %></h5>
-    <p class="card-text"><%= item[:description].presence || "No description provided." %></p>
+    <!-- Card Body -->
+    <div class="card-body">
+      <h5 class="card-title"><%= item[:name] || "Unknown Item" %></h5>
+      <p class="card-text"><%= item[:description] || "No description provided." %></p>
+    </div>
+
+    <!-- Custom Fields -->
+    <% if item[:custom_fields].present? %>
+      <ul class="list-group list-group-flush">
+        <% item[:custom_fields].each do |field_name, field_value| %>
+          <li class="list-group-item">
+            <strong><%= field_name.presence || "Unnamed field" %></strong>: 
+            <%= field_value.presence || "No value provided" %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 
-  <!-- Custom Fields -->
-  <% if item[:custom_fields].present? %>
-    <ul class="list-group list-group-flush">
-      <% item[:custom_fields].each do |field_name, field_value| %>
-        <li class="list-group-item">
-          <strong><%= field_name.presence || "Unnamed field" %></strong>: 
-          <%= field_value.presence || "No value provided" %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <!-- Comments Section -->
+  <!-- Right Section: Comments -->
   <div class="comments-section flex-grow-1" style="min-width: 450px;">
     <%= render partial: "comments/comments_section_popup", locals: { 
       item: item, 
       tier_list: tier_list, 
-      comments: item.comments
+      comments: item[:comments]
     } %>
   </div>
-  
 </div>

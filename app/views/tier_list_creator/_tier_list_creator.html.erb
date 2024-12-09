@@ -10,7 +10,7 @@
     <div class="d-flex align-items-center gap-2">
       <!-- Navigation Buttons -->
       <div class="d-flex gap-1">
-        <%= link_to "Your List", rank_item_tier_list_path(@tier_list, item_id: @current_item.id), class: "btn btn-light" %>
+        <%= link_to "Your List", rank_item_tier_list_path(@tier_list, item_id: @current_item[:id]), class: "btn btn-light" %>
         <button type="button" class="btn btn-light" disabled>
           Creator List
         </button>

@@ -32,10 +32,13 @@ class TierListsController < ApplicationController
         name: item.name || "Unknown Item",
         image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
         custom_fields: item.custom_field_values || {},
-        comments: item.comments, # Explicitly include comments
+        comments: item.comments.to_a, # Convert to array to avoid proxy issues
         rank: item.tier_list_rankings.find_by(ranked_by: @tier_list.created_by_id)&.rank || "Unranked"
       }
     end
+
+    Rails.logger.debug "Creator Ranked Items with Comments: #{@creator_ranked_items.inspect}"
+
 
     # Define the current item (e.g., the first ranked item for the creator)
     @current_item = @creator_ranked_items.first
@@ -343,6 +346,7 @@ class TierListsController < ApplicationController
         name: item.name || "Unknown Item",
         image_url: item.image&.attached? ? url_for(item.image) : view_context.asset_path("egg.png"),
         custom_fields: item.custom_field_values || {},
+        comments: item.comments.to_a, # Include comments here
       }
     end.compact
   end
