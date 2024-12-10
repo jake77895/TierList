@@ -25,4 +25,7 @@ Rails.application.routes.draw do
 
   # Home view root
   root to: "home#index"
+
+  # Article path
+  get 'articles/:id', to: 'articles#show', as: 'article'
 end

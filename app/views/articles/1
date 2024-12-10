@@ -1,0 +1,330 @@
+<div class="container my-5">
+  <!-- Article Header -->
+  <div class="row mb-4">
+    <div class="col text-center">
+      <h1 class="display-4 fw-bold">How Much Money Will You Really Make in Investment Banking?</h1>
+      <p class="text-muted">December 10, 2024</p>
+    </div>
+  </div>
+
+  <!-- Article Content -->
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <p class="lead">
+        There are plenty of reasons you’ll rattle off in your investment banking interviews about why you want to enter the industry. Maybe you’re "fascinated by financial markets," "excited about the opportunity to work with CEOs," or "eager to support shareholder value." Some of these reasons might even be true.
+      </p>
+      <p class="lead">
+        But let’s be honest—for the vast majority of people entering the field, the main driver is the money. That, and the hope of pivoting into private equity. Yet the question remains: <strong>how much money will you actually make?</strong> And what does that mean for your life?
+      </p>
+      <p class="lead">
+        Will you be driving Lambos and flying private jets by 30? Probably not. But if you have some discipline and grind it out for a few years, you’ll likely achieve something much rarer: <strong>financial freedom.</strong> Here’s what that could realistically look like, depending on your career path.
+      </p>
+    </div>
+  </div>
+
+  <!-- Form to calculate net worth by age -->
+  <div class="container my-5 p-4 bg-light rounded">
+    <h2 class="text-center mb-4">Calculate Your Future Net Worth</h2>
+    <form>
+      <div class="row g-3">
+        <!-- Age Input -->
+        <div class="col-md-6">
+          <label for="age" class="form-label">Your Current Age</label>
+          <input type="number" class="form-control" id="age" placeholder="Enter your age">
+        </div>
+        
+        <!-- Current Net Worth -->
+        <div class="col-md-6">
+          <label for="netWorth" class="form-label">Current Net Worth ($)</label>
+          <input type="number" class="form-control" id="netWorth" placeholder="e.g., 50000">
+        </div>
+        
+        <!-- Expected Salary -->
+        <div class="col-md-6">
+          <label for="salary" class="form-label">Expected Annual Salary ($)</label>
+          <input type="number" class="form-control" id="salary" placeholder="e.g., 150000">
+        </div>
+        
+        <!-- Expected Savings Rate -->
+        <div class="col-md-6">
+          <label for="savingsRate" class="form-label">Expected Savings Rate (%)</label>
+          <input type="number" class="form-control" id="savingsRate" placeholder="e.g., 20">
+        </div>
+  
+        <!-- Investment Growth Rate -->
+        <div class="col-md-6">
+          <label for="growthRate" class="form-label">Expected Investment Growth Rate (%)</label>
+          <input type="number" class="form-control" id="growthRate" placeholder="e.g., 7">
+        </div>
+  
+        <!-- Retirement Age -->
+        <div class="col-md-6">
+          <label for="retirementAge" class="form-label">Target Retirement Age</label>
+          <input type="number" class="form-control" id="retirementAge" placeholder="e.g., 65">
+        </div>
+  
+        <!-- Submit Button -->
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary btn-lg mt-3">Calculate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+
+  <!-- Accordion: Investment Banking Career Paths -->
+  <div class="accordion mt-5" id="bankingPathsAccordion">
+    <h2 class="fw-bold">Investment Banking Career Paths</h2>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Example 1: Analyst → Private Equity → Business School
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#bankingPathsAccordion">
+        <div class="accordion-body">
+          <p>This is the classic path. After two grueling years as an investment banking analyst, you jump into private equity, spend a few years there, and then go back to business school (or just continue in PE).</p>
+          <ul>
+            <li><strong>Years 1–2:</strong> $180k/year; save $60k/year.</li>
+            <li><strong>Years 3–5:</strong> $300k/year in PE; save $120k/year.</li>
+            <li><strong>Years 6–7:</strong> B-school costs $210k, net worth: $0–$50k by age 27.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Example 2: Analyst → Stay in Banking Through VP
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#bankingPathsAccordion">
+        <div class="accordion-body">
+          <p>Another common path is sticking with investment banking and climbing the ladder to VP. This requires grinding for at least six years (Analyst → Associate → VP), and the money ramps up quickly.</p>
+          <ul>
+            <li><strong>Years 1–3:</strong> $180k/year; save $60k/year.</li>
+            <li><strong>Years 4–6:</strong> $350k/year as Associate; save $150k/year.</li>
+            <li><strong>Year 7:</strong> $700k/year as VP; save $300k/year.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Example 3: MBA Associate with Debt and a Family
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#bankingPathsAccordion">
+        <div class="accordion-body">
+          <p>If you enter banking as an MBA graduate with debt and a family, your financial trajectory changes significantly due to debt payments and family expenses.</p>
+          <ul>
+            <li><strong>Year 1:</strong> $350k/year; save $50k–$70k/year.</li>
+            <li><strong>Years 2–4:</strong> $400k/year; save $100k/year.</li>
+            <li><strong>Net Worth by Age 30:</strong> $200k–$300k.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFour">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Example 4: MBA Associate Without Debt
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#bankingPathsAccordion">
+        <div class="accordion-body">
+          <p>If you’re an MBA Associate without debt or family obligations, your financial growth is much faster, resembling the Analyst → VP path.</p>
+          <ul>
+            <li><strong>Years 1–3:</strong> $350k/year; save $150k/year.</li>
+            <li><strong>Years 4–6:</strong> $700k/year as VP; save $300k/year.</li>
+            <li><strong>Net Worth by Age 30:</strong> $1M–$1.3M.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Comparing to Other Career Paths -->
+  <div class="row mt-5">
+    <div class="col-lg-8 mx-auto">
+      <h2 class="fw-bold">How Does This Compare to Other Career Paths?</h2>
+      <p class="lead">
+        Ok, that’s great and all, but how does this compare to other career paths? And with the stat that <strong>less than 1% of college graduates</strong> break into investment banking and <strong>top MBA programs placing only around 15%</strong> of their graduating classes into the field, if you can get into this competitive industry, you likely could enter other prestigious fields as well.
+      </p>
+      <p class="lead">
+        What really matters is how investment banking stacks up against other <strong>high-paying, competitive career paths</strong>. Let’s go through a few common ones and weigh the pros and cons for different personality types, along with how the financial outcomes compare.
+      </p>
+    </div>
+  </div>
+
+    <!-- Accordion: Other Career Paths -->
+    <div class="accordion mt-4" id="otherPathsAccordion">
+      <!-- Consulting -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingConsulting">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConsulting" aria-expanded="true" aria-controls="collapseConsulting">
+            Consulting
+          </button>
+        </h2>
+        <div id="collapseConsulting" class="accordion-collapse collapse show" aria-labelledby="headingConsulting" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>Most similar to banking in terms of skills and applicant base.</li>
+              <li>Better work-life balance and greater industry flexibility.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>Slower financial growth, with lower starting salaries.</li>
+              <li>Fewer opportunities to become a multi-millionaire.</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> $500k–$700k at age 30 vs. $1M+ for bankers.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Lawyer -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingLawyer">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLawyer" aria-expanded="false" aria-controls="collapseLawyer">
+            Lawyer
+          </button>
+        </h2>
+        <div id="collapseLawyer" class="accordion-collapse collapse" aria-labelledby="headingLawyer" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>High salaries at big law firms ($190k+ starting out after law school).</li>
+              <li>Structured career path with clear milestones.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>Longer and more expensive schooling than banking.</li>
+              <li>Slower financial payoff, with partnerships taking 8–10 years.</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> $300k–$500k by age 30, compared to $1M+ for bankers.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Doctor -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDoctor">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDoctor" aria-expanded="false" aria-controls="collapseDoctor">
+            Doctor
+          </button>
+        </h2>
+        <div id="collapseDoctor" class="accordion-collapse collapse" aria-labelledby="headingDoctor" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>High societal respect and meaningful work directly helping people.</li>
+              <li>Long-term earnings potential for specialists is excellent.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>Lengthy training path (medical school + residency + fellowship).</li>
+              <li>Financial payoff comes late—mid-30s or later for significant earnings.</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> Doctors often start with net debt by 30, compared to bankers with $1M+.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Software Engineer -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingEngineer">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEngineer" aria-expanded="false" aria-controls="collapseEngineer">
+            Software Engineer
+          </button>
+        </h2>
+        <div id="collapseEngineer" class="accordion-collapse collapse" aria-labelledby="headingEngineer" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>Great starting pay ($120k–$180k at top companies).</li>
+              <li>Flexible hours and better work-life balance than banking.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>Career progression plateaus for many engineers in non-management roles.</li>
+              <li>Stock-based compensation is volatile and market-dependent.</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> $700k–$1M by age 30, comparable to banking associates but behind VPs.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Directly to the Buyside -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingBuyside">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBuyside" aria-expanded="false" aria-controls="collapseBuyside">
+            Going Directly to the Buyside
+          </button>
+        </h2>
+        <div id="collapseBuyside" class="accordion-collapse collapse" aria-labelledby="headingBuyside" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>Higher starting pay than banking ($300k–$500k at top firms).</li>
+              <li>Better work-life balance compared to banking.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>As competitive as banking, often harder to break in without prior banking experience.</li>
+              <li>Strong finance knowledge required to excel.</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> $1M+ by age 30, similar to bankers.</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Corporate Role -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCorporate">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCorporate" aria-expanded="false" aria-controls="collapseCorporate">
+            Corporate Role
+          </button>
+        </h2>
+        <div id="collapseCorporate" class="accordion-collapse collapse" aria-labelledby="headingCorporate" data-bs-parent="#otherPathsAccordion">
+          <div class="accordion-body">
+            <p><strong>Pros:</strong></p>
+            <ul>
+              <li>Stable hours and predictable workload—ideal for work-life balance.</li>
+              <li>Easier to break into directly after school.</li>
+            </ul>
+            <p><strong>Cons:</strong></p>
+            <ul>
+              <li>Slower financial growth, with fewer paths to high-income roles.</li>
+              <li>Starting pay is significantly lower ($50k–$80k/year).</li>
+            </ul>
+            <p><strong>Net Worth Difference:</strong> $200k–$400k by age 30, far behind bankers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+ <!-- Conclusion -->
+ <div class="row mt-5">
+  <div class="col-lg-8 mx-auto">
+    <h2 class="fw-bold">Conclusion: The Cost of Financial Freedom</h2>
+    <p class="lead">
+      Investment banking is fascinating, fast-paced, and gives you a front-row seat to billion-dollar deals. It’s an industry where you feel important, constantly challenged, and always surrounded by ambition.
+    </p>
+    <p class="lead">
+      But let’s not sugarcoat it: the job is <strong>incredibly mentally and physically taxing.</strong> The hours are brutal, the demands never stop, and your personal life will take a backseat.
+    </p>
+    <p class="lead">
+      However, the payoff is something rare—financial freedom early in life. With discipline and focus, banking gives you the opportunity to accumulate wealth at a pace most careers can’t match. Sacrifice now, and for the right kind of person, it can pay dividends down the road.
+    </p>
+  </div>
+</div>
