@@ -22,54 +22,7 @@
     </div>
   </div>
 
-  <!-- Form to calculate net worth by age -->
-  <div class="container my-5 p-4 bg-light rounded">
-    <h2 class="text-center mb-4">Calculate Your Future Net Worth</h2>
-    <form>
-      <div class="row g-3">
-        <!-- Age Input -->
-        <div class="col-md-6">
-          <label for="age" class="form-label">Your Current Age</label>
-          <input type="number" class="form-control" id="age" placeholder="Enter your age">
-        </div>
-        
-        <!-- Current Net Worth -->
-        <div class="col-md-6">
-          <label for="netWorth" class="form-label">Current Net Worth ($)</label>
-          <input type="number" class="form-control" id="netWorth" placeholder="e.g., 50000">
-        </div>
-        
-        <!-- Expected Salary -->
-        <div class="col-md-6">
-          <label for="salary" class="form-label">Expected Annual Salary ($)</label>
-          <input type="number" class="form-control" id="salary" placeholder="e.g., 150000">
-        </div>
-        
-        <!-- Expected Savings Rate -->
-        <div class="col-md-6">
-          <label for="savingsRate" class="form-label">Expected Savings Rate (%)</label>
-          <input type="number" class="form-control" id="savingsRate" placeholder="e.g., 20">
-        </div>
-  
-        <!-- Investment Growth Rate -->
-        <div class="col-md-6">
-          <label for="growthRate" class="form-label">Expected Investment Growth Rate (%)</label>
-          <input type="number" class="form-control" id="growthRate" placeholder="e.g., 7">
-        </div>
-  
-        <!-- Retirement Age -->
-        <div class="col-md-6">
-          <label for="retirementAge" class="form-label">Target Retirement Age</label>
-          <input type="number" class="form-control" id="retirementAge" placeholder="e.g., 65">
-        </div>
-  
-        <!-- Submit Button -->
-        <div class="col-12 text-center">
-          <button type="submit" class="btn btn-primary btn-lg mt-3">Calculate</button>
-        </div>
-      </div>
-    </form>
-  </div>
+  <%= render "articles/calc_investment_banking_networth" %>
   
 
   <!-- Accordion: Investment Banking Career Paths -->
