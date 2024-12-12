@@ -39,7 +39,7 @@
           <input type="text" class="form-control percentage-field" id="savingsRate" placeholder="e.g., 35" required>
         </div>
         <div class="col-md-6">
-          <label for="growthRate" class="form-label">Banking Salary Growth Rate (%)</label>
+          <label for="growthRate" class="form-label">Banking/PE Compensation Growth Rate (%)</label>
           <input type="text" class="form-control percentage-field" id="growthRate" placeholder="e.g., 20" required>
         </div>
         <div class="col-md-6">
@@ -51,16 +51,22 @@
           <input type="number" class="form-control" id="yearsInBanking" placeholder="e.g., 6" required>
         </div>
         <div class="col-md-6">
-          <label for="pursueMBA" class="form-label">Pursue MBA?</label>
-          <input type="checkbox" id="pursueMBA">
-        </div>
-        <div class="col-md-6">
           <label for="retirementNetWorth" class="form-label">Target Net Worth ($)</label>
           <input type="text" class="form-control money-field" id="retirementNetWorth" placeholder="e.g., 5,000,000" required>
         </div>
+        <div class="col-md-6">
+          <label for="pursueMBA" class="form-label">Pursue MBA?</label>
+          <input type="checkbox" id="pursueMBA">
+        </div>
         <div class="col-12 text-center">
           <button type="submit" class="btn btn-primary btn-lg mt-3">Calculate</button>
+          <button type="button" class="btn btn-outline-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#assumptionsModal">Assumptions</button>
         </div>
+
+
+
+
+
       </div>
     </form>
 
@@ -75,46 +81,46 @@
     const scenarios = {
       analystToVP: {
         startAge: 22,
-        startingNetWorth: -5000,
+        startingNetWorth: -50000,
         startingBankingComp: 200000,
         bankingSalaryGrowthRate: 20,
         yearsInBanking: 6,
         pursueMBA: false,
-        savingsRate: 35,
-        targetNetWorth: 5000000,
+        savingsRate: 30,
+        targetNetWorth: 3000000,
         investmentGrowthRate: 7,
       },
       analystToPEToMBA: {
         startAge: 22,
-        startingNetWorth: -5000,
+        startingNetWorth: -50000,
         startingBankingComp: 200000,
         bankingSalaryGrowthRate: 20,
-        yearsInBanking: 4,
+        yearsInBanking: 6,
         pursueMBA: true,
-        savingsRate: 35,
-        targetNetWorth: 5000000,
+        savingsRate: 30,
+        targetNetWorth: 3000000,
         investmentGrowthRate: 7,
       },
       mbaAssociate: {
-        startAge: 22,
-        startingNetWorth: -5000,
-        startingBankingComp: 200000,
+        startAge: 30,
+        startingNetWorth: 150000,
+        startingBankingComp: 300000,
         bankingSalaryGrowthRate: 20,
         yearsInBanking: 4,
-        pursueMBA: true,
-        savingsRate: 35,
-        targetNetWorth: 5000000,
+        pursueMBA: false,
+        savingsRate: 20,
+        targetNetWorth: 3000000,
         investmentGrowthRate: 7,
       },
       mbaAssociateWithDebt: {
-        startAge: 22,
-        startingNetWorth: -500000,
-        startingBankingComp: 200000,
+        startAge: 30,
+        startingNetWorth: -50000,
+        startingBankingComp: 300000,
         bankingSalaryGrowthRate: 20,
         yearsInBanking: 4,
-        pursueMBA: true,
-        savingsRate: 35,
-        targetNetWorth: 5000000,
+        pursueMBA: false,
+        savingsRate: 20,
+        targetNetWorth: 3000000,
         investmentGrowthRate: 7,
       }
 
@@ -185,7 +191,7 @@
             tooltip: {
               callbacks: {
                 label: function (context) {
-                  const netWorth = context.raw;
+                  const netWorth = Math.round(context.raw); // Round net worth
                   const compensation = compensationData[context.dataIndex];
                   return [
                     `Net Worth: ${formatMoney(netWorth)}`,
@@ -223,12 +229,12 @@
       const compensationData = [];
       let netWorth = startingNetWorth;
       let previousCompensation = startingBankingComp;
-      let preMBACompensation = 0; // Store pre-MBA salary
       let MBAYears = 0; // Counter for Pre-MBA Years
       let corporateStartingComp = 0;
       let corporateStartInitializer = 1;
       let remainingBankingYears = yearsInBanking;
       let corpSalaryGrowthRate = .05;
+      let corpSavingsRate = .15;
 
       for (let year = age; year <= 65; year++) {
         labels.push(year);
@@ -248,12 +254,7 @@
           MBAYears += 1
           netWorth -= 120000; // MBA costs
           compensationData.push(0); // No salary during MBA
-          if (
-            (age <= 23 && year === age + 4) || // Save pre-MBA salary for 4-year case
-            (age >= 24 && year === age + 2)    // Save pre-MBA salary for 2-year case
-          ) {
-            preMBACompensation = previousCompensation;
-          }
+          
         }  else if (remainingBankingYears > 0) {
           // Banking/PE years
 
@@ -261,7 +262,10 @@
           compensationData.push(previousCompensation); // Push salary from the previous year (or initial value)
 
           // Recalculate salary for the current year
-          const salary = previousCompensation * (1 + bankingSalaryGrowthRate);
+          const salary = Math.min(
+            previousCompensation * (1 + bankingSalaryGrowthRate), // Compute the new salary
+            1_000_000 // Cap at 1 million
+          );
           netWorth += salary * savingsRate; // Add savings from banking salary to net worth
           previousCompensation = salary; // Update last year's salary
           remainingBankingYears -= 1; // Decrease remaining banking years
@@ -276,7 +280,7 @@
             corporateStartInitializer -= 1;
             compensationData.push(corporateStartingComp);
             previousCompensation = corporateStartingComp;
-            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+            netWorth += previousCompensation * corpSavingsRate; // Add savings from banking salary to net worth
           } else if (corporateStartInitializer === 1 && pursueMBA) {
             // Transition to corporate without MBA: Start with 50% of last banking year's salary
             previousCompensation = previousCompensation / (1 + bankingSalaryGrowthRate); // Removing the last year of salary growth
@@ -284,12 +288,15 @@
             corporateStartInitializer -= 1;
             compensationData.push(corporateStartingComp);
             previousCompensation = corporateStartingComp;
-            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+            netWorth += previousCompensation * corpSavingsRate; // Add savings from banking salary to net worth
           } else {
-            const corporateComp = previousCompensation * Math.pow(1 + corpSalaryGrowthRate, 1);
+            const corporateComp = Math.min(
+              previousCompensation * (1 + corpSalaryGrowthRate), // Compute the new compensation
+              500_000 // Cap at 500K
+            );
             compensationData.push(corporateComp);
             previousCompensation = corporateComp;
-            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+            netWorth += previousCompensation * corpSavingsRate; // Add savings from banking salary to net worth
 
 
           }
@@ -305,6 +312,46 @@
       renderChart(labels, netWorthData, compensationData, targetNetWorth);
     });
   </script>
+
+<div class="modal fade" id="assumptionsModal" tabindex="-1" aria-labelledby="assumptionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assumptionsModalLabel">Assumptions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li><strong>Savings Rates Account for Taxes</strong></li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Corporate Savings Rate:</strong> 15%</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Corporate Salary Annual Growth Rate:</strong> 5%</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Corporate Starting Salary:</strong> 50% of the last year of the banking/finance salary</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Corporate Salary Cap:</strong> $500,000</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Banking/Finance Compensation Cap:</strong> $1,000,000</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Investment Growth:</strong> Assumed to be constant each year</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Major Expenses:</strong> Assumed to be included in the savings rate (e.g., college tuition, car purchases)</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>MBA Cost:</strong> $120,000 per year</li>
+          <hr class="mb-1 mt-1">
+          <li><strong>Compensation During MBA:</strong> $0</li>
+          <hr class="mb-1 mt-1">
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
 
