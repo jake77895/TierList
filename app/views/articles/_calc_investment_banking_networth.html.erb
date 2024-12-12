@@ -95,6 +95,30 @@
         targetNetWorth: 5000000,
         investmentGrowthRate: 7,
       },
+      mbaAssociate: {
+        startAge: 22,
+        startingNetWorth: -5000,
+        startingBankingComp: 200000,
+        bankingSalaryGrowthRate: 20,
+        yearsInBanking: 4,
+        pursueMBA: true,
+        savingsRate: 35,
+        targetNetWorth: 5000000,
+        investmentGrowthRate: 7,
+      },
+      mbaAssociateWithDebt: {
+        startAge: 22,
+        startingNetWorth: -500000,
+        startingBankingComp: 200000,
+        bankingSalaryGrowthRate: 20,
+        yearsInBanking: 4,
+        pursueMBA: true,
+        savingsRate: 35,
+        targetNetWorth: 5000000,
+        investmentGrowthRate: 7,
+      }
+
+
     };
 
     // Function to populate the form based on a selected scenario
@@ -202,9 +226,13 @@
       let preMBACompensation = 0; // Store pre-MBA salary
       let MBAYears = 0; // Counter for Pre-MBA Years
       let corporateStartingComp = 0;
+      let corporateStartInitializer = 1;
+      let remainingBankingYears = yearsInBanking;
+      let corpSalaryGrowthRate = .05;
 
       for (let year = age; year <= 65; year++) {
         labels.push(year);
+        netWorthData.push(netWorth);
 
         // Apply investment growth to current net worth
         netWorth += netWorth * investmentGrowthRate;
@@ -226,32 +254,52 @@
           ) {
             preMBACompensation = previousCompensation;
           }
-        }  else if (yearsInBanking > 0) {
+        }  else if (remainingBankingYears > 0) {
           // Banking/PE years
-          const salary = previousCompensation * Math.pow(1 + bankingSalaryGrowthRate, 1);
+
+          // Push the current salary before recalculating it
+          compensationData.push(previousCompensation); // Push salary from the previous year (or initial value)
+
+          // Recalculate salary for the current year
+          const salary = previousCompensation * (1 + bankingSalaryGrowthRate);
           netWorth += salary * savingsRate; // Add savings from banking salary to net worth
-          compensationData.push(salary); // Add salary to chart data
           previousCompensation = salary; // Update last year's salary
-          yearsInBanking -= 1; // Decrease remaining banking years
+          remainingBankingYears -= 1; // Decrease remaining banking years
+
         } else {
           // Corporate years (after banking or MBA)
 
-          if (pursueMBA && year === age + yearsInBanking + 2) {
-            // After MBA: Start with 50% of pre-MBA salary
-            corporateStartingComp = preMBACompensation * 0.5;
-          } else if (!pursueMBA && year === age + yearsInBanking) {
+          if (corporateStartInitializer === 1 && !pursueMBA) {
             // Transition to corporate without MBA: Start with 50% of last banking year's salary
+            previousCompensation = previousCompensation / (1 + bankingSalaryGrowthRate); // Removing the last year of salary growth
             corporateStartingComp = previousCompensation * 0.5;
+            corporateStartInitializer -= 1;
+            compensationData.push(corporateStartingComp);
+            previousCompensation = corporateStartingComp;
+            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+          } else if (corporateStartInitializer === 1 && pursueMBA) {
+            // Transition to corporate without MBA: Start with 50% of last banking year's salary
+            previousCompensation = previousCompensation / (1 + bankingSalaryGrowthRate); // Removing the last year of salary growth
+            corporateStartingComp = previousCompensation * 0.5;
+            corporateStartInitializer -= 1;
+            compensationData.push(corporateStartingComp);
+            previousCompensation = corporateStartingComp;
+            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+          } else {
+            const corporateComp = previousCompensation * Math.pow(1 + corpSalaryGrowthRate, 1);
+            compensationData.push(corporateComp);
+            previousCompensation = corporateComp;
+            netWorth += previousCompensation * savingsRate; // Add savings from banking salary to net worth
+
+
           }
 
-          // Grow corporate salary annually
-          const corporateComp = corporateStartingComp * Math.pow(1.05, year - (age + yearsInBanking + (pursueMBA ? 2 : 0)));
-          netWorth += corporateComp * savingsRate; // Add savings from corporate salary to net worth
-          compensationData.push(corporateComp); // Add corporate salary to the chart
-          previousCompensation = corporateComp; // Update the last year's salary
+        
+
+
         }
 
-        netWorthData.push(netWorth);
+        
       }
 
       renderChart(labels, netWorthData, compensationData, targetNetWorth);
@@ -260,11 +308,11 @@
 </body>
 </html>
 
- else if (yearsInBanking > 0) {
+<!-- else if (yearsInBanking > 0) {
   // Banking/PE years
   const salary = previousCompensation * Math.pow(1 + bankingSalaryGrowthRate, 1);
   netWorth += salary * savingsRate; // Add savings from banking salary to net worth
   compensationData.push(salary); // Add salary to chart data
   previousCompensation = salary; // Update last year's salary
   yearsInBanking -= 1; // Decrease remaining banking years
-}
+}-->
