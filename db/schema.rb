@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_08_194806) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_13_185133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_08_194806) do
     t.index ["tier_list_id"], name: "index_items_on_tier_list_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.integer "parent_id"
+    t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "short_description"
+    t.text "about"
+    t.index ["created_by"], name: "index_pages_on_created_by"
+    t.index ["parent_id"], name: "index_pages_on_parent_id"
+  end
+
   create_table "tier_list_rankings", force: :cascade do |t|
     t.bigint "tier_list_id", null: false
     t.bigint "item_id", null: false
@@ -108,6 +121,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_08_194806) do
   add_foreign_key "comments", "tier_lists"
   add_foreign_key "comments", "users"
   add_foreign_key "items", "tier_lists"
+  add_foreign_key "pages", "users", column: "created_by"
   add_foreign_key "tier_list_rankings", "items", on_delete: :cascade
   add_foreign_key "tier_list_rankings", "tier_lists", on_delete: :cascade
   add_foreign_key "tier_list_rankings", "users", column: "ranked_by_id"

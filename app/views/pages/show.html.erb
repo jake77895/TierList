@@ -1,0 +1,6 @@
+<%= render 'pages/pages', page: @page, subpages: @subpages %>
+
+<%= link_to 'Create Subpage', new_page_path(parent_id: @page.id), class: 'btn btn-secondary' %>
+
+<%= link_to 'Edit Page', edit_page_path(@page), class: 'btn btn-primary' %>
+<%= link_to 'Back to Pages', pages_path, class: 'btn btn-secondary' %>

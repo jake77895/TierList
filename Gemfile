@@ -18,6 +18,9 @@ gem "puma"
 # Added ransack gem for search and filtering
 gem 'ransack'
 
+# Added Acts_as_tree to define the page and sub page hierarchy
+gem 'acts_as_tree'
+
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 

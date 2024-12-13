@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :pages
   devise_for :users
 
   resources :tier_lists do
@@ -25,6 +26,10 @@ Rails.application.routes.draw do
 
   # Home view root
   root to: "home#index"
+
+  resources :pages do
+    resources :tier_lists, only: [:index] # Nested route for tier lists
+  end
 
   # Article path
   get 'articles/:id', to: 'articles#show', as: 'article'
