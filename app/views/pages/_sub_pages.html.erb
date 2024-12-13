@@ -1,0 +1,101 @@
+<div class="container mt-4">
+  <!-- Cover Photo -->
+  <div class="position-relative">
+    <!-- Cover Photo -->
+    <%= image_tag(
+      @page.cover_photo.attached? ? url_for(@page.cover_photo) : "https://via.placeholder.com/1200x300",
+      class: "img-fluid w-100 rounded cover-photo",
+      style: "max-height: 300px; object-fit: cover;",
+      alt: "Cover Photo"
+    ) %>
+
+    <!-- Profile Photo -->
+    <div class="position-absolute" style="bottom: -50px; left: 20px;">
+      <%= image_tag(
+        @page.profile_photo.attached? ? url_for(@page.profile_photo) : "https://via.placeholder.com/100",
+        class: "rounded-circle border border-white shadow profile-photo",
+        style: "width: 100px; height: 100px; object-fit: cover;",
+        alt: "Profile Photo"
+      ) %>
+    </div>
+  </div>
+
+  <br>
+
+  <!-- Page Header -->
+  <div class="mt-5 text-left">
+    <h1><%= @page.name %></h1>
+    <p class="text-muted"><%= @page.short_description %></p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="row mt-4">
+    <!-- Left Column -->
+    <div class="col-md-8">
+      <!-- Tier Lists Section -->
+      <div class="border rounded p-3 mb-5">
+        <h3 class="mb-0">Tier Lists</h3>
+        <hr class="my-2">
+        <div class="row">
+          <!-- Placeholder Tier List Card -->
+          <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+              <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Tier List Image">
+              <div>
+                <h5 class="mb-1">Placeholder Tier List Title</h5>
+                <p class="text-muted mb-0">Placeholder short description of the tier list.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Add more placeholders if needed -->
+        </div>
+      </div>
+
+      <!-- Other Info Section -->
+      <div class="border rounded p-3 mb-5">
+        <h3 class="mb-0">Other Info</h3>
+        <hr class="my-2">
+        <div class="row">
+          <!-- Placeholder Other Info Card -->
+          <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+              <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Other Info Image">
+              <div>
+                <h5 class="mb-1">Placeholder Info Title</h5>
+                <p class="text-muted mb-0">Placeholder short description of the info.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Add more placeholders if needed -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-4">
+      <!-- About Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4>About</h4>
+          <hr class="my-2">
+          <p class="text-muted"><%= @page.about %></p>
+        </div>
+      </div>
+
+      <!-- Parent Page Section -->
+      <div class="card">
+        <div class="card-body">
+          <h4>Parent Page</h4>
+          <hr class="my-2">
+          <% if @page.parent.present? %>
+            <div class="list-group">
+              <%= link_to @page.parent.name, page_path(@page.parent) %>
+            </div>
+          <% else %>
+            <p class="text-muted">This page does not have a parent.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

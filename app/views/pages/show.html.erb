@@ -1,4 +1,8 @@
-<%= render 'pages/pages', page: @page, subpages: @subpages %>
+<% if @page.parent.present? %>
+  <%= render 'pages/sub_pages', page: @page %>
+<% else %>
+  <%= render 'pages/pages', page: @page, subpages: @subpages %>
+<% end %>
 
 <%= link_to 'Create Subpage', new_page_path(parent_id: @page.id), class: 'btn btn-secondary' %>
 

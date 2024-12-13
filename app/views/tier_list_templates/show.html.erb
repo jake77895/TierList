@@ -1,0 +1,21 @@
+<h1><%= @tier_list_template.name %></h1>
+
+<p><strong>Short Description:</strong> <%= @tier_list_template.short_description %></p>
+<p><strong>Category 1:</strong> <%= @tier_list_template.category1 %></p>
+<p><strong>Category 2:</strong> <%= @tier_list_template.category2 %></p>
+
+<h4>Custom Fields</h4>
+<% if @tier_list_template.custom_fields.any? %>
+  <ul>
+    <% @tier_list_template.custom_fields.each do |field| %>
+      <li><strong><%= field[:name] %>:</strong> <%= field[:data_type] %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No custom fields defined.</p>
+<% end %>
+
+<div class="d-flex justify-content-end">
+  <%= link_to "Edit", edit_tier_list_template_path(@tier_list_template), class: "btn btn-warning me-2" %>
+  <%= link_to "Back to Templates", tier_list_templates_path, class: "btn btn-secondary" %>
+</div>

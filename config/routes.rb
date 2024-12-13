@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :pages
   devise_for :users
 
+  resources :tier_list_templates
+
   resources :tier_lists do
     resources :items do
       collection do

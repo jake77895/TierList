@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_13_185133) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_13_195102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_13_185133) do
     t.index ["ranked_by_id"], name: "index_tier_list_rankings_on_ranked_by_id"
     t.index ["tier_list_id", "item_id", "ranked_by_id"], name: "unique_tier_list_rankings", unique: true
     t.index ["tier_list_id"], name: "index_tier_list_rankings_on_tier_list_id"
+  end
+
+  create_table "tier_list_templates", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "short_description"
+    t.json "custom_fields", default: []
+    t.string "category1"
+    t.string "category2"
+    t.integer "created_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_tier_list_templates_on_created_by_id"
   end
 
   create_table "tier_lists", force: :cascade do |t|

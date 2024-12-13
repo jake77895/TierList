@@ -1,0 +1,37 @@
+<%= form_with(model: @tier_list_template, local: true, html: { class: "needs-validation", multipart: true }) do |f| %>
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :short_description, class: "form-label" %>
+    <%= f.text_area :short_description, class: "form-control", rows: 3 %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :category1, class: "form-label" %>
+    <%= f.text_field :category1, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :category2, class: "form-label" %>
+    <%= f.text_field :category2, class: "form-control" %>
+  </div>
+
+  <h4>Custom Fields</h4>
+  <% @tier_list_template.custom_fields.each_with_index do |field, index| %>
+    <div class="custom-field-row">
+      <%= text_field_tag "custom_fields[#{index}][name]", field[:name], placeholder: "Field Name", class: "form-control mb-2" %>
+      <%= select_tag "custom_fields[#{index}][data_type]", 
+          options_for_select([["Text", "String"], ["Number", "Integer"], ["True/False", "Boolean"], ["Date", "Date"]], field[:data_type]), 
+          prompt: "Select Data Type", 
+          class: "form-control mb-2" %>
+    </div>
+    <hr>
+  <% end %>
+
+  <div class="d-flex justify-content-end">
+    <%= f.submit "Save Template", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,29 @@
+<h1>Tier List Templates</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category 1</th>
+      <th>Category 2</th>
+      <th>Created By</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tier_list_templates.each do |template| %>
+      <tr>
+        <td><%= link_to template.name, tier_list_template_path(template) %></td>
+        <td><%= template.category1 %></td>
+        <td><%= template.category2 %></td>
+        <td><%= template.creator&.email || "Unknown" %></td>
+        <td>
+          <%= link_to "Edit", edit_tier_list_template_path(template), class: "btn btn-sm btn-warning" %>
+          <%= link_to "Delete", tier_list_template_path(template), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Create New Template", new_tier_list_template_path, class: "btn btn-primary" %>
