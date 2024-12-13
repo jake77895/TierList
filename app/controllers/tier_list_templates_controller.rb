@@ -6,6 +6,9 @@ class TierListTemplatesController < ApplicationController
   end
 
   def show
+    @tier_list_template = TierListTemplate.find(params[:id])
+    @tier_list_template.custom_fields = @tier_list_template.custom_fields.map(&:symbolize_keys)
+
   end
 
   def new
@@ -24,9 +27,12 @@ class TierListTemplatesController < ApplicationController
   end
 
   def create
-    @tier_list_template = TierListTemplate.new(tier_list_template_params)
-    custom_fields = params[:custom_fields]&.values || []
-    @tier_list_template.custom_fields = custom_fields.reject { |field| field[:name].blank? && field[:data_type].blank? }
+    @tier_list_template = TierListTemplate.new(tier_list_template_params.except(:custom_fields))
+
+    # Extract and assign custom fields
+    custom_fields = params[:custom_fields]&.values || [] # Safely access the custom fields
+    filtered_fields = custom_fields.reject { |field| field["name"].blank? && field["data_type"].blank? }
+    @tier_list_template.custom_fields = filtered_fields.map { |field| field.to_h.symbolize_keys }
 
     if @tier_list_template.save
       redirect_to @tier_list_template, notice: "Tier List Template was successfully created."
@@ -36,9 +42,14 @@ class TierListTemplatesController < ApplicationController
   end
 
   def update
+    @tier_list_template.assign_attributes(tier_list_template_params.except(:custom_fields))
+
+    # Extract and assign custom fields
     custom_fields = params[:custom_fields]&.values || []
-    @tier_list_template.custom_fields = custom_fields.reject { |field| field[:name].blank? && field[:data_type].blank? }
-    if @tier_list_template.update(tier_list_template_params)
+    filtered_fields = custom_fields.reject { |field| field["name"].blank? && field["data_type"].blank? }
+    @tier_list_template.custom_fields = filtered_fields.map { |field| field.to_h.symbolize_keys }
+
+    if @tier_list_template.save
       redirect_to @tier_list_template, notice: "Tier List Template was successfully updated."
     else
       render :edit, status: :unprocessable_entity
@@ -57,7 +68,19 @@ class TierListTemplatesController < ApplicationController
   end
 
   def tier_list_template_params
-    params.require(:tier_list_template).permit(:name, :short_description, :category1, :category2, :created_by_id, custom_fields: [])
+    permitted_params = params.require(:tier_list_template).permit(
+      :name,
+      :short_description,
+      :category1,
+      :category2,
+      :created_by_id
+    )
+  
+    # Manually permit and process custom_fields if present
+    if params[:custom_fields]
+      permitted_params[:custom_fields] = params[:custom_fields].permit!.to_h.values
+    end
+  
+    permitted_params
   end
 end
-

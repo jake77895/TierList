@@ -8,7 +8,7 @@
 <% if @tier_list_template.custom_fields.any? %>
   <ul>
     <% @tier_list_template.custom_fields.each do |field| %>
-      <li><strong><%= field[:name] %>:</strong> <%= field[:data_type] %></li>
+      <li><strong><%= field["name"] %>:</strong> <%= field["data_type"] %></li>
     <% end %>
   </ul>
 <% else %>

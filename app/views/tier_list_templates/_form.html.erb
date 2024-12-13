@@ -1,4 +1,7 @@
 <%= form_with(model: @tier_list_template, local: true, html: { class: "needs-validation", multipart: true }) do |f| %>
+  <!-- Hidden field for created_by_id -->
+  <%= f.hidden_field :created_by_id, value: current_user.id %>
+  
   <div class="mb-3">
     <%= f.label :name, class: "form-label" %>
     <%= f.text_field :name, class: "form-control", required: true %>
