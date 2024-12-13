@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  before_action :find_page, only: [:show, :edit, :update, :destroy]
+  before_action :find_page, only: [:show, :edit, :update, :destroy, :tier_lists]
 
   # List all top-level pages
   def index
@@ -46,6 +46,33 @@ class PagesController < ApplicationController
   def destroy
     @page.destroy
     redirect_to pages_path, notice: 'Page was successfully deleted.'
+  end
+
+  def tier_lists
+    @associated_tier_lists = @page.tier_lists
+    @unassociated_tier_lists = TierList.where.not(id: @associated_tier_lists.pluck(:id))
+  end
+
+  def associate_tier_list
+    @page = Page.find(params[:page_id])
+    @tier_list = TierList.find(params[:tier_list_id])
+
+    if @page.tier_lists << @tier_list
+      redirect_to tier_lists_page_path(@page), notice: 'Tier list successfully added to the page.'
+    else
+      redirect_to tier_lists_page_path(@page), alert: 'Failed to add the tier list.'
+    end
+  end
+
+  def dissociate_tier_list
+    @page = Page.find(params[:page_id])
+    @tier_list = TierList.find(params[:tier_list_id])
+
+    if @page.tier_lists.destroy(@tier_list)
+      redirect_to tier_lists_page_path(@page), notice: 'Tier list successfully removed from the page.'
+    else
+      redirect_to tier_lists_page_path(@page), alert: 'Failed to remove the tier list.'
+    end
   end
 
   private

@@ -3,7 +3,7 @@
   <%= f.hidden_field :created_by_id, value: current_user.id %>
   
   <div class="mb-3">
-    <%= f.label :name, class: "form-label" %>
+    <%= f.label :name, "Name (Required)", class: "form-label" %>
     <%= f.text_field :name, class: "form-control", required: true %>
   </div>
 
@@ -13,16 +13,22 @@
   </div>
 
   <div class="mb-3">
-    <%= f.label :category1, class: "form-label" %>
-    <%= f.text_field :category1, class: "form-control" %>
+    <%= f.label :category1, "Category 1 (Required)", class: "form-label" %>
+    <%= f.select :category1, 
+                options_for_select(TierListTemplate::CATEGORY_OPTIONS, @tier_list_template.category1), 
+                { include_blank: "Select a Category" }, 
+                class: "form-select", 
+                required: true %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :category2, class: "form-label" %>
-    <%= f.text_field :category2, class: "form-control" %>
+    <%= f.label :category2, "Category 2", class: "form-label" %>
+    <%= f.select :category2, options_for_select(TierListTemplate::CATEGORY_OPTIONS, @tier_list_template.category2), 
+                  { include_blank: "Select a Category" }, class: "form-select" %>
   </div>
 
   <h4>Custom Fields</h4>
+  <hr>
   <% @tier_list_template.custom_fields.each_with_index do |field, index| %>
     <div class="custom-field-row">
       <%= text_field_tag "custom_fields[#{index}][name]", field[:name], placeholder: "Field Name", class: "form-control mb-2" %>

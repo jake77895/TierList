@@ -1,5 +1,7 @@
 class TierListTemplatesController < ApplicationController
   before_action :set_tier_list_template, only: %i[show edit update destroy]
+  
+  
 
   def index
     @tier_list_templates = TierListTemplate.all

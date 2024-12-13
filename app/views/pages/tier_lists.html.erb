@@ -1,0 +1,56 @@
+<h2>Tier Lists for <%= @page.name %></h2>
+
+<!-- Associated Tier Lists -->
+<h3>Associated Tier Lists</h3>
+<% if @associated_tier_lists.any? %>
+  <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
+    <thead class="table-primary">
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @associated_tier_lists.each do |tier_list| %>
+        <tr>
+          <td><%= tier_list.name %></td>
+          <td>
+            <%= link_to "Remove", page_dissociate_tier_list_path(page_id: @page.id, tier_list_id: tier_list.id),
+                method: :delete,
+                class: "btn btn-danger btn-sm",
+                data: { confirm: "Are you sure you want to remove this tier list from the page?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No tier lists are currently associated with this page.</p>
+<% end %>
+
+<!-- Unassociated Tier Lists -->
+<h3>Available Tier Lists</h3>
+<% if @unassociated_tier_lists.any? %>
+  <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
+    <thead class="table-primary">
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @unassociated_tier_lists.each do |tier_list| %>
+        <tr>
+          <td><%= tier_list.name %></td>
+          <td>
+            <%= link_to "Add", page_associate_tier_list_path(page_id: @page.id, tier_list_id: tier_list.id),
+                method: :post,
+                class: "btn btn-success btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No available tier lists to add to this page.</p>
+<% end %>

@@ -25,7 +25,12 @@ class Page < ApplicationRecord
   acts_as_tree order: "name"
 
   belongs_to :creator, class_name: "User", foreign_key: "created_by", optional: true
-  has_and_belongs_to_many :tier_lists
+
+  
+
+  has_many :pages_tier_lists
+  has_many :tier_lists, through: :pages_tier_lists
+
   has_one_attached :profile_photo
   has_one_attached :cover_photo
 

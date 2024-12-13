@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_13_195102) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_13_225135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,6 +75,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_13_195102) do
     t.text "about"
     t.index ["created_by"], name: "index_pages_on_created_by"
     t.index ["parent_id"], name: "index_pages_on_parent_id"
+  end
+
+  create_table "pages_tier_lists", id: false, force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.bigint "tier_list_id", null: false
+    t.index ["page_id", "tier_list_id"], name: "index_pages_tier_lists_on_page_id_and_tier_list_id", unique: true
+    t.index ["tier_list_id", "page_id"], name: "index_pages_tier_lists_on_tier_list_id_and_page_id"
   end
 
   create_table "tier_list_rankings", force: :cascade do |t|

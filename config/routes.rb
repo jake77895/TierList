@@ -30,7 +30,12 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   resources :pages do
-    resources :tier_lists, only: [:index] # Nested route for tier lists
+    member do
+      get :tier_lists # A page-specific tier list view
+    end
+  
+    post :associate_tier_list
+    delete :dissociate_tier_list
   end
 
   # Article path
