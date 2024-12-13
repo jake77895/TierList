@@ -54,10 +54,10 @@
     <div class="col-lg-4 col-md-5 col-sm-12">
       <%= link_to article_path(id: 1), class: "d-block h-100" do %> <!-- Navigate to /articles/1 -->
         <div class="position-relative h-100">
-          <img src="https://via.placeholder.com/350x350" class="img-fluid w-100 object-fit-cover" alt="Side Image">
-          <div class="position-absolute top-50 start-50 translate-middle text-white text-center bg-dark bg-opacity-50 p-2 rounded">
-            <h6><strong>AWARDS LEADERBOARD</strong></h6>
-            <p class="m-0">Nickel Boys, Wicked take the lead</p>
+          <%= image_tag 'jerry_maguire.jpg', class: 'img-fluid h-100 object-fit-cover', alt: 'Jerry Maguire' %>
+          <div class="position-absolute top-50 start-50 text-white text-center bg-dark bg-opacity-75 p-2 rounded" style="transform: translate(-50%, 50%);"><!-- Adjusted top value -->
+            <h6><strong>ARTICLE SPOTLIGHT</strong></h6>
+            <p class="m-0"><strong>Burnout or Big Bucks: </strong> <br> Who should go into Investment Banking?</p>
           </div>
         </div>
       <% end %>
