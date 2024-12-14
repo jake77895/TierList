@@ -13,7 +13,12 @@
     <tbody>
       <% @associated_tier_lists.each do |tier_list| %>
         <tr>
-          <td><%= tier_list.name %></td>
+          <!-- Clickable Name -->
+          <td>
+            <%= link_to tier_list.name, "#", 
+                class: "text-decoration-none text-primary", 
+                data: { bs_toggle: "modal", bs_target: "#tierListModal-#{tier_list.id}" } %>
+          </td>
           <td>
             <%= link_to "Remove", page_dissociate_tier_list_path(page_id: @page.id, tier_list_id: tier_list.id),
                 method: :delete,
@@ -21,6 +26,28 @@
                 data: { confirm: "Are you sure you want to remove this tier list from the page?" } %>
           </td>
         </tr>
+
+        <!-- Modal for Associated Tier List -->
+        <div class="modal fade" id="tierListModal-<%= tier_list.id %>" tabindex="-1" aria-labelledby="tierListModalLabel-<%= tier_list.id %>" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tierListModalLabel-<%= tier_list.id %>">Tier List: <%= tier_list.name %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <!-- Tier List Details -->
+                <p><strong>Name:</strong> <%= tier_list.name %></p>
+                <p><strong>Category 1:</strong> <%= tier_list.category1 %></p>
+                <p><strong>Category 2:</strong> <%= tier_list.category2 %></p>
+                <p><strong>Description:</strong> <%= tier_list.short_description %></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <% end %>
     </tbody>
   </table>
@@ -29,7 +56,45 @@
 <% end %>
 
 <!-- Unassociated Tier Lists -->
-<h3>Available Tier Lists</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="m-0">Available Tier Lists</h3>
+  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal">
+    Filters
+  </button>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Tier Lists</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Ransack Filter Form -->
+        <%= search_form_for @q, url: tier_lists_page_path(@page), method: :get, html: { class: "mb-4" } do |f| %>
+          <div class="mb-3">
+            <%= f.label :name_cont, "Search by Name", class: "form-label" %>
+            <%= f.text_field :name_cont, class: "form-control", placeholder: "Enter a name" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :category1_or_category2_eq, "Search by Category", class: "form-label" %>
+            <%= f.select :category1_or_category2_eq,
+                TierList.pluck(:category1, :category2).flatten.compact.uniq.sort,
+                { prompt: "Select a Category" },
+                class: "form-select" %>
+          </div>
+          <div class="d-flex justify-content-between">
+            <%= link_to "Clear Filters", tier_lists_page_path(@page), class: "btn btn-secondary" %>
+            <%= f.submit "Apply Filters", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
 <% if @unassociated_tier_lists.any? %>
   <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
     <thead class="table-primary">
@@ -41,13 +106,37 @@
     <tbody>
       <% @unassociated_tier_lists.each do |tier_list| %>
         <tr>
-          <td><%= tier_list.name %></td>
+          <!-- Clickable Name -->
+          <td>
+            <%= link_to tier_list.name, "#", 
+                class: "text-decoration-none text-primary", 
+                data: { bs_toggle: "modal", bs_target: "#tierListModal-#{tier_list.id}" } %>
+          </td>
           <td>
             <%= link_to "Add", page_associate_tier_list_path(page_id: @page.id, tier_list_id: tier_list.id),
                 method: :post,
                 class: "btn btn-success btn-sm" %>
           </td>
         </tr>
+
+        <!-- Modal for Tier List -->
+<div class="modal fade" id="tierListModal-<%= tier_list.id %>" tabindex="-1" aria-labelledby="tierListModalLabel-<%= tier_list.id %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tierListModalLabel-<%= tier_list.id %>">Tier List Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render partial: "tier_lists/tier_list", locals: { tier_list: tier_list } %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
       <% end %>
     </tbody>
   </table>

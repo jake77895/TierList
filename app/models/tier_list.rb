@@ -3,6 +3,8 @@
 # Table name: tier_lists
 #
 #  id                :bigint           not null, primary key
+#  category1         :string
+#  category2         :string
 #  custom_fields     :json
 #  image             :string
 #  name              :string           not null
@@ -32,6 +34,14 @@ class TierList < ApplicationRecord
   has_many :tier_list_rankings, dependent: :destroy
   has_many :items
   has_many :comments, dependent: :destroy # Comments linked to a TierList are removed if it’s deleted
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name category1 category2] # Add all attributes you want searchable
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [] # Allow no associations unless explicitly needed
+  end
 
   def custom_fields_with_types
     # Ensure `custom_fields` is present and is an array

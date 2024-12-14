@@ -1,0 +1,58 @@
+<div id="<%= dom_id tier_list %>" class="card mb-4 shadow-sm">
+  <div class="card-body">
+
+    <!-- Tier List Name -->
+    <p class="card-text">
+      <strong>Tier List Name:</strong>
+      <%= tier_list.name %>
+    </p>
+
+    <!-- Creator Information -->
+    <p class="card-text">
+      <strong>Created by:</strong>
+      <%= tier_list.creator&.user_name || "No username" %>
+    </p>
+
+    <!-- Short Description -->
+    <p class="card-text">
+      <strong>Short description:</strong>
+      <%= tier_list.short_description.presence || "No description available" %>
+    </p>
+
+    <!-- Custom Fields -->
+    <p class="card-text">
+      <strong>Custom fields:</strong>
+      <% if tier_list.custom_fields.present? %>
+        <ul class="list-group list-group-flush">
+          <% tier_list.custom_fields.each do |field| %>
+            <li class="list-group-item">
+              <strong><%= field[:name] %></strong>: 
+              <% case field[:data_type] %>
+              <% when "String" %>
+                Text
+              <% when "Integer" %>
+                Number
+              <% when "Boolean" %>
+                True/False
+              <% when "Date" %>
+                Date
+              <% else %>
+                Text
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <span>No custom fields provided.</span>
+      <% end %>
+    </p>
+
+    <!-- Additional Actions -->
+    <div>
+      <% if tier_list&.id.present? %>
+        <hr>
+        <%= link_to "Add items", new_tier_list_item_path(tier_list), class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
