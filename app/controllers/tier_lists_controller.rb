@@ -76,6 +76,8 @@ class TierListsController < ApplicationController
   def group_list
     @tier_list = TierList.find(params[:id])
 
+    @current_item = @tier_list.items.first
+
     # Load comments and associated users
     @comments = @tier_list.comments.includes(:user).order(updated_at: :desc)
 

@@ -39,24 +39,24 @@
         <hr class="my-2">
         <% if @page.tier_lists.any? %>
           <div class="row gx-3">
-            <% @page.tier_lists.each do |tier_list| %>
-              <div class="col-md-3 mb-3">
-                <div class="card border rounded overflow-hidden">
-                  <div class="position-relative">
-                    <!-- Image or Placeholder Image -->
-
-                    <%= image_tag tier_list.image.attached? ? url_for(tier_list.image) : "https://via.placeholder.com/150",
-                          class: "w-100",
-                          alt: tier_list.name %>
-                    <!-- Overlay Tier List Name -->
-                    <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white text-center py-2">
-                      <strong><%= tier_list.name %></strong>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            <% end %>
+<% @page.tier_lists.each do |tier_list| %>
+  <div class="col-md-3 mb-3">
+    <%= link_to group_list_tier_list_path(tier_list), class: "text-decoration-none" do %>
+      <div class="card border rounded overflow-hidden">
+        <div class="position-relative">
+          <!-- Image or Placeholder Image -->
+          <%= image_tag tier_list.image.attached? ? url_for(tier_list.image) : "https://via.placeholder.com/150",
+                        class: "w-100",
+                        alt: tier_list.name %>
+          <!-- Overlay Tier List Name -->
+          <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white text-center py-2">
+            <strong><%= tier_list.name %></strong>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
           </div>
         <% else %>
           <p>No tier lists are currently associated with this page.</p>
