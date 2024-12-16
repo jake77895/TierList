@@ -29,6 +29,7 @@
   </div>
 
   <!-- Main Content -->
+
   <div class="row mt-4">
     <!-- Left Column -->
     <div class="col-md-8">
@@ -36,19 +37,30 @@
       <div class="border rounded p-3 mb-5">
         <h3 class="mb-0">Tier Lists</h3>
         <hr class="my-2">
-        <div class="row">
-          <!-- Placeholder Tier List Card -->
-          <div class="col-md-6 mb-3">
-            <div class="d-flex align-items-center">
-              <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Tier List Image">
-              <div>
-                <h5 class="mb-1">Placeholder Tier List Title</h5>
-                <p class="text-muted mb-0">Placeholder short description of the tier list.</p>
+        <% if @page.tier_lists.any? %>
+          <div class="row gx-3">
+            <% @page.tier_lists.each do |tier_list| %>
+              <div class="col-md-3 mb-3">
+                <div class="card border rounded overflow-hidden">
+                  <div class="position-relative">
+                    <!-- Image or Placeholder Image -->
+
+                    <%= image_tag tier_list.image.attached? ? url_for(tier_list.image) : "https://via.placeholder.com/150",
+                          class: "w-100",
+                          alt: tier_list.name %>
+                    <!-- Overlay Tier List Name -->
+                    <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white text-center py-2">
+                      <strong><%= tier_list.name %></strong>
+                    </div>
+
+                  </div>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
-          <!-- Add more placeholders if needed -->
-        </div>
+        <% else %>
+          <p>No tier lists are currently associated with this page.</p>
+        <% end %>
       </div>
 
       <!-- Other Info Section -->
@@ -98,7 +110,6 @@
       </div>
 
       <%= link_to "Add Tier List", tier_lists_page_path(@page), class: "btn btn-primary" %>
-
 
     </div>
   </div>
