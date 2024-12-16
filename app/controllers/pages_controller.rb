@@ -54,23 +54,21 @@ class PagesController < ApplicationController
 
   # Tier Lists for a Page
   def tier_lists
-    Rails.logger.debug "Params: #{params.inspect}"
-
+  
     # Fetch associated tier lists
     associated_ids = @page.tier_lists.pluck(:id)
     @associated_tier_lists = @page.tier_lists
-    Rails.logger.debug "Associated Tier Lists: #{@associated_tier_lists.inspect}"
-
-    # Set up Ransack for unassociated tier lists
+  
+    # Set up Ransack for unassociated tier lists (searchable on limited attributes)
     @q = TierList
-      .select(:id, :name, :category1, :category2, :published, :created_by_id) # Exclude `custom_fields`
-      .where.not(id: associated_ids)
-      .ransack(params[:q])
-    Rails.logger.debug "Ransack Object: #{@q.inspect}"
+          .select(:id, :name, :category1, :category2, :published, :created_by_id) # Limited attributes for searching
+          .where.not(id: associated_ids)
+          .ransack(params[:q])
+  
+    # Fetch the full records for the filtered tier lists
+    unassociated_ids = @q.result.pluck(:id) # Fetch IDs of filtered records
+    @unassociated_tier_lists = TierList.where(id: unassociated_ids) # Fetch full records
 
-    # Fetch unassociated tier lists
-    @unassociated_tier_lists = @q.result(distinct: true)
-    Rails.logger.debug "Unassociated Tier Lists: #{@unassociated_tier_lists.inspect}"
   end
 
   # Associate a Tier List with a Page

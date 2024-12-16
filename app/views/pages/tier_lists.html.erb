@@ -15,9 +15,7 @@
         <tr>
           <!-- Clickable Name -->
           <td>
-            <%= link_to tier_list.name, "#", 
-                class: "text-decoration-none text-primary", 
-                data: { bs_toggle: "modal", bs_target: "#tierListModal-#{tier_list.id}" } %>
+            <%= tier_list.name %>
           </td>
           <td>
             <%= link_to "Remove", page_dissociate_tier_list_path(page_id: @page.id, tier_list_id: tier_list.id),
