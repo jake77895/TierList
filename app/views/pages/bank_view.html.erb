@@ -1,0 +1,86 @@
+
+<div class="container mt-5">
+  <!-- Bank and Group Title -->
+  <div class="text-center mb-5">
+    <h1 class="display-4">Goldman Sachs</h1>
+    <h3 class="text-muted">Investment Banking Group</h3>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Filter People</h5>
+      <form class="row g-3">
+        <div class="col-md-4">
+          <label for="filterName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="filterName" placeholder="Search by name">
+        </div>
+        <div class="col-md-4">
+          <label for="filterSchool" class="form-label">School</label>
+          <input type="text" class="form-control" id="filterSchool" placeholder="Search by school">
+        </div>
+        <div class="col-md-4 align-self-end">
+          <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- People Sections -->
+  <div class="mt-5">
+    <!-- Section: MD -->
+    <h3 class="mb-3">Managing Directors (MD)</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+      <% 3.times do %>
+        <div class="col">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+            <div class="card-body">
+              <h5 class="card-title">John Doe</h5>
+              <p class="card-text"><strong>School:</strong> Harvard University</p>
+              <p class="card-text"><strong>Title:</strong> Managing Director</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Section: ED -->
+    <h3 class="mb-3">Executive Directors (ED)</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+      <% 3.times do %>
+        <div class="col">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+            <div class="card-body">
+              <h5 class="card-title">Jane Smith</h5>
+              <p class="card-text"><strong>School:</strong> Yale University</p>
+              <p class="card-text"><strong>Title:</strong> Executive Director</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Section: VP -->
+    <h3 class="mb-3">Vice Presidents (VP)</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+      <% 3.times do %>
+        <div class="col">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+            <div class="card-body">
+              <h5 class="card-title">Alice Brown</h5>
+              <p class="card-text"><strong>School:</strong> Stanford University</p>
+              <p class="card-text"><strong>Title:</strong> Vice President</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <%= link_to 'Back to Bank Page', @bank_link, class: 'btn btn-primary btn-lg' %>
+  </div>

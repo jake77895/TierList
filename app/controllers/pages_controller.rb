@@ -1,6 +1,18 @@
 class PagesController < ApplicationController
   before_action :find_page, only: [:show, :edit, :update, :destroy, :tier_lists, :associate_tier_list, :dissociate_tier_list]
 
+  def bank_view
+    @page = Page.find_by(id: params[:id])
+
+    if @page.nil?
+      render plain: "Page not found", status: :not_found
+      return
+    end
+
+    # Generate the link back to the original page
+    @bank_link = page_path(@page.id)
+  end
+
   # List all top-level pages
   def index
     @pages = Page.roots # Fetch only top-level pages
@@ -8,7 +20,18 @@ class PagesController < ApplicationController
 
   # Show a page and its subpages
   def show
-    @subpages = @page.children # Subpages of the current page
+    @page = Page.find_by(id: params[:id])
+
+    if @page.nil?
+      render plain: "Page not found", status: :not_found
+      return
+    end
+
+    @subpages = @page.children
+
+    # Check if the current page has a special section
+    @show_special_section = ::BANK_LIST.include?(@page.name.downcase)
+    @bank_link = @show_special_section ? url_for(controller: 'pages', action: 'show', id: @page.id) : nil
   end
 
   # Form for new page or subpage

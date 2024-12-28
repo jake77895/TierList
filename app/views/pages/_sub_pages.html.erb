@@ -56,19 +56,31 @@
         <h3 class="mb-0">Other Info</h3>
         <hr class="my-2">
         <div class="row">
-          <!-- Placeholder Other Info Card -->
-          <div class="col-md-6 mb-3">
-            <div class="d-flex align-items-center">
-              <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Other Info Image">
-              <div>
-                <h5 class="mb-1">Placeholder Info Title</h5>
-                <p class="text-muted mb-0">Placeholder short description of the info.</p>
+          <% if @show_special_section %>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Other Info Image">
+                <div>
+                  <h5 class="mb-1">Explore Bankers</h5>
+                  <p class="text-muted mb-0">Learn more about <strong><%= @page.name %></strong>'s professionals.</p>
+                  <%= link_to 'View More', bank_view_path(@page.id), class: 'btn btn-secondary btn-sm mt-2' %>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- Add more placeholders if needed -->
+          <% else %>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/150" class="img-thumbnail me-3" alt="Other Info Image">
+                <div>
+                  <h5 class="mb-1">Placeholder Info Title</h5>
+                  <p class="text-muted mb-0">Placeholder short description of the info.</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
+
     </div>
 
     <!-- Right Column -->

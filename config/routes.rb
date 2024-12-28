@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   resources :pages
+
+  get 'pages/:id/bank_view', to: 'pages#bank_view', as: 'bank_view'
+
+  get 'banks/:id', to: 'pages#show', as: 'bank'
+
   devise_for :users
 
   resources :tier_list_templates
