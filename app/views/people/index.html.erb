@@ -1,0 +1,120 @@
+
+
+<div class="container mt-5">
+  <!-- Bank and Group Title -->
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h1 class="display-4"><%= @bank_name %></h1>
+      <h3 class="text-muted d-inline">Investment Banking Group</h3>
+    </div>
+    <div>
+      <!-- Button to Trigger Modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPersonModal">
+        Add Person
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Filters Section -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Filter People</h5>
+      <form class="row g-3">
+        <div class="col-md-4">
+          <label for="filterName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="filterName" placeholder="Search by name">
+        </div>
+        <div class="col-md-4">
+          <label for="filterSchool" class="form-label">School</label>
+          <input type="text" class="form-control" id="filterSchool" placeholder="Search by school">
+        </div>
+        <div class="col-md-4 align-self-end">
+          <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <!-- People Sections -->
+    <div class="mt-5">
+      <% @people_by_level.each do |level, people| %>
+        <h3 class="mb-3"><%= level.pluralize %></h3>
+        <hr>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+          <% people.each do |person| %>
+            <div class="col">
+              <div class="card h-100 shadow-sm text-center">
+                <% if person.image.attached? %>
+                  <img src="<%= url_for(person.image) %>" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+                <% else %>
+                  <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Placeholder Image">
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= person.name %></h5>
+                  <p class="card-text"><strong>School:</strong> <%= person.undergrad_school %></p>
+                  <p class="card-text"><strong>Title:</strong> <%= level %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Section: Level Not Specified -->
+      <% if @unspecified_people.any? %>
+        <h3 class="mb-3">Level Not Specified</h3>
+        <hr>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+          <% @unspecified_people.each do |person| %>
+            <div class="col">
+              <div class="card h-100 shadow-sm text-center">
+                <% if person.image.attached? %>
+                  <img src="<%= url_for(person.image) %>" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+                <% else %>
+                  <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Placeholder Image">
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= person.name %></h5>
+                  <p class="card-text"><strong>School:</strong> <%= person.undergrad_school %></p>
+                  <p class="card-text"><strong>Title:</strong> Level Not Specified</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+
+
+
+    
+  </div>
+</div>
+
+<div class="d-grid gap-2 col-6 mx-auto">
+  <% if params[:page_id].present? && params[:page_name].present? %>
+    <%= link_to 'Back to Bank Page', page_path(params[:page_id]), class: 'btn btn-primary btn-lg' %>
+  <% else %>
+    <%= link_to 'Back to Bank Page', root_path, class: 'btn btn-primary btn-lg' %>
+  <% end %>
+</div>
+
+
+
+<!-- Modal for adding person -->
+<div class="modal fade" id="newPersonModal" tabindex="-1" aria-labelledby="newPersonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newPersonModalLabel">Add a New Person</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Render the Form Partial -->
+        <%= render 'form' %>
+      </div>
+    </div>
+  </div>
+</div>

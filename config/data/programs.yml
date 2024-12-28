@@ -1,0 +1,250 @@
+undergraduate:
+  - Other
+  - Harvard University
+  - Stanford University
+  - Yale University
+  - Massachusetts Institute of Technology (MIT)
+  - Princeton University
+  - California Institute of Technology (Caltech)
+  - University of Chicago
+  - University of Pennsylvania
+  - University of Pennsylvania (Wharton School)
+  - Columbia University
+  - Duke University
+  - Northwestern University
+  - Northwestern University (Kellogg School of Management)
+  - Dartmouth College
+  - Dartmouth College (Tuck School of Business)
+  - Brown University
+  - Cornell University
+  - University of Michigan
+  - University of Michigan (Ross School of Business)
+  - University of California, Berkeley
+  - University of California, Berkeley (Haas School of Business)
+  - University of Virginia
+  - University of Virginia (Darden School of Business)
+  - Carnegie Mellon University
+  - Carnegie Mellon University (Tepper School of Business)
+  - University of Southern California
+  - University of Southern California (Marshall School of Business)
+  - New York University
+  - New York University (Stern School of Business)
+  - Georgetown University
+  - Georgetown University (McDonough School of Business)
+  - University of Notre Dame
+  - University of Notre Dame (Mendoza College of Business)
+  - University of North Carolina at Chapel Hill
+  - University of North Carolina (Kenan-Flagler Business School)
+  - Boston College
+  - Boston College (Carroll School of Management)
+  - Emory University
+  - Emory University (Goizueta Business School)
+  - University of Texas at Austin
+  - University of Texas (McCombs School of Business)
+  - University of Florida
+  - University of Florida (Warrington College of Business)
+  - Indiana University
+  - Indiana University (Kelley School of Business)
+  - University of Illinois Urbana-Champaign
+  - University of Illinois (Gies College of Business)
+  - University of Wisconsin-Madison
+  - University of California, Los Angeles (UCLA)
+  - University of California, San Diego
+  - University of California, Santa Barbara
+  - University of California, Irvine
+  - University of Washington
+  - University of Washington (Foster School of Business)
+  - University of Minnesota
+  - University of Minnesota (Carlson School of Management)
+  - Penn State University
+  - Penn State University (Smeal College of Business)
+  - Ohio State University
+  - Ohio State University (Fisher College of Business)
+  - Purdue University
+  - University of Georgia
+  - University of Georgia (Terry College of Business)
+  - University of Maryland
+  - University of Maryland (Smith School of Business)
+  - University of Arizona
+  - University of Arizona (Eller College of Management)
+  - Michigan State University
+  - Michigan State University (Broad College of Business)
+  - Texas A&M University
+  - Texas A&M University (Mays Business School)
+  - University of Miami
+  - University of Rochester
+  - University of Rochester (Simon Business School)
+  - Rice University
+  - Vanderbilt University
+  - Vanderbilt University (Owen Graduate School of Management)
+  - Wake Forest University
+  - Villanova University
+  - Babson College
+  - Boston University
+  - Boston University (Questrom School of Business)
+  - Syracuse University
+  - Syracuse University (Whitman School of Management)
+  - Pepperdine University
+  - George Washington University
+  - American University
+  - American University (Kogod School of Business)
+  - Fordham University
+  - Fordham University (Gabelli School of Business)
+  - Southern Methodist University
+  - Southern Methodist University (Cox School of Business)
+  - Santa Clara University
+  - Santa Clara University (Leavey School of Business)
+  - Baruch College
+  - Baruch College (Zicklin School of Business)
+  - University of St. Andrews
+  - University of Toronto
+  - University of Toronto (Rotman School of Management)
+  - University of British Columbia
+  - University of British Columbia (Sauder School of Business)
+  - Indian Institute of Technology (IIT)
+  - Indian Institute of Management (IIM)
+  - London School of Economics (LSE)
+  - London Business School (LBS)
+  - University of Oxford
+  - University of Cambridge
+  - HEC Paris
+  - INSEAD
+  - ESADE Business School
+  - IE Business School
+  - IESE Business School
+  - Bocconi University
+  - University of St. Gallen
+  - National University of Singapore (NUS)
+  - Tsinghua University
+  - Peking University
+  - University of Hong Kong (HKU)
+  - Hong Kong University of Science and Technology (HKUST)
+  - University of Sydney
+  - University of Melbourne
+  - University of Cape Town
+
+
+graduate:
+  - Other
+  - Harvard University
+  - Stanford University
+  - Yale University
+  - Massachusetts Institute of Technology (MIT)
+  - Princeton University
+  - California Institute of Technology (Caltech)
+  - University of Chicago
+  - University of Pennsylvania
+  - University of Pennsylvania (Wharton School)
+  - Columbia University
+  - Duke University
+  - Northwestern University
+  - Northwestern University (Kellogg School of Management)
+  - Dartmouth College
+  - Dartmouth College (Tuck School of Business)
+  - Brown University
+  - Cornell University
+  - University of Michigan
+  - University of Michigan (Ross School of Business)
+  - University of California, Berkeley
+  - University of California, Berkeley (Haas School of Business)
+  - University of Virginia
+  - University of Virginia (Darden School of Business)
+  - Carnegie Mellon University
+  - Carnegie Mellon University (Tepper School of Business)
+  - University of Southern California
+  - University of Southern California (Marshall School of Business)
+  - New York University
+  - New York University (Stern School of Business)
+  - Georgetown University
+  - Georgetown University (McDonough School of Business)
+  - University of Notre Dame
+  - University of Notre Dame (Mendoza College of Business)
+  - University of North Carolina at Chapel Hill
+  - University of North Carolina (Kenan-Flagler Business School)
+  - Boston College
+  - Boston College (Carroll School of Management)
+  - Emory University
+  - Emory University (Goizueta Business School)
+  - University of Texas at Austin
+  - University of Texas (McCombs School of Business)
+  - University of Florida
+  - University of Florida (Warrington College of Business)
+  - Indiana University
+  - Indiana University (Kelley School of Business)
+  - University of Illinois Urbana-Champaign
+  - University of Illinois (Gies College of Business)
+  - University of Wisconsin-Madison
+  - University of California, Los Angeles (UCLA)
+  - University of California, San Diego
+  - University of California, Santa Barbara
+  - University of California, Irvine
+  - University of Washington
+  - University of Washington (Foster School of Business)
+  - University of Minnesota
+  - University of Minnesota (Carlson School of Management)
+  - Penn State University
+  - Penn State University (Smeal College of Business)
+  - Ohio State University
+  - Ohio State University (Fisher College of Business)
+  - Purdue University
+  - University of Georgia
+  - University of Georgia (Terry College of Business)
+  - University of Maryland
+  - University of Maryland (Smith School of Business)
+  - University of Arizona
+  - University of Arizona (Eller College of Management)
+  - Michigan State University
+  - Michigan State University (Broad College of Business)
+  - Texas A&M University
+  - Texas A&M University (Mays Business School)
+  - University of Miami
+  - University of Rochester
+  - University of Rochester (Simon Business School)
+  - Rice University
+  - Vanderbilt University
+  - Vanderbilt University (Owen Graduate School of Management)
+  - Wake Forest University
+  - Villanova University
+  - Babson College
+  - Boston University
+  - Boston University (Questrom School of Business)
+  - Syracuse University
+  - Syracuse University (Whitman School of Management)
+  - Pepperdine University
+  - George Washington University
+  - American University
+  - American University (Kogod School of Business)
+  - Fordham University
+  - Fordham University (Gabelli School of Business)
+  - Southern Methodist University
+  - Southern Methodist University (Cox School of Business)
+  - Santa Clara University
+  - Santa Clara University (Leavey School of Business)
+  - Baruch College
+  - Baruch College (Zicklin School of Business)
+  - University of St. Andrews
+  - University of Toronto
+  - University of Toronto (Rotman School of Management)
+  - University of British Columbia
+  - University of British Columbia (Sauder School of Business)
+  - Indian Institute of Technology (IIT)
+  - Indian Institute of Management (IIM)
+  - London School of Economics (LSE)
+  - London Business School (LBS)
+  - University of Oxford
+  - University of Cambridge
+  - HEC Paris
+  - INSEAD
+  - ESADE Business School
+  - IE Business School
+  - IESE Business School
+  - Bocconi University
+  - University of St. Gallen
+  - National University of Singapore (NUS)
+  - Tsinghua University
+  - Peking University
+  - University of Hong Kong (HKU)
+  - Hong Kong University of Science and Technology (HKUST)
+  - University of Sydney
+  - University of Melbourne
+  - University of Cape Town

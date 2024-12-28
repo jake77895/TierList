@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  get 'people/index'
+  get 'people/new'
+  get 'people/create'
   resources :pages
 
   get 'pages/:id/bank_view', to: 'pages#bank_view', as: 'bank_view'
 
   get 'banks/:id', to: 'pages#show', as: 'bank'
+
+  # Create people in banks
+  resources :people, only: [:index, :new, :create]
 
   devise_for :users
 

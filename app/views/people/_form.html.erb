@@ -1,0 +1,68 @@
+<% if @person.errors.any? %>
+  <div class="alert alert-danger">
+    <h4>There were errors saving this person:</h4>
+    <ul>
+      <% @person.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: @person, local: true, html: { multipart: true }) do |form| %>
+
+  <!-- Hidden Page ID Field (for redirect purposes) -->
+  <%= hidden_field_tag :page_id, params[:page_id] %>
+
+  <!-- Hidden Page Name Field (for redirect purposes) -->
+  <%= hidden_field_tag :page_name, params[:page_name] %>
+
+  <!-- Hidden Bank Field -->
+  <%= form.hidden_field :bank, value: @bank_name %>
+
+  <div class="mb-3">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+  
+  <!-- Group Selection -->
+  <div class="mb-3">
+    <%= form.label :group, "Group within #{@bank_name}" %>
+    <%= form.select :group, 
+          options_for_select([["Select Option", ""]] + @bank_groups.map { |group| [group, group] }, @person.group), 
+          {}, 
+          class: 'form-control' %>
+  </div>
+  
+  <div class="mb-3">
+    <%= form.label :level, "Level at Bank" %>
+     <%= form.select :level, options_for_select([['Select Option', '']] + @bank_levels), {}, class: 'form-control' %>
+  </div>
+  
+  <div class="mb-3">
+    <%= form.label :email %>
+    <%= form.email_field :email, class: 'form-control' %>
+  </div>
+    
+  <!-- Undergraduate Program Dropdown -->
+  <div class="mb-3">
+    <%= form.label :undergrad_school, "Undergraduate Program" %>
+    <%= form.select :undergrad_school, options_for_select(@undergrad_programs), { include_blank: "Select Option" }, { class: 'form-control' } %>
+  </div>
+
+  <!-- Graduate Program Dropdown -->
+  <div class="mb-3">
+    <%= form.label :grad_school, "Graduate Program" %>
+    <%= form.select :grad_school, options_for_select(@grad_programs), { include_blank: "Select Option" }, { class: 'form-control' } %>
+  </div>
+
+    
+  <div class="mb-3">
+    <%= form.label :image, "Profile Picture" %>
+    <%= form.file_field :image, accept: 'image/png,image/jpg,image/jpeg', class: 'form-control' %>
+  </div>
+  
+  <div class="mt-4 text-end">
+    <%= form.submit "Add Person", class: 'btn btn-primary' %>
+  </div>
+<% end %>

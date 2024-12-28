@@ -63,7 +63,7 @@
                 <div>
                   <h5 class="mb-1">Explore Bankers</h5>
                   <p class="text-muted mb-0">Learn more about <strong><%= @page.name %></strong>'s professionals.</p>
-                  <%= link_to 'View More', bank_view_path(@page.id), class: 'btn btn-secondary btn-sm mt-2' %>
+                  <%= link_to 'View More', people_path(page_id: @page.id, page_name: @page.name), class: 'btn btn-secondary btn-sm mt-2' %>
                 </div>
               </div>
             </div>
