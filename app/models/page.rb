@@ -39,6 +39,12 @@ class Page < ApplicationRecord
 
   before_validation :generate_slug
 
+
+  # Check if this page corresponds to a bank
+  def bank_page_path
+    slug.present? ? Rails.application.routes.url_helpers.bank_path(slug) : nil
+  end
+
   private
 
   def generate_slug
