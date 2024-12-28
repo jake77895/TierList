@@ -1,0 +1,46 @@
+<!-- Modal Partial for Person Details -->
+<div class="modal fade" id="personModal-<%= person.id %>" tabindex="-1" aria-labelledby="personModalLabel-<%= person.id %>" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header position-relative">
+        <h5 class="modal-title" id="personModalLabel-<%= person.id %>">Person Details</h5>
+        
+        <!-- LinkedIn Icon in Top-Right Corner (Replaces Close Button) -->
+        <% if person.linkedin.present? %>
+          <a href="<%= person.linkedin %>" target="_blank" class="position-absolute" style="top: 13px; right: 10px;">
+            <%= image_tag 'icons/linkedin.svg', alt: 'LinkedIn Icon', style: 'width: 24px; height: 24px;' %>
+          </a>
+        <% end %>
+      </div>
+      
+      <div class="modal-body text-center">
+        <!-- Profile Image -->
+        <div class="mb-3">
+          <% if person.image.attached? %>
+            <img src="<%= url_for(person.image) %>" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" alt="Person Image">
+          <% else %>
+            <%= image_tag 'avatars/Blank-profile.png', class: 'rounded-circle', style: 'width: 150px; height: 150px; object-fit: cover;', alt: 'Default Profile Image' %>
+          <% end %>
+        </div>
+
+        <!-- Name -->
+        <h3 class="fw-bold mb-2"><%= person.name.present? ? person.name : "Not Specified" %></h3>
+        <hr class="my-3">
+
+        <!-- Person Details -->
+        <div class="text-left">
+          <p><strong>Title:</strong> <%= person.level.present? ? person.level : "Not Specified" %></p>
+          <p><strong>Group:</strong> <%= person.group.present? ? person.group : "Not Specified" %></p>
+          <p><strong>Office Location:</strong> <%= person.location.present? ? person.location : "Not Provided" %></p>
+          <p><strong>Email:</strong> <%= person.email.present? ? person.email : "Not Provided" %></p>
+          <p><strong>Undergraduate School:</strong> <%= person.undergrad_school.present? ? person.undergrad_school : "Not Provided" %></p>
+          <p><strong>Graduate School:</strong> <%= person.grad_school.present? ? person.grad_school : "Not Provided" %></p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

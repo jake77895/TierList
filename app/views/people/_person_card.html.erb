@@ -1,0 +1,61 @@
+<div class="card h-100 shadow-sm text-center">
+  <!-- Profile Image -->
+  <% if person.image.attached? %>
+    <img src="<%= url_for(person.image) %>" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Person Image">
+  <% else %>
+    <%= image_tag 'avatars/Blank-profile.png', class: 'card-img-top rounded-circle mx-auto mt-3', style: 'width: 100px; height: 100px; object-fit: cover;', alt: 'Default Profile Image' %>
+  <% end %>
+
+  <!-- Card Body -->
+  <div class="card-body">
+
+    <!-- Icons Top-Right Corner -->
+    
+    <!-- Email Icon -->
+    <% if person.email.present? %>
+      <div class="position-absolute" style="top: 13px; right: 38px;">
+        <%= image_tag 'icons/email.svg', alt: 'Email Icon', style: 'width: 20px; height: 20px;' %>
+      </div>
+    <% end %>
+
+    <!-- LinkedIn Icon Button -->
+    <% if person.linkedin.present? %>
+      <a href="<%= person.linkedin %>" target="_blank" class="position-absolute" style="top: 10px; right: 10px;">
+        <%= image_tag 'icons/linkedin.svg', alt: 'LinkedIn', style: 'width: 20px; height: 20px;' %>
+      </a>
+    <% end %>
+
+    <!-- Name -->
+    <h5 class="card-title mb-2"><%= person.name %></h5>
+    
+    <!-- Horizontal Line -->
+    <hr class="my-2">
+
+    <!-- Title -->
+    <% if person.level.present? %>
+      <p class="card-text mb-1">
+        <strong>Title:</strong> <%= person.level %>
+      </p>
+    <% else %>
+      <p class="card-text mb-1 text-muted"><strong> Title:</strong> Not Specified</p>
+    <% end %>
+    
+    <!-- Office Location -->
+    <% if person.location.present? %>
+      <p class="card-text mb-1">
+        <strong>Office Location:</strong> <%= person.location %>
+      </p>
+    <% else %>
+      <p class="card-text mb-1 text-muted"> <strong>Office Location:</strong> Not Provided</p>
+    <% end %>
+
+    <!-- View Details Button -->
+    <button type="button" class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#personModal-<%= person.id %>">
+      View Details
+    </button>
+
+  </div>
+</div>
+
+<!-- Render Modal Partial -->
+<%= render 'people/person_detail', person: person %>
