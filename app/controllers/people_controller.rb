@@ -12,6 +12,7 @@ class PeopleController < ApplicationController
     @bank_name = params[:page_name] || 'Default Bank Name'
     @bank_groups = Person.groups_for_bank(@bank_name)
     @bank_levels = Person.levels_for_bank(@bank_name)
+    @bank_locations = Person.locations_for_bank
 
     # Fetch people filtered by the bank
     @people = Person.where(bank: @bank_name)
@@ -59,7 +60,18 @@ class PeopleController < ApplicationController
   private
 
   def person_params
-    params.require(:person).permit(:name, :bank, :group, :level, :email, :undergrad_school, :grad_school, :image)
+    params.require(:person).permit(
+      :name,
+      :bank,
+      :group,
+      :level,
+      :email,
+      :undergrad_school,
+      :grad_school,
+      :location,
+      :linkedin,
+      :image
+    )
   end
   
   

@@ -38,10 +38,22 @@
     <%= form.label :level, "Level at Bank" %>
      <%= form.select :level, options_for_select([['Select Option', '']] + @bank_levels), {}, class: 'form-control' %>
   </div>
+
+  <!-- Location Dropdown -->
+  <div class="mb-3">
+    <%= form.label :location, "Office Location" %>
+    <%= form.select :location, options_for_select(@bank_locations), { include_blank: "Select Option" }, { class: 'form-control' } %>
+  </div>
   
   <div class="mb-3">
     <%= form.label :email %>
     <%= form.email_field :email, class: 'form-control' %>
+  </div>
+
+  <!-- LinkedIn Field -->
+  <div class="mb-3">
+    <%= form.label :linkedin, "LinkedIn URL" %>
+    <%= form.text_field :linkedin, placeholder: 'https://linkedin.com/in/username', class: 'form-control' %>
   </div>
     
   <!-- Undergraduate Program Dropdown -->

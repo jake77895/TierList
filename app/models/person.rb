@@ -8,6 +8,8 @@
 #  grad_school      :string
 #  group            :string
 #  level            :string
+#  linkedin         :string
+#  location         :string
 #  name             :string
 #  undergrad_school :string
 #  created_at       :datetime         not null
@@ -18,6 +20,7 @@ class Person < ApplicationRecord
   has_one_attached :image
 
   validates :name, presence: true
+  validates :linkedin, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "must be a valid URL" }, allow_blank: true
 
   # Bank Groups Mapping
   BANK_GROUPS = {
@@ -45,6 +48,28 @@ class Person < ApplicationRecord
 
   def self.levels_for_bank(bank_name)
     BANK_LEVELS[bank_name] || DEFAULT_LEVELS
+  end
+
+  # Bank Locations (Shared Across All Banks)
+  BANK_LOCATIONS = [
+    "Other",
+    "New York",
+    "California",
+    "San Francisco",
+    "Chicago",
+    "London",
+    "Hong Kong",
+    "Singapore",
+    "Tokyo",
+    "Frankfurt",
+    "Sydney",
+    "Toronto",
+    "Dubai"
+  ]
+
+  # Fetch Locations for Any Bank
+  def self.locations_for_bank
+    BANK_LOCATIONS
   end
 
 end
