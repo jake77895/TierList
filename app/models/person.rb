@@ -22,6 +22,24 @@ class Person < ApplicationRecord
   validates :name, presence: true
   validates :linkedin, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "must be a valid URL" }, allow_blank: true
 
+  # Scopes for filtering
+  scope :by_bank, ->(bank) { where(bank: bank) if bank.present? }
+  scope :by_level, ->(level) { where(level: level) if level.present? }
+  scope :by_group, ->(group) { where(group: group) if group.present? }
+
+  # Allowlisting searchable attributes for Ransack
+  def self.ransackable_attributes(auth_object = nil)
+    %w[
+      id name email bank group level linkedin location undergrad_school
+      grad_school created_at updated_at
+    ]
+  end
+
+  # Allowlisting searchable associations (if any, for example, belongs_to or has_many relations)
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   # Bank Groups Mapping
   BANK_GROUPS = {
     "Goldman Sachs" => ["Investment Banking Group", "Private Wealth Management", "Asset Management"],

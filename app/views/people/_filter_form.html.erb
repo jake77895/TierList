@@ -1,0 +1,40 @@
+<%= form_with(url: people_path, method: :get, local: true) do |f| %>
+  <!-- Hidden Field for Bank -->
+  <%= hidden_field_tag 'q[bank_eq]', @bank_name %>
+  
+  <!-- Name -->
+  <div class="mb-3">
+    <%= f.label :name_cont, "Name" %>
+    <%= f.text_field :name_cont, placeholder: "Search by name", class: "form-control" %>
+  </div>
+
+  <!-- Level -->
+  <div class="mb-3">
+    <%= f.label :level_eq, "Level" %>
+    <%= f.select :level_eq, options_for_select(@bank_levels, params.dig(:q, :level_eq)), { include_blank: "Select Level" }, { class: "form-select" } %>
+  </div>
+
+  <!-- Group -->
+  <div class="mb-3">
+    <%= f.label :group_eq, "Group" %>
+    <%= f.text_field :group_eq, placeholder: "Search by group", class: "form-control" %>
+  </div>
+
+  <!-- Undergraduate School -->
+  <div class="mb-3">
+    <%= f.label :undergrad_school_eq, "Undergraduate School" %>
+    <%= f.select :undergrad_school_eq, options_for_select(@filtered_undergrad_programs, params.dig(:q, :undergrad_school_eq)), { include_blank: "Select Undergraduate School" }, { class: "form-select" } %>
+  </div>
+
+  <!-- Graduate School -->
+  <div class="mb-3">
+    <%= f.label :grad_school_eq, "Graduate School" %>
+    <%= f.select :grad_school_eq, options_for_select(@filtered_grad_programs, params.dig(:q, :grad_school_eq)), { include_blank: "Select Graduate School" }, { class: "form-select" } %>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <%= f.submit "Filter", class: "btn btn-primary" %>
+    <%= link_to "Reset", people_path(page_id: params[:page_id], page_name: @bank_name), class: "btn btn-secondary" %>
+  </div>
+<% end %>

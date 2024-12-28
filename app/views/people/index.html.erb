@@ -16,33 +16,35 @@
   </div>
 
 
-  <!-- Filters Section -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title">Filter People</h5>
-      <form class="row g-3">
-        <div class="col-md-4">
-          <label for="filterName" class="form-label">Name</label>
-          <input type="text" class="form-control" id="filterName" placeholder="Search by name">
+  <!-- Filter Button to Open Modal -->
+  <div class="text-end mb-3">
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+      Open Filters
+    </button>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterModalLabel">Filter People</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="col-md-4">
-          <label for="filterSchool" class="form-label">School</label>
-          <input type="text" class="form-control" id="filterSchool" placeholder="Search by school">
+        <div class="modal-body">
+          <%= render 'filter_form' %>
         </div>
-        <div class="col-md-4 align-self-end">
-          <button type="submit" class="btn btn-primary w-100">Filter</button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 
-    <div class="container mt-5">
-  <!-- People Sections -->
+<!-- People Sections -->
+  <div class="container mt-5">
   <% @bank_levels.each do |level| %>
     <h3 class="mb-3"><%= level %></h3>
     <hr>
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-      <% @people.where(level: level).each do |person| %>
+      <% @people.select { |person| person.level == level }.each do |person| %>
         <div class="col">
           <%= render partial: "person_card", locals: { person: person } %>
         </div>
@@ -51,6 +53,7 @@
   <% end %>
 
   <!-- Unspecified Level -->
+  <% @unspecified_people = @people.select { |person| person.level.blank? } %>
   <% if @unspecified_people.any? %>
     <h3 class="mb-3">Level Not Specified</h3>
     <hr>

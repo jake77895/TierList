@@ -1,0 +1,49 @@
+<%= form_with(model: person, url: url, local: true, html: { multipart: true }) do |form| %>
+
+  <!-- Form Fields -->
+  <div class="mb-3">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :bank %>
+    <%= form.text_field :bank, value: @bank_name, class: 'form-control', readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :group %>
+    <%= form.text_field :group, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :level %>
+    <%= form.select :level, Person.levels_for_bank(@bank_name), {}, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :email %>
+    <%= form.email_field :email, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :location %>
+    <%= form.text_field :location, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :linkedin %>
+    <%= form.text_field :linkedin, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :image, "Profile Image" %>
+    <%= form.file_field :image, class: 'form-control' %>
+  </div>
+
+  <!-- Submit and Back Buttons -->
+  <div class="mt-4 d-flex justify-content-between">
+    <%= link_to '← Back to People List', admin_banks_people_path, class: 'btn btn-outline-secondary' %>
+    <%= form.submit "Save Changes", class: 'btn btn-primary' %>
+  </div>
+<% end %>

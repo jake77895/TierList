@@ -1,0 +1,33 @@
+<h1>Admin - Manage All People</h1>
+
+<div class="mb-3 text-end">
+  <%= link_to "Add Person", new_admin_banks_person_path, class: "btn btn-primary" %>
+</div>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Bank</th>
+      <th>Group</th>
+      <th>Level</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @people.each do |person| %>
+      <tr>
+        <td><%= person.name %></td>
+        <td><%= person.bank.presence || 'Not Specified' %></td>
+        <td><%= person.group.presence || 'Not Specified' %></td>
+        <td><%= person.level.presence || 'Not Specified' %></td>
+        <td><%= person.email.presence || 'Not Provided' %></td>
+        <td>
+          <%= link_to "Edit", edit_admin_banks_person_path(person), class: "btn btn-sm btn-warning" %>
+          <%= link_to "Delete", admin_banks_person_path(person), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

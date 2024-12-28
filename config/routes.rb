@@ -51,4 +51,12 @@ Rails.application.routes.draw do
 
   # Article path
   get 'articles/:id', to: 'articles#show', as: 'article'
+
+  # Admin path
+  namespace :admin do
+    namespace :banks do
+      resources :people, only: [:index, :new, :create, :edit, :update, :destroy]
+    end
+  end
+
 end

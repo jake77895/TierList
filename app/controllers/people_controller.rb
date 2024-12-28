@@ -1,40 +1,43 @@
 class PeopleController < ApplicationController
   def index
-    @people = Person.all
+    @q = Person.ransack(params[:q]) # Apply Ransack filters
+    @people = @q.result(distinct: true) # Get distinct filtered results
     @person = Person.new
     
-
     # Retrieve the current page based on page_id
     if params[:page_id].present?
       @page = Page.find_by(id: params[:page_id])
     end
-
+  
     @bank_name = params[:page_name] || 'Default Bank Name'
     @bank_groups = Person.groups_for_bank(@bank_name)
     @bank_levels = Person.levels_for_bank(@bank_name)
     @bank_locations = Person.locations_for_bank
-
-    # Fetch people filtered by the bank
-    @people = Person.where(bank: @bank_name)
-
+  
+    # Apply bank filter to already filtered @people
+    @people = @people.where(bank: @bank_name)
+  
     @page_id = params[:page_id]
-
-    @people_by_level = @bank_levels.index_with { |level| @people.where(level: level) }
+  
+    # Group people by level
+    @people_by_level = @bank_levels.index_with do |level|
+      @people.where(level: level)
+    end
+  
     # Handle "Level Not Specified"
     @unspecified_people = @people.where(level: [nil, ''])
-
-    Rails.logger.debug "DEBUG: @unspecified_people count = #{@unspecified_people.count}"
-    Rails.logger.debug "DEBUG: @unspecified_people = #{@unspecified_people.pluck(:id, :name, :level)}"
-
+  
     # Load programs data from YAML
-    # Use caching to improve performance
     programs_data = Rails.cache.fetch('programs_data', expires_in: 12.hours) do
       YAML.load_file(Rails.root.join('config/data/programs.yml'))
     end
-    
+  
     @undergrad_programs = programs_data['undergraduate'] || []
     @grad_programs = programs_data['graduate'] || []
-
+    
+    # Filter Undergraduate and Graduate Programs for Filter Dropdowns
+    @filtered_undergrad_programs = @people.distinct.pluck(:undergrad_school).reject(&:blank?)
+    @filtered_grad_programs = @people.distinct.pluck(:grad_school).reject(&:blank?)
 
   end
 

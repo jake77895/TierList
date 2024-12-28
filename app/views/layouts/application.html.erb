@@ -52,6 +52,14 @@
 
         <% end %>
 
+        <% if user_signed_in? && current_user.admin? %>
+          <nav>
+            <%= link_to "Admin - Manage People", admin_banks_people_path, class: "btn btn-outline-danger" %>
+          </nav>
+        <% end %>
+
+
+
 
       </div>
     </nav>
